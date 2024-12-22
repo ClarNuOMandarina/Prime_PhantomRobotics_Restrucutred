@@ -9,9 +9,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@TeleOp(name="tepeop_MECHanism_TEST")
+@TeleOp(name="init_for_repairs")
 public class teleop_mecanism_test extends LinearOpMode {
 
 
@@ -53,13 +54,9 @@ public class teleop_mecanism_test extends LinearOpMode {
         colection.start_config();
         scoring.init_config();
         while(opModeIsActive() && !isStopRequested()){
-            drive.setDrivePowers(new PoseVelocity2d(
-                    new Vector2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x
-                    ),
-                    -gamepad1.right_stick_x
-            ));
+
+
+            // changes the turn speed if the robot is in it s extened config for better precision
             if(extension.left_extension.getPosition()>extension.extension_retracted+0.1) {
                 drive.setDrivePowers(new PoseVelocity2d(
                         new Vector2d(
@@ -82,34 +79,43 @@ public class teleop_mecanism_test extends LinearOpMode {
 
             if(blockage==false)
             {
+                // enable/disable automations with the "manual" variable
                 if(gamepad2.cross)manual=false;
                 if(gamepad2.square)manual=true;
+                // high sample scoring config
                 if(gamepad2.dpad_up) {
                     slides.culisante(slides.slides_high_basket);
                     scoring.scoring_arm_score_basket();
                 }
+                // low sample scoring config
                 if(gamepad2.dpad_left) {
                     slides.culisante(slides.slides_low_basket);
                     scoring.scoring_arm_score_basket();
 
                 }
+                // high specimen score config
                 if(gamepad2.dpad_right) {
                     slides.culisante(slides.slides_specimen_high);
                     scoring.scoring_arm_score_specimen_score();                }
+                // low specimen score config
                 if(gamepad2.dpad_down) {
                     slides.culisante(slides.slides_specimen_low);
                     scoring.scoring_arm_score_specimen_score();                }
+                //changes the robots config to the specimen colection config
                 if(gamepad2.share){
                     alt_transfer=true;
                     slides.culisante(slides.slides_init);
                     scoring.scoring_arm_score_specimen_collect();
                 }
+                // particualr reset if grabbed in a peculiar way after transfer, used extremly rarely if ever
                 if(gamepad2.triangle){
                     slides.culisante(slides.slides_init);
                     scoring.scoring_arm_default();
                 }
+                // manual change between specimen_cycling, if true then robots default config is specimen cycling, if false then it is sample cycling
                 if(gamepad2.right_bumper)specimen_cycling=true;
                 if(gamepad2.left_bumper)specimen_cycling=false;
+                // intermediary check for succseful transfer of the sample in the auto-transfer process
                 if(gamepad1.left_trigger==0) {
                     if (transfer_extend == true) {
                         timer.reset();
@@ -122,6 +128,8 @@ public class teleop_mecanism_test extends LinearOpMode {
                         transfer_retracted = false;
                     }
                 }
+                // transfers the sample from a colected config to a scoring config, also blocks off other controls while the transfer is happening
+                // and is automated based on a distance/color sensor, can also be used manually
                 if(gamepad2.touchpad || (transfer_retracted_counter && timer.seconds()>0.8) ||(transfer_extend_counter==true && timer.seconds()>0.9)){
                     transfer_extend_counter=false;
                     transfer_retracted_counter=false;
@@ -138,13 +146,13 @@ public class teleop_mecanism_test extends LinearOpMode {
 
                 }
 
-
+                // sequence of code that puts the robot in the first half of the hanging sequence
                 if(gamepad2.left_trigger!=0){
                     extension.extend(extension.extension_hang);
                     slides.culisante(slides.slides_high_basket);
                     hang=true;
                 }
-
+                // general reset of all functions, press if any errors arise or if in need of config reset
                 if(gamepad2.right_trigger!=0){
                     scramble_single_shot=false;
 
@@ -157,22 +165,12 @@ public class teleop_mecanism_test extends LinearOpMode {
 
 
 
+            // finishes the hanging sequence by lowering the slides
+                 if(gamepad1.share){
+                     slides.culisante(slides.slides_hang);
+                     }
 
-                // driver 1
-//                if(gamepad1.x)
-//                {
-//                    colection.colection_arm(colection.colection_extended);
-//                    colection.gripper_angle.setPosition(colection.gripper_angle_default);
-//                    colection.gripper_rotation.setPosition(colection.gripper_rotation_collect);
-//                    timer_release.reset();
-//                    timer_no=true;
-//                }
-////                if(timer_no==true)
-////                    if(timer_release.seconds()>)
-//                if(gamepad1.touchpad)colection.gripper_release();
-if(gamepad1.share){
-    slides.culisante(slides.slides_hang);
-}
+                 // sequence of code that allows the scrambling of samples inside the submersible in case of unlucky positioning
                 if(gamepad1.right_trigger!=0)
                 {
                     colection.colection_arm(colection.colection_extended);
@@ -182,20 +180,17 @@ if(gamepad1.share){
                     scrambler_time.reset();
                     scramble_single_shot=true;
                 }
-//                else{
-//                    scramble_single_shot=false;
-//                }
+
                 if(scramble==true&&!(gamepad1.right_trigger!=0))
                 {
-//                    if(scramble_single_shot==false)
-//                        colection.gripper.setPosition(colection.gripper_release);
+
                     if(scrambler_time.seconds()>0.3)
                     {
                         colection.colection_arm(colection.colection_default);
                         scramble=false;
                     }
                 }
-
+                // scores the already collected specimen on the high bar
                 if(gamepad1.b){
                     to_score=true;
                     timer_score.reset();
@@ -211,8 +206,12 @@ if(gamepad1.share){
                         to_score=false;
                     }
                 }
+                // changes the angle of the gripper for sample colection on multiple axis
                 if(gamepad1.dpad_left) colection.gripper_angle.setPosition(colection.gripper_angle_vertical);
                 if(gamepad1.dpad_right)colection.gripper_angle.setPosition(colection.gripper_angle_default);
+
+                // sequence that grabs sample and depending on the cycling mode either readies it for
+                // transfer or puts the robot into the specimen colection configuration
                 if( (gamepad1.x)){
                     colection.collecting_config();
                     grab=true;
@@ -227,31 +226,38 @@ if(gamepad1.share){
                     if(timer2.seconds()>0.7) {
                         if (specimen_cycling == false) {
 
-                            if (colection.senzor.alpha() > 600) {
-                                colection.gripper.setPosition(colection.gripper_transfer);
-                                colection.scoring_config();
-                                if(manual==true) {
+                            if (!manual){
+
+                                if (colection.senzor.getDistance(DistanceUnit.CM) <colection.distance_to_collected_sample) {
+
+                                    colection.gripper.setPosition(colection.gripper_transfer);
+                                    colection.scoring_config();
+
                                     if (gamepad1.left_trigger != 0) transfer_extend = true;
                                     else transfer_retracted = true;
                                 }
-                            } else {
+                            }
+
+                            else if (manual){
                                 colection.default_config();
                             }
-                        } else {
-                            if(manual==true) {
-                                if (colection.senzor.alpha() > 600) {
+                        }
+                        else {
+                            if(!manual) {
+                                if (colection.senzor.getDistance(DistanceUnit.CM) <colection.distance_to_collected_sample) {
                                     colection.colection_arm(colection.colection_specimen);
                                 } else {
                                     colection.default_config();
                                 }
                             }
-                            else colection.colection_arm(colection.colection_specimen);
+
+                            else if (manual) colection.colection_arm(colection.colection_specimen);
                         }
                         grab = false;
                     }
                 }
 
-
+                // releases the sample from the sample colection mechanism, used
                 if(gamepad1.right_bumper){
                     colection.gripper_release();
                     colection.colection_arm(colection.colection_default);
@@ -267,7 +273,6 @@ if(gamepad1.share){
                 }
                 // specimen colection
                 if(gamepad1.triangle){
-//                    if(scoring.scoring_arm_left.getPosition()>0.28)
                         if(alt_transfer==true)
                         {
                             scoring.grip_transfer_grab();
@@ -288,7 +293,6 @@ if(gamepad1.share){
 
                 } if (timer.seconds() >0.4  && timer.seconds() < 0.5) {
                     colection.gripper.setPosition(colection.gripper_release);
-//                    colection.colection_arm(colection.colection_extended);
 
                 }
                 if (timer.seconds() > 0.6 ) {
@@ -299,7 +303,7 @@ if(gamepad1.share){
             }
 
             telemetry.addData("Cycling_specimen",specimen_cycling);
-            telemetry.addData("Color",colection.senzor.alpha());
+            telemetry.addData("Color",colection.senzor.getDistance(DistanceUnit.CM));
             telemetry.addData("automations",manual);
             telemetry.update();
 

@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Autonomous(name="auto_basket_4_sample")
-public class auto_basket_sample extends LinearOpMode {
+public class auto_basket_4_sample extends LinearOpMode {
 
 
     @Override
@@ -80,12 +80,12 @@ boolean transferz=false;
                 .strafeToLinearHeading(new Vector2d(-53,-60),Math.toRadians(39));
 
         TrajectoryActionBuilder parking_pre = drive.actionBuilder(new Pose2d(new Vector2d(-53,-60),Math.toRadians(39)))
-                .afterTime(0.2,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(-43,-13),Math.toRadians(0));
+                .afterTime(0.2,slides.auto_park())
+                .strafeToLinearHeading(new Vector2d(-43,-13),Math.toRadians(180));
 
         TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(0)))
-                .afterTime(0.2,slides.slide_init())
-                .strafeTo(new Vector2d(-28,-11));
+                .afterTime(0.2,slides.auto_park())
+                .strafeTo(new Vector2d(-35,-11));
 
 
 
@@ -267,45 +267,9 @@ boolean transferz=false;
                         parking_pre.build(),
                         parking.build()
                 ));
-        double x=extension.extension_retracted;
-        colection.colection_arm(colection.colection_extended_auto_submersible);
-        boolean force_stop=false;
-        while(x<extension.extension_extended && timer.seconds()<25 && !force_stop){
-            extension.extend(x);
-            sleep(500);
-            if(colection.senzor.alpha()>80){
-                colection.colection_arm(colection.colection_extended);
-                sleep(200);
-                colection.gripper_grab();
-                sleep(200);
-                if(colection.senzor.alpha()<1000){
-                    colection.gripper_release();
-                    sleep(200);
-                    colection.colection_arm(colection.colection_extended_auto_submersible);
-                    sleep(200);
-                    colection.gripper_angle.setPosition(colection.gripper_angle_vertical);
-                    sleep(200);
-                    colection.colection_arm(colection.colection_extended);
-                    sleep(200);
-                    colection.gripper_grab();
-                }
-
-                    if(colection.senzor.alpha()>1000){
-                    colection.scoring_config();
-                    force_stop=true;
-                }
-                else{
-                    colection.gripper_release();
-                }
-            }
-            x+=0.05;
-        }
-        colection.scoring_config();
-        sleep(4000);
         while(!isStopRequested()){
             scoring.scoring_arm_auto_init_end();
             scoring.grip_transfer_release();
-            slides.culisante(slides.slides_init);
             colection.init_config();
         }
         telemetry.update();

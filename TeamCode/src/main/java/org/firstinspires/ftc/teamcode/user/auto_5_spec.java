@@ -18,8 +18,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name="auto 5 spec final boss")
-public class auto_5_spec_final_boss extends LinearOpMode {
+@Autonomous(name="auto 5 spec")
+public class auto_5_spec extends LinearOpMode {
 
 
     @Override
@@ -42,11 +42,6 @@ public class auto_5_spec_final_boss extends LinearOpMode {
                 .afterTime(0.2,slides.auto_score())
                 .lineToY(-37.5)
                 .afterTime(0,scoring.specimen_score_2());
-//        TrajectoryActionBuilder score_to_transfer = drive.actionBuilder(new Pose2d(new Vector2d(7.2,-37),Math.toRadians(-90)))
-//                .afterTime(0.3,scoring.gripper_release())
-//                .afterTime(0.8,scoring.auto_End())
-//                .afterTime(1,slides.slide_init())
-//                .strafeToLinearHeading(new Vector2d(32,-40),Math.toRadians(90));
         TrajectoryActionBuilder transfer_sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(7.2,-37.5),Math.toRadians(-90)))
                 .afterTime(0.6,scoring.gripper_release())
                 .afterTime(1.2,scoring.auto_End())
@@ -64,8 +59,7 @@ public class auto_5_spec_final_boss extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(56,-48),Math.toRadians(250));
         TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(56,-48),Math.toRadians(250)))
                 .strafeToLinearHeading(new Vector2d(55.5,-24),Math.toRadians(0));
-//        TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(57,-48),Math.toRadians(241)))
-//                        .strafeToLinearHeading(new Vector2d(55.5,-26),Math.toRadians(0));
+
 
         TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(55,-24),Math.toRadians(0)))
                 .strafeToLinearHeading(new Vector2d(57,-48),Math.toRadians(241));
@@ -117,7 +111,6 @@ public class auto_5_spec_final_boss extends LinearOpMode {
                 .afterTime(0,extension.max_extension())
                 .afterDisp(0,scoring.auto_End())
                 .afterTime(0.5,colection.auto_end())
-//                .strafeToLinearHeading(new Vector2d(11,-50),Math.toRadians(-80));
                 .strafeToLinearHeading(new Vector2d(39,-43),Math.toRadians(-45));
 
         scoring.gripper(scoring.gripper_hold);
@@ -136,10 +129,8 @@ public class auto_5_spec_final_boss extends LinearOpMode {
                 ));
         colection.colection_arm(colection.colection_default);
         colection.default_config();
-//        colection.gripper_angle.setPosition(colection.gripper_angle_vertical);
         Actions.runBlocking(
                 new SequentialAction(
-//                        score_to_transfer.build(),
                         transfer_sample_1.build()
                 ));
         colection.colection_arm(colection.colection_extended_auto);
@@ -248,16 +239,6 @@ public class auto_5_spec_final_boss extends LinearOpMode {
                 new SequentialAction(
                         scoring_poz_pre_3.build()
                 ));
-//        Actions.runBlocking(
-//                new SequentialAction(
-//                        scoring_poz_3.build()
-//                ));
-
-
-
-        // ciclu 4
-
-
         Actions.runBlocking(
                 new SequentialAction(
                         specimen_collect_pre_cicling.build(),
@@ -277,28 +258,12 @@ public class auto_5_spec_final_boss extends LinearOpMode {
         sleep(400);
         scoring.gripper(scoring.gripper_release);
         sleep(200);
-//        Actions.runBlocking(
-//                new SequentialAction(
-//                        scoring_poz_4.build()
-//                ));
-
 
         Actions.runBlocking(
                 new SequentialAction(
                         parking.build()
                 ));
-//        while(!isStopRequested()){
-//            scoring.scoring_arm_auto_init_end();
-//            slides.culisante(slides.slides_init);
-//            colection.init_config();
-//        }
 
-
-        if (isStopRequested()) {
-            ElapsedTime kok = new ElapsedTime();
-            while(kok.seconds()<0.4)scoring.grip_transfer.setPosition(scoring.gripper_release);
-            return;
-        }
         telemetry.update();
     }
 

@@ -48,3 +48,39 @@ public class arhiva_DE_COD {
 //        }
 //    }
 }
+
+//        double x=extension.extension_retracted;
+//                colection.colection_arm(colection.colection_extended_auto_submersible);
+//                boolean force_stop=false;
+//                while(x<extension.extension_extended && timer.seconds()<25 && !force_stop){
+//            extension.extend(x);
+//            sleep(500);
+//            if(colection.senzor.alpha()>80){
+//            colection.colection_arm(colection.colection_extended);
+//            sleep(200);
+//            colection.gripper_grab();
+//            sleep(200);
+//            if(colection.senzor.alpha()<1000){
+//            colection.gripper_release();
+//            sleep(200);
+//            colection.colection_arm(colection.colection_extended_auto_submersible);
+//            sleep(200);
+//            colection.gripper_angle.setPosition(colection.gripper_angle_vertical);
+//            sleep(200);
+//            colection.colection_arm(colection.colection_extended);
+//            sleep(200);
+//            colection.gripper_grab();
+//            }
+//
+//            if(colection.senzor.alpha()>1000){
+//            colection.scoring_config();
+//            force_stop=true;
+//            }
+//            else{
+//            colection.gripper_release();
+//            }
+//            }
+//            x+=0.05;
+//            }
+//            colection.scoring_config();
+//            sleep(4000);

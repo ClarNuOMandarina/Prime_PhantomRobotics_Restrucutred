@@ -25,6 +25,7 @@ public DcMotorEx left_slide,right_slide;
     public int slides_specimen_high_score_tepeop=700   ;
     public int slides_hang=1500;
     public int slides_auto_score=1700   ;
+    public int slides_auto_park=1000   ;
 
     public slides(HardwareMap hardwareMap){
         // declarari motoare si modul lor de functionare
@@ -69,6 +70,21 @@ public DcMotorEx left_slide,right_slide;
         return new Slide_init();
     }
     public class Slide_sample  implements Action{
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                culisante(slides_high_basket);
+
+
+            return false;
+        }
+
+    }
+    public Action auto_park(){
+        return new Auto_park();
+    }
+    public class Auto_park  implements Action{
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {

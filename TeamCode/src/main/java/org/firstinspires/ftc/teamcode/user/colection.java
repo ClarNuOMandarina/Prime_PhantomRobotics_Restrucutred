@@ -5,18 +5,22 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 public class colection {
 
-    public ColorSensor senzor;
+    public DistanceSensor senzor;
 
    public Servo colection_arm_left;
    public Servo colection_arm_right;
    public Servo gripper;
    public Servo gripper_rotation;
    public Servo gripper_angle;
+   public double distance_to_collected_sample=1;
    public double colection_retracted=0.6;
    public double colection_extended=0.83;
    public double colection_extended_auto=0.8;
@@ -46,7 +50,7 @@ public class colection {
         gripper=hardwareMap.get(Servo.class,"gripper");
         gripper_rotation=hardwareMap.get(Servo.class,"gripper_rotation");
         gripper_angle=hardwareMap.get(Servo.class,"gripper_angle");
-        senzor=hardwareMap.get(ColorSensor.class,"senzor");
+        senzor=hardwareMap.get(DistanceSensor.class,"senzor");
 
     }
 

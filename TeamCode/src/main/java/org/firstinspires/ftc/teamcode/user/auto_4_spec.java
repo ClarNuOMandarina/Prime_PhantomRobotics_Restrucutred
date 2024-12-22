@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Autonomous(name="auto 4 spec")
-public class auto_standard_v2 extends LinearOpMode {
+public class auto_4_spec extends LinearOpMode {
 
 
     @Override
