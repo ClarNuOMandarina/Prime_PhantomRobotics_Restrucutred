@@ -47,23 +47,36 @@ public class teleop extends LinearOpMode {
         boolean transfer_extend_counter=false;
         boolean transfer_retracted=false;
         boolean transfer_retracted_counter=false;
-double heading=-72;
-double x=12;
-double x2=40;
-//        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(40,-59),Math.toRadians(90)))
-//                .afterTime(0.1,slides.auto_score())
-//                .afterTime(0.4,slides.auto_score())
-//                .afterTime(1.2,slides.auto_score())
-//
-//                .afterTime(0.2,scoring.specimen_prepare())
-//                .strafeToLinearHeading(new Vector2d(x,-32),Math.toRadians(heading))
-//                .afterTime(0,scoring.specimen_score_2());
-//
-//        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(10,-32),Math.toRadians(-72)))
-//                .afterTime(0.4,scoring.gripper_release())
-//                .afterTime(1,slides.slide_init())
-//                .afterTime(1,scoring.auto_End())
-//                .strafeToLinearHeading(new Vector2d(40,-40),Math.toRadians(90));
+        boolean auto_specimen_score=false;
+        boolean auto_specimen_intermediary=false;
+        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-59),Math.toRadians(90)))
+                .afterTime(0.1,slides.auto_score())
+                .afterTime(0.4,slides.auto_score())
+                .afterTime(1.2,slides.auto_score())
+
+                .afterTime(0.2,scoring.specimen_prepare())
+                .strafeToLinearHeading(new Vector2d(10,-33),Math.toRadians(-90))
+                .afterTime(0,scoring.specimen_score_2());
+
+        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(10,-33),Math.toRadians(-90)))
+                .afterTime(0,slides.auto_score())
+                .strafeTo(new Vector2d(4,-33))
+                .afterTime(0.5,scoring.gripper_release())
+                .afterTime(1,scoring.specimen_collect())
+                .afterTime(1,slides.slide_init())
+                .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
+
+        TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(10,-33),Math.toRadians(-90)))
+                .afterTime(0,slides.auto_score())
+                .strafeTo(new Vector2d(4,-33))
+                .afterTime(0.5,scoring.gripper_release())
+                .afterTime(1,scoring.specimen_collect())
+                .afterTime(1,slides.slide_init())
+                .strafeToLinearHeading(new Vector2d(-12,-40),Math.toRadians(-180));
+
+
+        TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(45,-47),Math.toRadians(90)))
+                .strafeTo(new Vector2d(45,-59));
 
         // sequence that lowers slides to init level in auto sequence until start button is pressed
 
@@ -80,21 +93,7 @@ double x2=40;
 
         while(opModeIsActive() && !isStopRequested()){
 
-            TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(40,-59),Math.toRadians(90)))
-                    .afterTime(0.1,slides.auto_score())
-                    .afterTime(0.4,slides.auto_score())
-                    .afterTime(1.2,slides.auto_score())
 
-                    .afterTime(0.2,scoring.specimen_prepare())
-                    .strafeToLinearHeading(new Vector2d(x,-32),Math.toRadians(heading))
-                    .afterTime(0,scoring.specimen_score_2());
-
-            TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(10,-32),Math.toRadians(-72)))
-                    .afterTime(0.4,scoring.gripper_release())
-                    .afterTime(1,slides.slide_init())
-                    .afterTime(1,scoring.specimen_collect())
-                    .strafeToLinearHeading(new Vector2d(x2,-53),Math.toRadians(90))
-                    .strafeToLinearHeading(new Vector2d(40,-47),Math.toRadians(110));
 
             // changes the turn speed if the robot is in it s extened config for better precision
             if(extension.left_extension.getPosition()>extension.extension_retracted+0.1) {
@@ -318,15 +317,41 @@ double x2=40;
                 }
                 if(gamepad1.dpad_up){
                     drive.pose=pose;
+                    auto_specimen_score=true;
+                    auto_specimen_intermediary=false;
                     slides.culisante(slides.slides_auto_score+300);
-                    Actions.runBlocking(
-                            new SequentialAction(
-                                    scoring_spec.build(),
-                                    scoring_spec_finish.build()
-                            ));
-                    x2-=2;
-                    x-=2.5;
-                    heading-=0.7;
+                }
+                while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary){
+                    if(gamepad1.dpad_right)auto_specimen_intermediary=true;
+
+                    if(gamepad1.dpad_down)auto_specimen_score=false;
+                    if(auto_specimen_score) {
+                        Actions.runBlocking(
+                                new SequentialAction(
+                                        scoring_spec.build(),
+                                        scoring_spec_finish.build(),
+                                        specimen_collect.build()
+                                ));
+                    }
+                    if(gamepad1.dpad_down)auto_specimen_score=false;
+                    if(gamepad1.dpad_right)auto_specimen_intermediary=true;
+
+                    if(!auto_specimen_score) {
+                        scoring.grip_transfer.setPosition(scoring.gripper_hold);
+                        sleep(300);
+                        Actions.runBlocking(
+                                new SequentialAction(
+                                        scoring_spec.build(),
+                                        specimen_end.build()
+                                ));
+                    }
+                    if(gamepad1.dpad_down)auto_specimen_score=false;
+                    if(!auto_specimen_score)break;
+                    if(auto_specimen_intermediary)break;
+                    if(!auto_specimen_intermediary) {
+                        scoring.grip_transfer.setPosition(scoring.gripper_hold);
+                        sleep(300);
+                    }
                 }
 
             }
