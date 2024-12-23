@@ -21,7 +21,7 @@ public class teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d pose=new Pose2d(new Vector2d(39,-43),Math.toRadians(-45));
+        Pose2d pose=new Pose2d(new Vector2d(40,-59),Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap,pose);
         colection colection = new colection(hardwareMap);
         extension extension = new extension(hardwareMap);
@@ -42,25 +42,27 @@ public class teleop extends LinearOpMode {
         boolean specimen_cycling=false;
         slides.culisante(slides.slides_init);
         extension.extend(extension.extension_retracted);
-        boolean manual=true;
+        boolean manual=false;
         boolean transfer_extend=false;
         boolean transfer_extend_counter=false;
         boolean transfer_retracted=false;
         boolean transfer_retracted_counter=false;
-
-        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(40,-59.5),Math.toRadians(90)))
-                .afterTime(0.1,slides.auto_score())
-                .afterTime(0.4,slides.auto_score())
-                .afterTime(1.2,slides.auto_score())
-
-                .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(10,-32),Math.toRadians(-72))
-                .afterTime(0,scoring.specimen_score_2());
-
-        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(10,-32),Math.toRadians(-72)))
-                .afterTime(0.4,scoring.gripper_release())
-                .afterTime(1,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(40,-45),Math.toRadians(90));
+double heading=-72;
+double x=10;
+//        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(40,-59),Math.toRadians(90)))
+//                .afterTime(0.1,slides.auto_score())
+//                .afterTime(0.4,slides.auto_score())
+//                .afterTime(1.2,slides.auto_score())
+//
+//                .afterTime(0.2,scoring.specimen_prepare())
+//                .strafeToLinearHeading(new Vector2d(x,-32),Math.toRadians(heading))
+//                .afterTime(0,scoring.specimen_score_2());
+//
+//        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(10,-32),Math.toRadians(-72)))
+//                .afterTime(0.4,scoring.gripper_release())
+//                .afterTime(1,slides.slide_init())
+//                .afterTime(1,scoring.auto_End())
+//                .strafeToLinearHeading(new Vector2d(40,-40),Math.toRadians(90));
 
         // sequence that lowers slides to init level in auto sequence until start button is pressed
 
@@ -77,6 +79,20 @@ public class teleop extends LinearOpMode {
 
         while(opModeIsActive() && !isStopRequested()){
 
+            TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(40,-59),Math.toRadians(90)))
+                    .afterTime(0.1,slides.auto_score())
+                    .afterTime(0.4,slides.auto_score())
+                    .afterTime(1.2,slides.auto_score())
+
+                    .afterTime(0.2,scoring.specimen_prepare())
+                    .strafeToLinearHeading(new Vector2d(x,-32),Math.toRadians(heading))
+                    .afterTime(0,scoring.specimen_score_2());
+
+            TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(10,-32),Math.toRadians(-72)))
+                    .afterTime(0.4,scoring.gripper_release())
+                    .afterTime(1,slides.slide_init())
+                    .afterTime(1,scoring.specimen_collect())
+                    .strafeToLinearHeading(new Vector2d(40,-57),Math.toRadians(110));
 
             // changes the turn speed if the robot is in it s extened config for better precision
             if(extension.left_extension.getPosition()>extension.extension_retracted+0.1) {
@@ -298,14 +314,16 @@ public class teleop extends LinearOpMode {
                     }
                     else scoring.grip_transfer_release();
                 }
-
                 if(gamepad1.dpad_up){
+                    drive.pose=pose;
                     slides.culisante(slides.slides_auto_score+300);
                     Actions.runBlocking(
                             new SequentialAction(
                                     scoring_spec.build(),
                                     scoring_spec_finish.build()
                             ));
+                    x-=1;
+                    heading-=0.5;
                 }
 
             }
@@ -330,6 +348,7 @@ public class teleop extends LinearOpMode {
             }
 
             telemetry.addData("Cycling_specimen",specimen_cycling);
+            telemetry.addData("robot position",drive.pose);
             telemetry.addData("Color",colection.senzor.getDistance(DistanceUnit.CM));
             telemetry.addData("automations",manual);
             telemetry.update();

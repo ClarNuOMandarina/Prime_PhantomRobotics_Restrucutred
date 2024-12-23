@@ -38,10 +38,12 @@ public class auto_5_spec extends LinearOpMode {
         scoring.scoring_arm_score_specimen_score();
         scoring.gripper_grab();
         slides.reset_encoder();
+
         TrajectoryActionBuilder start_to_score = drive.actionBuilder(initialPose)
                 .afterTime(0.2,slides.auto_score())
                 .lineToY(-37.5)
                 .afterTime(0,scoring.specimen_score_2());
+
         TrajectoryActionBuilder transfer_sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(7.2,-37.5),Math.toRadians(-90)))
                 .afterTime(0.6,scoring.gripper_release())
                 .afterTime(1.2,scoring.auto_End())
@@ -263,7 +265,8 @@ public class auto_5_spec extends LinearOpMode {
                 new SequentialAction(
                         parking.build()
                 ));
-
+        drive.updatePoseEstimate();
+        telemetry.addData("pose",drive.pose);
         telemetry.update();
     }
 

@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Drawing;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.TankDrive;
@@ -119,7 +120,7 @@ public class LocalizationTest extends LinearOpMode {
                 telemetry.addData("CULI",slides.left_slide.getCurrentPosition());
                 telemetry.addData("CULI2",slides.right_slide.getCurrentPosition());
                 telemetry.addData("extend",extension.left_extension.getPosition());
-                telemetry.addData("color",colection.senzor.alpha());
+                telemetry.addData("color",colection.senzor.getDistance(DistanceUnit.CM));
 
                 telemetry.update();
                 drive.updatePoseEstimate();
