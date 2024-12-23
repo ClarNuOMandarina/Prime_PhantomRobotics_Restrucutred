@@ -48,7 +48,8 @@ public class teleop extends LinearOpMode {
         boolean transfer_retracted=false;
         boolean transfer_retracted_counter=false;
 double heading=-72;
-double x=10;
+double x=12;
+double x2=40;
 //        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(40,-59),Math.toRadians(90)))
 //                .afterTime(0.1,slides.auto_score())
 //                .afterTime(0.4,slides.auto_score())
@@ -92,7 +93,8 @@ double x=10;
                     .afterTime(0.4,scoring.gripper_release())
                     .afterTime(1,slides.slide_init())
                     .afterTime(1,scoring.specimen_collect())
-                    .strafeToLinearHeading(new Vector2d(40,-57),Math.toRadians(110));
+                    .strafeToLinearHeading(new Vector2d(x2,-53),Math.toRadians(90))
+                    .strafeToLinearHeading(new Vector2d(40,-47),Math.toRadians(110));
 
             // changes the turn speed if the robot is in it s extened config for better precision
             if(extension.left_extension.getPosition()>extension.extension_retracted+0.1) {
@@ -322,8 +324,9 @@ double x=10;
                                     scoring_spec.build(),
                                     scoring_spec_finish.build()
                             ));
-                    x-=1;
-                    heading-=0.5;
+                    x2-=2;
+                    x-=2.5;
+                    heading-=0.7;
                 }
 
             }
