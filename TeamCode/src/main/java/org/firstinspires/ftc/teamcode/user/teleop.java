@@ -2,9 +2,14 @@ package org.firstinspires.ftc.teamcode.user;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TimeTrajectory;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -23,6 +28,28 @@ public class teleop extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Pose2d pose=new Pose2d(new Vector2d(40,-59),Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap,pose);
+         class CancelableFollowTrajectoryAction implements Action {
+            private final MecanumDrive.FollowTrajectoryAction action;
+            private boolean cancelled = false;
+
+            public CancelableFollowTrajectoryAction(TimeTrajectory t) {
+                action = new MecanumDrive.FollowTrajectoryAction(t);
+            }
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                if (cancelled) {
+                    drive.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
+                    return false;
+                }
+
+                return action.run(telemetryPacket);
+            }
+
+            public void cancelAbruptly() {
+                cancelled = true;
+            }
+        }
         colection colection = new colection(hardwareMap);
         extension extension = new extension(hardwareMap);
         scoring scoring = new scoring(hardwareMap);
@@ -49,11 +76,11 @@ public class teleop extends LinearOpMode {
         boolean transfer_retracted_counter=false;
         boolean auto_specimen_score=false;
         boolean auto_specimen_intermediary=false;
+        int auto_specimen_score_counter=0;
         TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-59),Math.toRadians(90)))
                 .afterTime(0.1,slides.auto_score())
                 .afterTime(0.4,slides.auto_score())
                 .afterTime(1.2,slides.auto_score())
-
                 .afterTime(0.2,scoring.specimen_prepare())
                 .strafeToLinearHeading(new Vector2d(10,-33),Math.toRadians(-90))
                 .afterTime(0,scoring.specimen_score_2());
@@ -320,12 +347,15 @@ public class teleop extends LinearOpMode {
                     auto_specimen_score=true;
                     auto_specimen_intermediary=false;
                     slides.culisante(slides.slides_auto_score+300);
+                    auto_specimen_score_counter=0;
                 }
-                while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary){
+                while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary && auto_specimen_score_counter<=5){
+
                     if(gamepad1.dpad_right)auto_specimen_intermediary=true;
 
                     if(gamepad1.dpad_down)auto_specimen_score=false;
                     if(auto_specimen_score) {
+
                         Actions.runBlocking(
                                 new SequentialAction(
                                         scoring_spec.build(),
@@ -352,6 +382,7 @@ public class teleop extends LinearOpMode {
                         scoring.grip_transfer.setPosition(scoring.gripper_hold);
                         sleep(300);
                     }
+                    auto_specimen_score_counter+=1;
                 }
 
             }
