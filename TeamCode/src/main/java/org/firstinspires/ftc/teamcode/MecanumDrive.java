@@ -53,6 +53,7 @@ import java.util.List;
 
 @Config
 public final class MecanumDrive {
+
     public static class Params {
         // IMU orientation
         // TODO: fill in these values based on
@@ -68,10 +69,10 @@ public final class MecanumDrive {
         public double trackWidthTicks = 4000.5050250913155;
 
         // feedforward parameters (in tick units)
-                public double kS = 1.4134402190031459;
-                public double kV = 0.0004030667216164229;
+        public double kS = 1.4134402190031459;
+        public double kV = 0.0004030667216164229;
         public double kA = 0.00008;
-                            //0.00008
+        //0.00008
         // path profile parameters (in inches)
         public double maxWheelVel = 80;
         public double minProfileAccel = -30;
@@ -260,7 +261,7 @@ public final class MecanumDrive {
         rightFront.setPower(wheelVels.rightFront.get(0) / maxPowerMag);
     }
 
-    public static final class FollowTrajectoryAction implements Action {
+    public final class FollowTrajectoryAction implements Action {
         public final TimeTrajectory timeTrajectory;
         private double beginTs = -1;
 
@@ -488,5 +489,27 @@ public final class MecanumDrive {
                 defaultTurnConstraints,
                 defaultVelConstraint, defaultAccelConstraint
         );
+    }
+    public class CancelableFollowTrajectoryAction implements Action {
+        private final FollowTrajectoryAction action;
+        private boolean cancelled = false;
+
+        public CancelableFollowTrajectoryAction(TimeTrajectory t) {
+            action = new MecanumDrive.FollowTrajectoryAction(t);
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if (cancelled) {
+                setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
+                return false;
+            }
+
+            return action.run(telemetryPacket);
+        }
+
+        public void cancelAbruptly() {
+            cancelled = true;
+        }
     }
 }

@@ -46,46 +46,48 @@ boolean transferz=false;
                 .afterTime(0,slides.slide_sample())
                 .afterTime(0.4,slides.slide_sample())
                 .afterTime(0.8,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-53.5,-60),Math.toRadians(40));
+                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
+
 
         TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-53.5,-60),Math.toRadians(40)))
-                .afterTime(0.1,slides.slide_init())
+                .afterTime(0.4,slides.slide_init())
+                .afterTime(0.7,slides.slide_init())
                 .afterTime(0.1,scoring.sample_collect())
                 .strafeToLinearHeading(new Vector2d(-50.7,-42.7),Math.toRadians(94));
         TrajectoryActionBuilder sample_finish = drive.actionBuilder(new Pose2d(new Vector2d(-51.1,-42.7),Math.toRadians(94)))
 
-                .strafeToLinearHeading(new Vector2d(-53.5,-60),Math.toRadians(40));
+                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
 
 
 
         TrajectoryActionBuilder sample_2 = drive.actionBuilder(new Pose2d(new Vector2d(-53.5,-60),Math.toRadians(40)))
-                .afterTime(0.1,slides.slide_init())
                 .afterTime(0.4,slides.slide_init())
+                .afterTime(0.7,slides.slide_init())
                 .afterTime(0.5,colection.collecting_arm_default())
                 .strafeToLinearHeading(new Vector2d(-59.5,-41.8),Math.toRadians(98));
 
         TrajectoryActionBuilder sample_finish_2 = drive.actionBuilder(new Pose2d(new Vector2d(-59.5,-41.8),Math.toRadians(98)))
 
-                .strafeToLinearHeading(new Vector2d(-53.5,-60),Math.toRadians(40));
+                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
 
         TrajectoryActionBuilder sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(-53.5,-60),Math.toRadians(40)))
-                .afterTime(0,slides.slide_init())
                 .afterTime(0.4,slides.slide_init())
+                .afterTime(0.7,slides.slide_init())
                 .afterTime(0.5,colection.collecting_arm_default())
                 .strafeToLinearHeading(new Vector2d(-56.5,-29),Math.toRadians(-180));
         TrajectoryActionBuilder sample_3_end = drive.actionBuilder(new Pose2d(new Vector2d(-56,-29),Math.toRadians(-180)))
                 .strafeTo(new Vector2d(-50,-29));
         TrajectoryActionBuilder sample_finish_3 = drive.actionBuilder(new Pose2d(new Vector2d(-56,-27),Math.toRadians(-180)))
 
-                .strafeToLinearHeading(new Vector2d(-53,-60),Math.toRadians(39));
+                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
 
-        TrajectoryActionBuilder parking_pre = drive.actionBuilder(new Pose2d(new Vector2d(-53,-60),Math.toRadians(39)))
+        TrajectoryActionBuilder parking_pre = drive.actionBuilder(new Pose2d(new Vector2d(-53,-60),Math.toRadians(40)))
                 .afterTime(0.2,slides.auto_park())
                 .strafeToLinearHeading(new Vector2d(-43,-13),Math.toRadians(180));
 
-        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(0)))
+        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(180)))
                 .afterTime(0.2,slides.auto_park())
-                .strafeTo(new Vector2d(-35,-11));
+                .strafeTo(new Vector2d(-25,-11));
 
 
 
@@ -267,11 +269,10 @@ boolean transferz=false;
                         parking_pre.build(),
                         parking.build()
                 ));
-        while(!isStopRequested()){
-            scoring.scoring_arm_auto_init_end();
+            scoring.scoring_arm_park();
             scoring.grip_transfer_release();
             colection.init_config();
-        }
+        
         telemetry.update();
     }
 }

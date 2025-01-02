@@ -20,7 +20,7 @@ public class colection {
    public Servo gripper;
    public Servo gripper_rotation;
    public Servo gripper_angle;
-   public double distance_to_collected_sample=1.1;
+   public double distance_to_collected_sample=1;
    public double colection_retracted=0.6;
    public double colection_extended=0.83;
    public double colection_extended_auto=0.8;

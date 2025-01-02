@@ -249,11 +249,12 @@ public class auto_5_spec extends LinearOpMode {
                         specimen_collect.build()
                 ));
 //        sleep(200);
-        scoring.gripper(scoring.gripper_hold);
+        scoring.gripper(scoring.gripper_semi_hold);
         sleep(200);
         slides.culisante(slides.slides_specimen_high+300);
         Actions.runBlocking(
                 new SequentialAction(
+                        scoring.gripper_grab(),
                         scoring_poz_pre_4.build()
                 ));
         slides.culisante(slides.slides_specimen_high_score);

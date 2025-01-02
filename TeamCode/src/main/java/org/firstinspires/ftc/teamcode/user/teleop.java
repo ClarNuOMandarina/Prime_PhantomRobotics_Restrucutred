@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -23,33 +24,34 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @TeleOp(name="TELEOP")
 public class teleop extends LinearOpMode {
 
+    public class FailoverAction implements Action {
+        private final Action mainAction;
+        private final Action failoverAction;
+        private boolean failedOver = false;
 
+        public FailoverAction(Action mainAction, Action failoverAction) {
+            this.mainAction = mainAction;
+            this.failoverAction = failoverAction;
+        }
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if (failedOver) {
+                return failoverAction.run(telemetryPacket);
+            }
+
+            return mainAction.run(telemetryPacket);
+        }
+
+        public void failover() {
+            failedOver = true;
+        }
+    }
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d pose=new Pose2d(new Vector2d(40,-59),Math.toRadians(90));
         MecanumDrive drive = new MecanumDrive(hardwareMap,pose);
-         class CancelableFollowTrajectoryAction implements Action {
-            private final MecanumDrive.FollowTrajectoryAction action;
-            private boolean cancelled = false;
 
-            public CancelableFollowTrajectoryAction(TimeTrajectory t) {
-                action = new MecanumDrive.FollowTrajectoryAction(t);
-            }
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                if (cancelled) {
-                    drive.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
-                    return false;
-                }
-
-                return action.run(telemetryPacket);
-            }
-
-            public void cancelAbruptly() {
-                cancelled = true;
-            }
-        }
         colection colection = new colection(hardwareMap);
         extension extension = new extension(hardwareMap);
         scoring scoring = new scoring(hardwareMap);
@@ -77,10 +79,14 @@ public class teleop extends LinearOpMode {
         boolean auto_specimen_score=false;
         boolean auto_specimen_intermediary=false;
         int auto_specimen_score_counter=0;
+        boolean is_automation_ready=false;
+
         TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-59),Math.toRadians(90)))
                 .afterTime(0.1,slides.auto_score())
+                .afterTime(0.6,scoring.gripper_grab())
                 .afterTime(0.4,slides.auto_score())
                 .afterTime(1.2,slides.auto_score())
+                .afterTime(1.5,slides.auto_score())
                 .afterTime(0.2,scoring.specimen_prepare())
                 .strafeToLinearHeading(new Vector2d(10,-33),Math.toRadians(-90))
                 .afterTime(0,scoring.specimen_score_2());
@@ -95,17 +101,18 @@ public class teleop extends LinearOpMode {
 
         TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(10,-33),Math.toRadians(-90)))
                 .afterTime(0,slides.auto_score())
+                .afterTime(0.2,slides.auto_score())
+                .afterTime(0.4,slides.auto_score())
                 .strafeTo(new Vector2d(4,-33))
                 .afterTime(0.5,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(-12,-40),Math.toRadians(-180));
+                .strafeToLinearHeading(new Vector2d(-12,-47),Math.toRadians(-180));
 
 
         TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(45,-47),Math.toRadians(90)))
                 .strafeTo(new Vector2d(45,-59));
 
-        // sequence that lowers slides to init level in auto sequence until start button is pressed
 
         while(!opModeIsActive()){
             slides.culisante(0);
@@ -161,6 +168,7 @@ public class teleop extends LinearOpMode {
                 }
                 // high specimen score config
                 if(gamepad2.dpad_right) {
+                    is_automation_ready=false;
                     slides.culisante(slides.slides_specimen_high);
                     scoring.scoring_arm_score_specimen_score();                }
                 // low specimen score config
@@ -169,6 +177,7 @@ public class teleop extends LinearOpMode {
                     scoring.scoring_arm_score_specimen_score();                }
                 //changes the robots config to the specimen colection config
                 if(gamepad2.share){
+                    is_automation_ready=true;
                     alt_transfer=true;
                     slides.culisante(slides.slides_init);
                     scoring.scoring_arm_score_specimen_collect();
@@ -179,8 +188,20 @@ public class teleop extends LinearOpMode {
                     scoring.scoring_arm_default();
                 }
                 // manual change between specimen_cycling, if true then robots default config is specimen cycling, if false then it is sample cycling
-                if(gamepad2.right_bumper)specimen_cycling=true;
-                if(gamepad2.left_bumper)specimen_cycling=false;
+                if(gamepad2.right_bumper){
+                    colection.colection_arm(colection.colection_default);
+                    colection.gripper_angle.setPosition(colection.gripper_angle_default);
+                    colection.gripper_rotation.setPosition(colection.gripper_rotation_collect);
+
+                    specimen_cycling=true;
+                }
+                if(gamepad2.left_bumper){
+                    colection.colection_arm(colection.colection_retracted);
+                    colection.gripper_angle.setPosition(colection.gripper_angle_tranfer);
+                    colection.gripper_rotation.setPosition(colection.gripper_rotation_score);
+                    colection.gripper.setPosition(colection.gripper_transfer);
+                    specimen_cycling=false;
+                }
                 // intermediary check for succseful transfer of the sample in the auto-transfer process
                 if(gamepad1.left_trigger==0) {
                     if (transfer_extend == true) {
@@ -220,7 +241,7 @@ public class teleop extends LinearOpMode {
                 }
                 // general reset of all functions, press if any errors arise or if in need of config reset
                 if(gamepad2.right_trigger!=0){
-
+                    is_automation_ready=false;
                     colection.default_config();
                     scoring.init_config();
                     slides.culisante(0);
@@ -299,10 +320,15 @@ public class teleop extends LinearOpMode {
                                     if (gamepad1.left_trigger != 0) transfer_extend = true;
                                     else transfer_retracted = true;
                                 }
+                                else{
+                                    colection.gripper_release();
+                                }
                             }
 
                             else if (manual){
-                                colection.default_config();
+                                colection.gripper.setPosition(colection.gripper_transfer);
+
+                                colection.scoring_config();
                             }
                         }
                         else {
@@ -311,6 +337,7 @@ public class teleop extends LinearOpMode {
                                     colection.colection_arm(colection.colection_specimen);
                                 } else {
                                     colection.default_config();
+                                    colection.gripper.setPosition(colection.gripper_release);
                                 }
                             }
 
@@ -335,39 +362,55 @@ public class teleop extends LinearOpMode {
                     extension.extend(extension.extension_retracted);
                 }
                 // specimen colection
+                if(gamepad1.right_stick_button)
+                    scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
+
                 if(gamepad1.triangle){
                     if(alt_transfer==true)
                     {
-                        scoring.grip_transfer_grab();
+                        scoring.grip_transfer.setPosition(scoring.gripper_hold);
                     }
                     else scoring.grip_transfer_release();
                 }
-                if(gamepad1.dpad_up){
+                if(gamepad1.dpad_up && is_automation_ready){
+                    is_automation_ready=false;
                     drive.pose=pose;
                     auto_specimen_score=true;
                     auto_specimen_intermediary=false;
                     slides.culisante(slides.slides_auto_score+300);
                     auto_specimen_score_counter=0;
                 }
-                while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary && auto_specimen_score_counter<=5){
 
-                    if(gamepad1.dpad_right)auto_specimen_intermediary=true;
+                while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary && auto_specimen_score_counter<5){
 
-                    if(gamepad1.dpad_down)auto_specimen_score=false;
+                    telemetry.addData("STOP AUTO",auto_specimen_intermediary);
+                    telemetry.update();
+                    if(gamepad2.right_trigger!=0)auto_specimen_intermediary=true;
+
+                    if(gamepad2.left_trigger!=0)auto_specimen_score=false;
+                    if(auto_specimen_intermediary)break;
                     if(auto_specimen_score) {
 
                         Actions.runBlocking(
                                 new SequentialAction(
-                                        scoring_spec.build(),
-                                        scoring_spec_finish.build(),
-                                        specimen_collect.build()
+                                        scoring_spec.build()
                                 ));
+                        if(gamepad2.right_trigger!=0)auto_specimen_intermediary=true;
+                        if (!auto_specimen_intermediary) {
+                            Actions.runBlocking(
+                                    new SequentialAction(
+                                            scoring_spec_finish.build(),
+                                            specimen_collect.build()
+                                    ));
+                        }
                     }
-                    if(gamepad1.dpad_down)auto_specimen_score=false;
-                    if(gamepad1.dpad_right)auto_specimen_intermediary=true;
+                    if(gamepad2.left_trigger!=0)auto_specimen_score=false;
+                    if(gamepad2.right_trigger!=0)auto_specimen_intermediary=true;
+                    if(auto_specimen_intermediary)break;
 
+                    telemetry.update();
                     if(!auto_specimen_score) {
-                        scoring.grip_transfer.setPosition(scoring.gripper_hold);
+                        scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
                         sleep(300);
                         Actions.runBlocking(
                                 new SequentialAction(
@@ -375,13 +418,14 @@ public class teleop extends LinearOpMode {
                                         specimen_end.build()
                                 ));
                     }
-                    if(gamepad1.dpad_down)auto_specimen_score=false;
+                    if(gamepad2.left_trigger!=0)auto_specimen_score=false;
                     if(!auto_specimen_score)break;
                     if(auto_specimen_intermediary)break;
                     if(!auto_specimen_intermediary) {
-                        scoring.grip_transfer.setPosition(scoring.gripper_hold);
+                        scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
                         sleep(300);
                     }
+                    telemetry.update();
                     auto_specimen_score_counter+=1;
                 }
 
