@@ -53,8 +53,8 @@ boolean transferz=false;
                 .afterTime(0.4,slides.slide_init())
                 .afterTime(0.7,slides.slide_init())
                 .afterTime(0.1,scoring.sample_collect())
-                .strafeToLinearHeading(new Vector2d(-50.7,-42.7),Math.toRadians(94));
-        TrajectoryActionBuilder sample_finish = drive.actionBuilder(new Pose2d(new Vector2d(-51.1,-42.7),Math.toRadians(94)))
+                .strafeToLinearHeading(new Vector2d(-50.7,-41.5),Math.toRadians(94));
+        TrajectoryActionBuilder sample_finish = drive.actionBuilder(new Pose2d(new Vector2d(-51.1,-41.5),Math.toRadians(94)))
 
                 .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
 
@@ -64,9 +64,9 @@ boolean transferz=false;
                 .afterTime(0.4,slides.slide_init())
                 .afterTime(0.7,slides.slide_init())
                 .afterTime(0.5,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-59.5,-41.8),Math.toRadians(98));
+                .strafeToLinearHeading(new Vector2d(-60.2,-41.5),Math.toRadians(86));
 
-        TrajectoryActionBuilder sample_finish_2 = drive.actionBuilder(new Pose2d(new Vector2d(-59.5,-41.8),Math.toRadians(98)))
+        TrajectoryActionBuilder sample_finish_2 = drive.actionBuilder(new Pose2d(new Vector2d(-60.2,-41.5),Math.toRadians(86)))
 
                 .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
 
@@ -74,7 +74,7 @@ boolean transferz=false;
                 .afterTime(0.4,slides.slide_init())
                 .afterTime(0.7,slides.slide_init())
                 .afterTime(0.5,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-56.5,-29),Math.toRadians(-180));
+                .strafeToLinearHeading(new Vector2d(-56.5,-28.5),Math.toRadians(-180));
         TrajectoryActionBuilder sample_3_end = drive.actionBuilder(new Pose2d(new Vector2d(-56,-29),Math.toRadians(-180)))
                 .strafeTo(new Vector2d(-50,-29));
         TrajectoryActionBuilder sample_finish_3 = drive.actionBuilder(new Pose2d(new Vector2d(-56,-27),Math.toRadians(-180)))

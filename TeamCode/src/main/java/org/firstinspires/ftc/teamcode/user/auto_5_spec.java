@@ -60,7 +60,7 @@ public class auto_5_spec extends LinearOpMode {
         TrajectoryActionBuilder transfer_sample_2_finish = drive.actionBuilder(new Pose2d(new Vector2d(57.6,-40.7),Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(56,-48),Math.toRadians(250));
         TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(56,-48),Math.toRadians(250)))
-                .strafeToLinearHeading(new Vector2d(55.5,-24),Math.toRadians(0));
+                .strafeToLinearHeading(new Vector2d(56,-24),Math.toRadians(0));
 
 
         TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(55,-24),Math.toRadians(0)))

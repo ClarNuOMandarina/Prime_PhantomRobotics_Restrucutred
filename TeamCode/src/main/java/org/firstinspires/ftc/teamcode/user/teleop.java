@@ -24,29 +24,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @TeleOp(name="TELEOP")
 public class teleop extends LinearOpMode {
 
-    public class FailoverAction implements Action {
-        private final Action mainAction;
-        private final Action failoverAction;
-        private boolean failedOver = false;
 
-        public FailoverAction(Action mainAction, Action failoverAction) {
-            this.mainAction = mainAction;
-            this.failoverAction = failoverAction;
-        }
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (failedOver) {
-                return failoverAction.run(telemetryPacket);
-            }
-
-            return mainAction.run(telemetryPacket);
-        }
-
-        public void failover() {
-            failedOver = true;
-        }
-    }
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d pose=new Pose2d(new Vector2d(40,-59),Math.toRadians(90));
@@ -136,7 +114,7 @@ public class teleop extends LinearOpMode {
                                 -gamepad1.left_stick_y,
                                 -gamepad1.left_stick_x
                         ),
-                        -gamepad1.right_stick_x * 0.5
+                        -gamepad1.right_stick_x * 0.25
                 ));
             }
 
@@ -363,12 +341,12 @@ public class teleop extends LinearOpMode {
                 }
                 // specimen colection
                 if(gamepad1.right_stick_button)
-                    scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
+                    scoring.grip_transfer.setPosition(scoring.gripper_hold);
 
                 if(gamepad1.triangle){
                     if(alt_transfer==true)
                     {
-                        scoring.grip_transfer.setPosition(scoring.gripper_hold);
+                        scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
                     }
                     else scoring.grip_transfer_release();
                 }
@@ -437,7 +415,7 @@ public class teleop extends LinearOpMode {
                 }
 
                 if (timer.seconds() > 0.2 && timer.seconds() < 0.4) {
-                    scoring.grip_transfer_grab();
+                    scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
 
                 } if (timer.seconds() >0.4  && timer.seconds() < 0.5) {
                     colection.gripper.setPosition(colection.gripper_release);

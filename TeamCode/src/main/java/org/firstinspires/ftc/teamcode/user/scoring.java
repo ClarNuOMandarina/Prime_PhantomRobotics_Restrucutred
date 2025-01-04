@@ -14,7 +14,7 @@ public class scoring {
     public Servo grip_transfer;
     // declarare/memorare pozitii utilizate
     public double gripper_hold=0.57;
-    public double gripper_semi_hold=0.595;
+    public double gripper_semi_hold=0.585;
     public double gripper_release=0.625  ;
     public double scoring_arm_left_colect=0.09;
     public double scoring_arm_right_colect=0.19;
