@@ -49,8 +49,8 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(1.2,scoring.auto_End())
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(36,-40),Math.toRadians(20.5))
-                .strafeToLinearHeading(new Vector2d(48,-41.2),Math.toRadians(90));
-        TrajectoryActionBuilder transfer_sample_1_finish = drive.actionBuilder(new Pose2d(new Vector2d(48,-41.2),Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(49,-41.2),Math.toRadians(90));
+        TrajectoryActionBuilder transfer_sample_1_finish = drive.actionBuilder(new Pose2d(new Vector2d(49,-41.2),Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(50.5,-49),Math.toRadians(-62));
 
 
@@ -60,10 +60,10 @@ public class auto_5_spec extends LinearOpMode {
         TrajectoryActionBuilder transfer_sample_2_finish = drive.actionBuilder(new Pose2d(new Vector2d(57.6,-40.7),Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(56,-48),Math.toRadians(250));
         TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(56,-48),Math.toRadians(250)))
-                .strafeToLinearHeading(new Vector2d(56,-24),Math.toRadians(0));
+                .strafeToLinearHeading(new Vector2d(56,-26),Math.toRadians(0));
 
 
-        TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(55,-24),Math.toRadians(0)))
+        TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(55,-26),Math.toRadians(0)))
                 .strafeToLinearHeading(new Vector2d(57,-48),Math.toRadians(241));
 
         TrajectoryActionBuilder specimen_collect_pre = drive.actionBuilder(new Pose2d(new Vector2d(57,-48),Math.toRadians(246)))
@@ -73,7 +73,7 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(40,-45),Math.toRadians(90));
         TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(40,-45),Math.toRadians(90)))
-                .lineToY(-59);
+                .strafeToLinearHeading(new Vector2d(40,-59),Math.toRadians(90));
 
         TrajectoryActionBuilder scoring_poz_pre = drive.actionBuilder(new Pose2d(new Vector2d(40,-59),Math.toRadians(90)))
                 .afterTime(0.1,slides.auto_score())

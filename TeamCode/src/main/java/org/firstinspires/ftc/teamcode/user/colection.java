@@ -23,7 +23,7 @@ public class colection {
    public double distance_to_collected_sample=1.2;
    public double colection_retracted=0.6;
    public double colection_extended=0.83;
-   public double colection_extended_auto=0.795;
+   public double colection_extended_auto=0.809;
    public double colection_extended_auto_submersible=0.78;
    public double colection_drag=0.955;
    public double colection_default=0.76;
@@ -38,7 +38,7 @@ public class colection {
    public double gripper_rotation_default=0.2;
    public double gripper_rotation_collect=0;
 
-   double gripper_angle_default=0.13;
+   double gripper_angle_default=0.04;
    double gripper_angle_drag=0.4;
    double gripper_angle_tranfer=1;
    double gripper_angle_vertical=0.32;
