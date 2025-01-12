@@ -59,6 +59,7 @@ public class teleop extends LinearOpMode {
         int auto_specimen_score_counter=0;
         boolean is_automation_ready=false;
         boolean first_automated_cycle=false;
+        boolean is_collected=false;
         TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-59),Math.toRadians(90)))
                 .afterTime(0.1,slides.auto_score())
                 .afterTime(0.6,scoring.gripper_grab())
@@ -66,7 +67,7 @@ public class teleop extends LinearOpMode {
                 .afterTime(1.2,slides.auto_score())
                 .afterTime(1.5,slides.auto_score())
                 .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(8,-32.5),Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(16,-31),Math.toRadians(-90))
                 .afterTime(0,scoring.specimen_score_2());
 
         TrajectoryActionBuilder scoring_spec_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(45,-59),Math.toRadians(90)))
@@ -76,31 +77,31 @@ public class teleop extends LinearOpMode {
                 .afterTime(1.2,slides.auto_score())
                 .afterTime(1.5,slides.auto_score())
                 .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(2,-30.5),Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(18,-31),Math.toRadians(-90))
                 .afterTime(0,scoring.specimen_score_2());
 
-        TrajectoryActionBuilder scoring_spec_finish_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(2,-31.5),Math.toRadians(-90)))
+        TrajectoryActionBuilder scoring_spec_finish_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(18,-31),Math.toRadians(-90)))
                 .afterTime(0,slides.auto_score())
-                .strafeToLinearHeading(new Vector2d(20,-33),Math.toRadians(-90))
-                .strafeTo(new Vector2d(10,-33))
-                .afterTime(0.6,scoring.gripper_release())
+                .strafeToLinearHeading(new Vector2d(4,-31),Math.toRadians(-90))
+                .strafeTo(new Vector2d(10,-31))
+                .afterTime(0.5,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
 
-        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(8,-32.5),Math.toRadians(-90)))
+        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(16,-31),Math.toRadians(-90)))
                 .afterTime(0,slides.auto_score())
-                .strafeTo(new Vector2d(4,-32.5))
-                .afterTime(0.6,scoring.gripper_release())
+                .strafeTo(new Vector2d(8,-31))
+                .afterTime(0.45,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
 
-        TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(8,-32.5),Math.toRadians(-90)))
+        TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(16,-31),Math.toRadians(-90)))
                 .afterTime(0,slides.auto_score())
                 .afterTime(0.2,slides.auto_score())
                 .afterTime(0.4,slides.auto_score())
-                .strafeTo(new Vector2d(4,-32.5))
+                .strafeTo(new Vector2d(10,-31))
                 .afterTime(0.6,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
@@ -127,7 +128,7 @@ public class teleop extends LinearOpMode {
 
 
             // changes the turn speed if the robot is in it s extened config for better precision
-            if(extension.left_extension.getPosition()>extension.extension_retracted+0.1) {
+            if(extension.left_extension.getPosition()>extension.extension_retracted+0.1 && !is_collected) {
                 drive.setDrivePowers(new PoseVelocity2d(
                         new Vector2d(
                                 -gamepad1.left_stick_y,
@@ -238,6 +239,7 @@ public class teleop extends LinearOpMode {
                 }
                 // general reset of all functions, press if any errors arise or if in need of config reset
                 if(gamepad2.right_trigger!=0){
+                    is_collected=false;
                     is_automation_ready=false;
                     colection.default_config();
                     scoring.init_config();
@@ -332,13 +334,17 @@ public class teleop extends LinearOpMode {
                             if(!manual) {
                                 if (colection.senzor.getDistance(DistanceUnit.CM) <colection.distance_to_collected_sample) {
                                     colection.colection_arm(colection.colection_specimen);
+                                    is_collected=true;
                                 } else {
                                     colection.default_config();
                                     colection.gripper.setPosition(colection.gripper_release);
                                 }
                             }
 
-                            else if (manual) colection.colection_arm(colection.colection_specimen);
+                            else if (manual){
+                                is_collected=true;
+                                colection.colection_arm(colection.colection_specimen);
+                            }
                         }
                         grab = false;
                     }
@@ -348,6 +354,7 @@ public class teleop extends LinearOpMode {
                 if(gamepad1.right_bumper){
                     colection.gripper_release();
                     colection.colection_arm(colection.colection_default);
+                    is_collected=false;
                 }
                 // expansion and retraction
                 if( gamepad1.left_trigger!=0){
