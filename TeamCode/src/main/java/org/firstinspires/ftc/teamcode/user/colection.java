@@ -23,7 +23,7 @@ public class colection {
    public double distance_to_collected_sample=1.2;
    public double colection_retracted=0.6;
    public double colection_extended=0.83;
-   public double colection_extended_auto=0.809;
+   public double colection_extended_auto=0.81;
    public double colection_extended_auto_submersible=0.78;
    public double colection_drag=0.955;
    public double colection_default=0.76;

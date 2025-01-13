@@ -92,7 +92,7 @@ public class teleop extends LinearOpMode {
         TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(16,-31),Math.toRadians(-90)))
                 .afterTime(0,slides.auto_score())
                 .strafeTo(new Vector2d(8,-31))
-                .afterTime(0.45,scoring.gripper_release())
+                .afterTime(0.6,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
