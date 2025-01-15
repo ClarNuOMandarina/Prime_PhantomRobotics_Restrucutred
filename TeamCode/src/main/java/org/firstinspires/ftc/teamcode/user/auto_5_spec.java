@@ -102,18 +102,23 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(0,scoring.specimen_score_2());
 
         TrajectoryActionBuilder scoring_poz_pre_4 = drive.actionBuilder(new Pose2d(new Vector2d(40,-59.5),Math.toRadians(90)))
+                .afterTime(0.1,slides.auto_score())
+                .afterTime(0.4,slides.auto_score())
+                .afterTime(1.2,slides.auto_score())
 
-                .afterTime(0.1,slides.specimen_score_high())
-                .afterTime(0.5,scoring.specimen_score())
-                .strafeToLinearHeading(new Vector2d(6,-40),Math.toRadians(-90));
+                .afterTime(0.2,scoring.specimen_prepare())
+                .strafeToLinearHeading(new Vector2d(6,-32),Math.toRadians(-72))
+                .afterTime(0,scoring.specimen_score_2());
 
 
-        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(6,-40),Math.toRadians(-90)))
-                .afterTime(0,slides.slide_init())
-                .afterTime(0,extension.max_extension())
-                .afterDisp(0,scoring.auto_End())
-                .afterTime(0.5,colection.auto_end())
-                .strafeToLinearHeading(new Vector2d(39,-43),Math.toRadians(-45));
+
+
+        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(6,-32),Math.toRadians(-72)))
+
+                .afterTime(0.4,scoring.gripper_release())
+                .afterTime(1,slides.slide_init())
+                .afterTime(0, extension.max_extension())
+                .strafeToLinearHeading(new Vector2d(40,-100),Math.toRadians(90));
 
         scoring.gripper(scoring.gripper_hold);
 
@@ -196,10 +201,6 @@ public class auto_5_spec extends LinearOpMode {
                 new SequentialAction(
                         scoring_poz_pre.build()
                 ));
-//        Actions.runBlocking(
-//                new SequentialAction(
-//                        scoring_poz.build()
-//                ));
 
         // ciclu 2
 
@@ -255,17 +256,12 @@ public class auto_5_spec extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         scoring.gripper_grab(),
-                        scoring_poz_pre_4.build()
-                ));
-        slides.culisante(slides.slides_specimen_high_score);
-        sleep(400);
-        scoring.gripper(scoring.gripper_release);
-        sleep(200);
-
-        Actions.runBlocking(
-                new SequentialAction(
+                        scoring_poz_pre_4.build(),
                         parking.build()
+
                 ));
+
+
         drive.updatePoseEstimate();
         telemetry.addData("pose",drive.pose);
         telemetry.update();
