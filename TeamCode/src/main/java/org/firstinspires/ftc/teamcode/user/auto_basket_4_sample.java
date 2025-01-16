@@ -38,16 +38,14 @@ public class auto_basket_4_sample extends LinearOpMode {
         scoring.scoring_arm_score_specimen_score();
         slides.reset_encoder();
         scoring.gripper_grab();
-ElapsedTime timer= new ElapsedTime();
-boolean transferz=false;
-        TrajectoryActionBuilder start = drive.actionBuilder(new Pose2d(new Vector2d(-53,-60), Math.toRadians(-43)))
-                .strafeToLinearHeading(new Vector2d(-16.5,-62), Math.toRadians(-90));
+        ElapsedTime timer= new ElapsedTime();
+        boolean transferz=false;
+
         TrajectoryActionBuilder start_to_score = drive.actionBuilder( initialPose)
                 .afterTime(0,slides.slide_sample())
                 .afterTime(0.4,slides.slide_sample())
                 .afterTime(0.8,colection.collecting_arm_default())
                 .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
-
 
         TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-58,-60),Math.toRadians(40)))
                 .afterTime(0.4,slides.slide_init())
@@ -83,9 +81,9 @@ boolean transferz=false;
 
         TrajectoryActionBuilder parking_pre = drive.actionBuilder(new Pose2d(new Vector2d(-53,-60),Math.toRadians(40)))
                 .afterTime(0.2,slides.auto_park())
-                .strafeToLinearHeading(new Vector2d(-43,-13),Math.toRadians(180));
+                .strafeToLinearHeading(new Vector2d(-43,-13),Math.toRadians(0));
 
-        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(180)))
+        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(0)))
                 .afterTime(0.2,slides.auto_park())
                 .strafeTo(new Vector2d(-25,-11));
 
@@ -93,9 +91,33 @@ boolean transferz=false;
 
 
 
-
+        double x,y;
+        x=-25;
+        y=-11;
         scoring.gripper(scoring.gripper_hold);
+        while(opModeInInit()&&!isStarted()){
 
+            if(gamepad1.dpad_up){
+                y+=0.001;
+            }
+            if(gamepad1.dpad_down){
+                y-=0.001;
+            }
+            if(gamepad1.dpad_right){
+                x+=0.001;
+            }
+            if(gamepad1.dpad_left){
+                x-=0.001;
+            }
+
+            telemetry.addData("X",x);
+            telemetry.addData("Y",y);
+            telemetry.update();
+        }
+        TrajectoryActionBuilder coord_inpput = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(0)))
+                .afterTime(0.2,slides.auto_park())
+                .afterTime(0, extension.max_extension())
+                .strafeTo(new Vector2d(x,y));
         waitForStart();
         timerr.reset();
         if (isStopRequested()) return;
@@ -264,10 +286,12 @@ boolean transferz=false;
                 ));
         scoring.gripper(scoring.gripper_release);
         sleep(300);
+        colection.gripper_rotation.setPosition(colection.gripper_rotation_default);
+        colection.colection_arm(colection.colection_default);
         Actions.runBlocking(
                 new SequentialAction(
                         parking_pre.build(),
-                        parking.build()
+                        coord_inpput.build()
                 ));
             scoring.scoring_arm_park();
             scoring.grip_transfer_release();

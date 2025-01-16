@@ -16,10 +16,10 @@ public class scoring {
     public double gripper_hold=0.57;
     public double gripper_semi_hold=0.585;
     public double gripper_release=0.625  ;
-    public double scoring_arm_left_colect=0.09;
-    public double scoring_arm_right_colect=0.19;
-    public double scoring_arm_left_default=0.17;
-    public double scoring_arm_right_default=0.31;
+    public double scoring_arm_left_colect=0.20;
+    public double scoring_arm_right_colect=0.12;
+    public double scoring_arm_left_default=0.30;
+    public double scoring_arm_right_default=0.22;
     public double scoring_arm_left_basket=0.12;
     public double scoring_arm_right_basket=0.48  ;
     public double scoring_arm_left_specimen_score=0.02 ;

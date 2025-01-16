@@ -20,7 +20,7 @@ public class colection {
    public Servo gripper;
    public Servo gripper_rotation;
    public Servo gripper_angle;
-   public double distance_to_collected_sample=1.2;
+   public double distance_to_collected_sample=2.2;
    public double colection_retracted=0.6;
    public double colection_extended=0.83;
    public double colection_extended_auto=0.81;
@@ -29,19 +29,19 @@ public class colection {
    public double colection_default=0.76;
    public double colection_specimen=0.72;
 
-   public double gripper_hold=0.83;
-   public double gripper_release=1;
-   public double gripper_transfer=0.87;
+   public double gripper_hold=0.8;
+   public double gripper_release=0.5;
+   public double gripper_transfer=0.8;
 
-   public double gripper_rotation_score=0.7;
+   public double gripper_rotation_score=0.73;
    public double gripper_rotation_drag=0.5;
    public double gripper_rotation_default=0.2;
    public double gripper_rotation_collect=0;
 
-   double gripper_angle_default=0.12;
+   double gripper_angle_default=0.15;
    double gripper_angle_drag=0.4;
    double gripper_angle_tranfer=1;
-   double gripper_angle_vertical=0.32;
+   double gripper_angle_vertical=0.35;
    double gripper_angle_auto=0.34;
    double gripper_angle_sample2=0.4;
 
