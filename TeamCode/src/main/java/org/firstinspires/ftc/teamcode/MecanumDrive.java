@@ -52,12 +52,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Config
-<<<<<<< HEAD
 public class MecanumDrive {
-=======
-public final class MecanumDrive {
-
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
     public static class Params {
         // IMU orientation
         // TODO: fill in these values based on
@@ -73,17 +68,10 @@ public final class MecanumDrive {
         public double trackWidthTicks = 12.462731491512015;
 
         // feedforward parameters (in tick units)
-<<<<<<< HEAD
         public double kS = 1.6328068981428605;
         public double kV = 0.13265841641923873;
         public double kA = 0.025;
 
-=======
-        public double kS = 1.4134402190031459;
-        public double kV = 0.0004030667216164229;
-        public double kA = 0.00008;
-        //0.00008
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
         // path profile parameters (in inches)
         public double maxWheelVel = 80;
         public double minProfileAccel = -30;
@@ -500,30 +488,4 @@ public final class MecanumDrive {
                 defaultVelConstraint, defaultAccelConstraint
         );
     }
-<<<<<<< HEAD
 }
-=======
-    public class CancelableFollowTrajectoryAction implements Action {
-        private final FollowTrajectoryAction action;
-        private boolean cancelled = false;
-
-        public CancelableFollowTrajectoryAction(TimeTrajectory t) {
-            action = new MecanumDrive.FollowTrajectoryAction(t);
-        }
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (cancelled) {
-                setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
-                return false;
-            }
-
-            return action.run(telemetryPacket);
-        }
-
-        public void cancelAbruptly() {
-            cancelled = true;
-        }
-    }
-}
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
