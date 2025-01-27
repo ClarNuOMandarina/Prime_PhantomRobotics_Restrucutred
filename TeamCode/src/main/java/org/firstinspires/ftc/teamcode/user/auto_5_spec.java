@@ -50,19 +50,13 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(1.2,scoring.auto_End())
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(36,-40),Math.toRadians(20.5))
-<<<<<<< HEAD
                 .strafeToLinearHeading(new Vector2d(49,-39),Math.toRadians(90));
         TrajectoryActionBuilder transfer_sample_1_finish = drive.actionBuilder(new Pose2d(new Vector2d(49,-38),Math.toRadians(90)))
-=======
-                .strafeToLinearHeading(new Vector2d(48,-41.7),Math.toRadians(90));
-        TrajectoryActionBuilder transfer_sample_1_finish = drive.actionBuilder(new Pose2d(new Vector2d(48,-41.7),Math.toRadians(90)))
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .strafeToLinearHeading(new Vector2d(50.5,-49.5),Math.toRadians(-62));
 
 
 
         TrajectoryActionBuilder transfer_sample_2 = drive.actionBuilder(new Pose2d(new Vector2d(50.5,-49.5),Math.toRadians(-62)))
-<<<<<<< HEAD
                 .strafeToLinearHeading(new Vector2d(60,-40),Math.toRadians(90));
         TrajectoryActionBuilder transfer_sample_2_finish = drive.actionBuilder(new Pose2d(new Vector2d(60,-40),Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(56,-48),Math.toRadians(250));
@@ -71,16 +65,6 @@ public class auto_5_spec extends LinearOpMode {
 
 
         TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(58,-25),Math.toRadians(0)))
-=======
-                .strafeToLinearHeading(new Vector2d(57,-41.2),Math.toRadians(90));
-        TrajectoryActionBuilder transfer_sample_2_finish = drive.actionBuilder(new Pose2d(new Vector2d(57,-41.2),Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(56,-48),Math.toRadians(250));
-        TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(56,-48),Math.toRadians(250)))
-                .strafeToLinearHeading(new Vector2d(55,-25),Math.toRadians(0));
-
-
-        TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(55,-25),Math.toRadians(0)))
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .strafeToLinearHeading(new Vector2d(57,-48),Math.toRadians(241));
 
         TrajectoryActionBuilder specimen_collect_pre = drive.actionBuilder(new Pose2d(new Vector2d(57,-48),Math.toRadians(246)))
@@ -90,11 +74,7 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(40,-45),Math.toRadians(90));
         TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(40,-45),Math.toRadians(90)))
-<<<<<<< HEAD
                 .strafeToLinearHeading(new Vector2d(40,-57),Math.toRadians(90));
-=======
-                .strafeToLinearHeading(new Vector2d(40,-59),Math.toRadians(90));
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
 
         TrajectoryActionBuilder scoring_poz_pre = drive.actionBuilder(new Pose2d(new Vector2d(40,-57),Math.toRadians(90)))
                 .afterTime(0.1,slides.auto_score())
@@ -122,11 +102,7 @@ public class auto_5_spec extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(8,-32),Math.toRadians(-72))
                 .afterTime(0,scoring.specimen_score_2());
 
-<<<<<<< HEAD
         TrajectoryActionBuilder scoring_poz_pre_4 = drive.actionBuilder(new Pose2d(new Vector2d(40,-57),Math.toRadians(90)))
-=======
-        TrajectoryActionBuilder scoring_poz_pre_4 = drive.actionBuilder(new Pose2d(new Vector2d(40,-59.5),Math.toRadians(90)))
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .afterTime(0.1,slides.auto_score())
                 .afterTime(0.4,slides.auto_score())
                 .afterTime(1.2,slides.auto_score())
@@ -141,10 +117,7 @@ public class auto_5_spec extends LinearOpMode {
         TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(6,-32),Math.toRadians(-72)))
 
                 .afterTime(0.4,scoring.gripper_release())
-<<<<<<< HEAD
                 .afterTime(0.5,scoring.auto_End())
-=======
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .afterTime(1,slides.slide_init())
                 .afterTime(0, extension.max_extension())
                 .strafeToLinearHeading(new Vector2d(40,-100),Math.toRadians(90));

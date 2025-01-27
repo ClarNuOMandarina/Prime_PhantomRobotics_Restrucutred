@@ -47,7 +47,6 @@ public class auto_basket_4_sample extends LinearOpMode {
                 .afterTime(0,slides.slide_sample())
                 .afterTime(0.4,slides.slide_sample())
                 .afterTime(0.8,colection.collecting_arm_default())
-<<<<<<< HEAD
                 .strafeToLinearHeading(new Vector2d(-57,-57),Math.toRadians(46.5));
 
         TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-57),Math.toRadians(46.5)))
@@ -84,81 +83,6 @@ public class auto_basket_4_sample extends LinearOpMode {
 
 
 
-=======
-                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
-
-        TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-58,-60),Math.toRadians(40)))
-                .afterTime(0.4,slides.slide_init())
-                .afterTime(0.7,slides.slide_init())
-                .afterTime(0.1,scoring.sample_collect())
-                .strafeToLinearHeading(new Vector2d(-50.7,-42.5),Math.toRadians(90));
-        TrajectoryActionBuilder sample_finish = drive.actionBuilder(new Pose2d(new Vector2d(-50.7,-42.5),Math.toRadians(90)))
-
-                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
-
-
-
-        TrajectoryActionBuilder sample_2 = drive.actionBuilder(new Pose2d(new Vector2d(-53.5,-60),Math.toRadians(40)))
-                .afterTime(0.4,slides.slide_init())
-                .afterTime(0.7,slides.slide_init())
-                .afterTime(0.5,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-61.5,-41.5),Math.toRadians(90));
-
-        TrajectoryActionBuilder sample_finish_2 = drive.actionBuilder(new Pose2d(new Vector2d(-61.5,-41.5),Math.toRadians(90)))
-
-                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
-
-        TrajectoryActionBuilder sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(-53.5,-60),Math.toRadians(40)))
-                .afterTime(0.4,slides.slide_init())
-                .afterTime(0.7,slides.slide_init())
-                .afterTime(0.5,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-56.5,-28.5),Math.toRadians(-180));
-        TrajectoryActionBuilder sample_3_end = drive.actionBuilder(new Pose2d(new Vector2d(-56,-29),Math.toRadians(-180)))
-                .strafeTo(new Vector2d(-50,-29));
-        TrajectoryActionBuilder sample_finish_3 = drive.actionBuilder(new Pose2d(new Vector2d(-56,-27),Math.toRadians(-180)))
-
-                .strafeToLinearHeading(new Vector2d(-58,-60),Math.toRadians(40));
-
-        TrajectoryActionBuilder parking_pre = drive.actionBuilder(new Pose2d(new Vector2d(-53,-60),Math.toRadians(40)))
-                .afterTime(0.2,slides.auto_park())
-                .strafeToLinearHeading(new Vector2d(-43,-13),Math.toRadians(0));
-
-        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(0)))
-                .afterTime(0.2,slides.auto_park())
-                .strafeTo(new Vector2d(-25,-11));
-
-
-
-
-
-        double x,y;
-        x=-25;
-        y=-11;
-        scoring.gripper(scoring.gripper_hold);
-        while(opModeInInit()&&!isStarted()){
-
-            if(gamepad1.dpad_up){
-                y+=0.001;
-            }
-            if(gamepad1.dpad_down){
-                y-=0.001;
-            }
-            if(gamepad1.dpad_right){
-                x+=0.001;
-            }
-            if(gamepad1.dpad_left){
-                x-=0.001;
-            }
-
-            telemetry.addData("X",x);
-            telemetry.addData("Y",y);
-            telemetry.update();
-        }
-        TrajectoryActionBuilder coord_inpput = drive.actionBuilder(new Pose2d(new Vector2d(-43,-13),Math.toRadians(0)))
-                .afterTime(0.2,slides.auto_park())
-                .afterTime(0, extension.max_extension())
-                .strafeTo(new Vector2d(x,y));
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
         waitForStart();
         timerr.reset();
         if (isStopRequested()) return;
@@ -360,21 +284,14 @@ public class auto_basket_4_sample extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         parking_pre.build(),
-                        coord_inpput.build()
+                        parking.build()
                 ));
-<<<<<<< HEAD
 
 
         scoring.scoring_arm_park();
         scoring.grip_transfer_release();
         colection.init_config();
 
-=======
-            scoring.scoring_arm_park();
-            scoring.grip_transfer_release();
-            colection.init_config();
-        
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
         telemetry.update();
     }
 }

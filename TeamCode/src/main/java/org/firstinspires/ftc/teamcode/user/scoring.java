@@ -16,17 +16,10 @@ public class scoring {
     public double gripper_hold=0.57;
     public double gripper_semi_hold=0.585;
     public double gripper_release=0.625  ;
-<<<<<<< HEAD
     public double scoring_arm_left_colect=0.16;
     public double scoring_arm_right_colect=0.12;
     public double scoring_arm_left_default=0.23;
     public double scoring_arm_right_default=0.23;
-=======
-    public double scoring_arm_left_colect=0.20;
-    public double scoring_arm_right_colect=0.12;
-    public double scoring_arm_left_default=0.30;
-    public double scoring_arm_right_default=0.22;
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
     public double scoring_arm_left_basket=0.12;
     public double scoring_arm_right_basket=0.48  ;
     public double scoring_arm_left_specimen_score=0.02 ;
@@ -39,13 +32,8 @@ public class scoring {
     public double scoring_arm_right_auto_end_init=0.42 ;
     public double scoring_arm_left_auto_park=0.25 ;
     public double scoring_arm_right_auto_park=0.55 ;
-<<<<<<< HEAD
     public double scoring_arm_left_specimen_collect=0.31;
     public double scoring_arm_right_specimen_collect=0.67;
-=======
-    public double scoring_arm_left_specimen_collect=0.32;
-    public double scoring_arm_right_specimen_collect=0.68;
->>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
 
     public scoring(HardwareMap hardwareMap){
         // detalierea modului de functionare a mecanismelor
@@ -166,7 +154,7 @@ public class scoring {
     public Action specimen_score_2(){
         return new Specimen_score_2();
     }
-//    public class Gripper_grabing  implements Action {
+    //    public class Gripper_grabing  implements Action {
 //
 //        @Override
 //        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -183,13 +171,13 @@ public class scoring {
 //    public Action gripper_grabber() {
 //        return new Gripper_grabing();
 //    }
-  public class Specimen_prepare implements Action {
+    public class Specimen_prepare implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
 
-                scoring_arm_specimen_prepare();
+            scoring_arm_specimen_prepare();
 
 
             return false;
@@ -223,7 +211,7 @@ public class scoring {
 
 
 
-                scoring_arm_colect();
+            scoring_arm_colect();
 
 
             return false;
@@ -255,7 +243,7 @@ public class scoring {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-                scoring_arm_score_specimen_score();
+            scoring_arm_score_specimen_score();
 
 
             return false;
@@ -265,12 +253,12 @@ public class scoring {
     public Action specimen_score(){
         return new Specimen_score();
     }
-        public class Gripper_grab  implements Action {
+    public class Gripper_grab  implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-                gripper(gripper_hold);
+            gripper(gripper_hold);
 
 
             return false;
@@ -285,7 +273,7 @@ public class scoring {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-                gripper(gripper_release);
+            gripper(gripper_release);
 
 
             return false;
@@ -301,8 +289,8 @@ public class scoring {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-                scoring_arm_auto_init_end();
-                grip_transfer_release();
+            scoring_arm_auto_init_end();
+            grip_transfer_release();
 
             return false;
         }
