@@ -28,8 +28,13 @@ public class teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+<<<<<<< HEAD
         Pose2d pose=new Pose2d(new Vector2d(40,-57),Math.toRadians(90));
         PinpointDrive drive = new PinpointDrive(hardwareMap,pose);
+=======
+        Pose2d pose=new Pose2d(new Vector2d(40,-59),Math.toRadians(90));
+        MecanumDrive drive = new MecanumDrive(hardwareMap,pose);
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
 
         colection colection = new colection(hardwareMap);
         extension extension = new extension(hardwareMap);
@@ -61,6 +66,7 @@ public class teleop extends LinearOpMode {
         boolean is_automation_ready=false;
         boolean first_automated_cycle=false;
         boolean is_collected=false;
+<<<<<<< HEAD
         TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-57),Math.toRadians(90)))
                 .afterTime(0.1,slides.auto_score())
                 .afterTime(1,scoring.gripper_grab())
@@ -69,10 +75,19 @@ public class teleop extends LinearOpMode {
                 .afterTime(1.5,slides.auto_score())
                 .afterTime(2,slides.auto_score())
 
+=======
+        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-59),Math.toRadians(90)))
+                .afterTime(0.1,slides.auto_score())
+                .afterTime(0.6,scoring.gripper_grab())
+                .afterTime(0.4,slides.auto_score())
+                .afterTime(1.2,slides.auto_score())
+                .afterTime(1.5,slides.auto_score())
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .afterTime(0.2,scoring.specimen_prepare())
                 .strafeToLinearHeading(new Vector2d(12,-31),Math.toRadians(-90))
                 .afterTime(0,scoring.specimen_score_2());
 
+<<<<<<< HEAD
         TrajectoryActionBuilder scoring_spec_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(45,-57),Math.toRadians(90)))
                 .afterTime(0.1,slides.auto_score())
                 .afterTime(1,scoring.gripper_grab())
@@ -93,10 +108,28 @@ public class teleop extends LinearOpMode {
                 .strafeTo(new Vector2d(6,-32))
                 .afterTime(0.1,scoring.specimen_score_2())
                 .afterTime(0.5,scoring.gripper_release())
+=======
+        TrajectoryActionBuilder scoring_spec_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(45,-59),Math.toRadians(90)))
+                .afterTime(0.1,slides.auto_score())
+                .afterTime(0.6,scoring.gripper_grab())
+                .afterTime(0.4,slides.auto_score())
+                .afterTime(1.2,slides.auto_score())
+                .afterTime(1.5,slides.auto_score())
+                .afterTime(0.2,scoring.specimen_prepare())
+                .strafeToLinearHeading(new Vector2d(18,-31),Math.toRadians(-90))
+                .afterTime(0,scoring.specimen_score_2());
+
+        TrajectoryActionBuilder scoring_spec_finish_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(18,-31),Math.toRadians(-90)))
+                .afterTime(0,slides.auto_score())
+                .strafeToLinearHeading(new Vector2d(0,-31),Math.toRadians(-90))
+                .strafeTo(new Vector2d(6,-31))
+                .afterTime(0.55,scoring.gripper_release())
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
 
+<<<<<<< HEAD
         TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(-90)))
                 .afterTime(0,slides.auto_score())
                 .strafeTo(new Vector2d(4,-32))
@@ -109,15 +142,29 @@ public class teleop extends LinearOpMode {
                 .afterTime(0,slides.auto_score())
                 .strafeTo(new Vector2d(8,-32))
                 .afterTime(0.6,scoring.gripper_release())
+=======
+        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(12,-31),Math.toRadians(-90)))
+                .afterTime(0,slides.auto_score())
+                .strafeTo(new Vector2d(4,-31))
+                .afterTime(0.55,scoring.gripper_release())
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
 
+<<<<<<< HEAD
         TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(-90)))
                 .afterTime(0,slides.auto_score())
                 .afterTime(0.2,slides.auto_score())
                 .afterTime(0.4,slides.auto_score())
                 .strafeTo(new Vector2d(8,-32))
+=======
+        TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(12,-31),Math.toRadians(-90)))
+                .afterTime(0,slides.auto_score())
+                .afterTime(0.2,slides.auto_score())
+                .afterTime(0.4,slides.auto_score())
+                .strafeTo(new Vector2d(8,-31))
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                 .afterTime(0.6,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
@@ -125,7 +172,11 @@ public class teleop extends LinearOpMode {
 
 
         TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(45,-47),Math.toRadians(90)))
+<<<<<<< HEAD
                 .strafeToLinearHeading(new Vector2d(45,-57),Math.toRadians(90));
+=======
+                .strafeToLinearHeading(new Vector2d(45,-59),Math.toRadians(90));
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
 
 
         while(!opModeIsActive()){
@@ -410,7 +461,11 @@ public class teleop extends LinearOpMode {
                     first_automated_cycle=true;
                 }
 
+<<<<<<< HEAD
                 while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary ){
+=======
+                while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary && auto_specimen_score_counter<5){
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
 
                     telemetry.addData("STOP AUTO",auto_specimen_intermediary);
                     telemetry.update();
@@ -440,6 +495,7 @@ public class teleop extends LinearOpMode {
                                     ));
                             if (gamepad2.right_trigger != 0) auto_specimen_intermediary = true;
                             if (!auto_specimen_intermediary) {
+<<<<<<< HEAD
                                 if (auto_specimen_score_counter < 9) {
                                     Actions.runBlocking(
                                             new SequentialAction(
@@ -454,6 +510,13 @@ public class teleop extends LinearOpMode {
                                                     specimen_collect.build()
                                             ));
                                 }
+=======
+                                Actions.runBlocking(
+                                        new SequentialAction(
+                                                scoring_spec_finish.build(),
+                                                specimen_collect.build()
+                                        ));
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
                             }
                         }
                         if (gamepad2.left_trigger != 0) auto_specimen_score = false;
@@ -493,9 +556,14 @@ public class teleop extends LinearOpMode {
                 if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
                     colection.gripper.setPosition(colection.gripper_transfer);
 
+<<<<<<< HEAD
                 }
                 if (timer.seconds() > 0.6 && timer.seconds() < 0.7) {
                     colection.gripper.setPosition(colection.gripper_transfer_almost_open);
+=======
+                if (timer.seconds() > 0.2 && timer.seconds() < 0.4) {
+                    scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
 
                 }
                 if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {

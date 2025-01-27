@@ -24,7 +24,11 @@ public DcMotorEx left_slide,right_slide;
     public int slides_specimen_high_score=700   ;
     public int slides_specimen_high_score_tepeop=700   ;
     public int slides_hang=1500;
+<<<<<<< HEAD
     public int slides_auto_score=1700   ;
+=======
+    public int slides_auto_score=1680   ;
+>>>>>>> c38d4e8badb85d16379e0f6ac799795f06efdb54
     public int slides_auto_park=500   ;
 
     public slides(HardwareMap hardwareMap){
