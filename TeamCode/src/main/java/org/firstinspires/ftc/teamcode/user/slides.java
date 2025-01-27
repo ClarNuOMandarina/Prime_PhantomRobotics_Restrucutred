@@ -25,7 +25,7 @@ public DcMotorEx left_slide,right_slide;
     public int slides_specimen_high_score_tepeop=700   ;
     public int slides_hang=1500;
     public int slides_auto_score=1700   ;
-    public int slides_auto_park=1000   ;
+    public int slides_auto_park=500   ;
 
     public slides(HardwareMap hardwareMap){
         // declarari motoare si modul lor de functionare
@@ -89,7 +89,7 @@ public DcMotorEx left_slide,right_slide;
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-                culisante(slides_high_basket);
+                culisante(slides_auto_park);
 
 
             return false;

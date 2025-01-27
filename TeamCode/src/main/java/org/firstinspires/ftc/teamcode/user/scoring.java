@@ -14,25 +14,26 @@ public class scoring {
     public Servo grip_transfer;
     // declarare/memorare pozitii utilizate
     public double gripper_hold=0.57;
+    public double gripper_semi_hold=0.585;
     public double gripper_release=0.625  ;
-    public double scoring_arm_left_colect=0.07;
-    public double scoring_arm_right_colect=0.17;
-    public double scoring_arm_left_default=0.13;
-    public double scoring_arm_right_default=0.27;
+    public double scoring_arm_left_colect=0.16;
+    public double scoring_arm_right_colect=0.12;
+    public double scoring_arm_left_default=0.23;
+    public double scoring_arm_right_default=0.23;
     public double scoring_arm_left_basket=0.12;
     public double scoring_arm_right_basket=0.48  ;
-    public double scoring_arm_left_specimen_score=0.02  ;
-    public double scoring_arm_right_specimen_score=0.78  ;
-    public double scoring_arm_left_specimen_score_auto=0  ;
-    public double scoring_arm_right_specimen_score_auto=1  ;
-    public double scoring_arm_left_specimen_prepare=0.2  ;
-    public double scoring_arm_right_specimen_prepare=0.8  ;
-    public double scoring_arm_left_auto_end_init=0.06  ;
-    public double scoring_arm_right_auto_end_init=0.42  ;
-    public double scoring_arm_left_specimen_score_finalize=0.75;
-    public double scoring_arm_right_specimen_finalize=0.83;
-    public double scoring_arm_left_specimen_collect=0.3;
-    public double scoring_arm_right_specimen_collect=0.66;
+    public double scoring_arm_left_specimen_score=0.02 ;
+    public double scoring_arm_right_specimen_score=0.78 ;
+    public double scoring_arm_left_specimen_score_auto=0 ;
+    public double scoring_arm_right_specimen_score_auto=1 ;
+    public double scoring_arm_left_specimen_prepare=0.2 ;
+    public double scoring_arm_right_specimen_prepare=0.8 ;
+    public double scoring_arm_left_auto_end_init=0.06 ;
+    public double scoring_arm_right_auto_end_init=0.42 ;
+    public double scoring_arm_left_auto_park=0.25 ;
+    public double scoring_arm_right_auto_park=0.55 ;
+    public double scoring_arm_left_specimen_collect=0.31;
+    public double scoring_arm_right_specimen_collect=0.67;
 
     public scoring(HardwareMap hardwareMap){
         // detalierea modului de functionare a mecanismelor
@@ -68,6 +69,10 @@ public class scoring {
     public void scoring_arm_default(){
         scoring_arm_left.setPosition(scoring_arm_left_default);
         scoring_arm_right.setPosition(scoring_arm_right_default);
+    }
+    public void scoring_arm_park(){
+        scoring_arm_left.setPosition(scoring_arm_left_auto_park);
+        scoring_arm_right.setPosition(scoring_arm_right_auto_park);
     }
     public void scoring_arm_score_basket(){
         scoring_arm_left.setPosition(scoring_arm_left_basket);
@@ -149,6 +154,23 @@ public class scoring {
     public Action specimen_score_2(){
         return new Specimen_score_2();
     }
+//    public class Gripper_grabing  implements Action {
+//
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+//            if(true)
+//
+//
+//                gripper(gripper_hold);
+//
+//
+//            return false;
+//        }
+//
+//    }
+//    public Action gripper_grabber() {
+//        return new Gripper_grabing();
+//    }
   public class Specimen_prepare implements Action {
 
         @Override

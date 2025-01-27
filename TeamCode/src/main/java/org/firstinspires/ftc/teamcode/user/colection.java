@@ -20,29 +20,33 @@ public class colection {
    public Servo gripper;
    public Servo gripper_rotation;
    public Servo gripper_angle;
-   public double distance_to_collected_sample=1;
-   public double colection_retracted=0.6;
-   public double colection_extended=0.83;
-   public double colection_extended_auto=0.8;
+   public double distance_to_collected_sample=2.2;
+   public double colection_retracted=0.62;
+   public double colection_extended=0.82;
+   public double colection_extended_auto=0.82;
    public double colection_extended_auto_submersible=0.78;
    public double colection_drag=0.955;
    public double colection_default=0.76;
    public double colection_specimen=0.72;
-   public double gripper_hold=0.83;
-   public double gripper_release=1;
-   public double gripper_transfer=0.87;
+
+   public double gripper_hold=0.35;
+   public double gripper_release=0.58;
+   public double gripper_release_auto=0.58;
+
+   public double gripper_transfer=0.39;
+   public double gripper_transfer_almost_open=0.39;
 
    public double gripper_rotation_score=0.7;
    public double gripper_rotation_drag=0.5;
    public double gripper_rotation_default=0.2;
    public double gripper_rotation_collect=0;
 
-   double gripper_angle_default=0.13;
-   double gripper_angle_drag=0.4;
-   double gripper_angle_tranfer=1;
-   double gripper_angle_vertical=0.32;
-   double gripper_angle_auto=0.34;
-   double gripper_angle_sample2=0.4;
+   double gripper_angle_default=0.02;
+   double gripper_angle_drag=0.22;
+   double gripper_angle_tranfer=0.91;
+   double gripper_angle_vertical=0.22;
+   double gripper_angle_auto=0.22;
+   double gripper_angle_sample2=0.22;
 
     public colection(HardwareMap hardwareMap){
         colection_arm_left= hardwareMap.get(Servo.class,"colection_arm_left");
@@ -189,4 +193,21 @@ public class colection {
         return new Gripper_release();
     }
 
+
+    public class Gripper_release_max  implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+
+
+        gripper.setPosition(gripper_release_auto);
+
+            return false;
+        }
+
+    }
+    public Action griper_release_max(){
+        return new Gripper_release_max();
+    }
 }

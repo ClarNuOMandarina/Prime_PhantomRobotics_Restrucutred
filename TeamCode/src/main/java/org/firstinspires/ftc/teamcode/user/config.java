@@ -19,14 +19,14 @@ public class config extends LinearOpMode {
 //     extension extension = new extension(hardwareMap);
 
      public static int slidez=0;
-     public static double extendz=0;
-     public static double scoring_left_arm=0;
-     public static double scoring_right_arm=0;
-     public static double colecting_arms=0.52;
-     public static double gripz=0;
-     public static double transfer_gripz=0;
-     public static double gripz_rotation=0.2;
-     public static double gripz_angle=0.65;
+     public static double extendz=0.75;
+     public static double scoring_left_arm=0.2;
+     public static double scoring_right_arm=0.1;
+     public static double colecting_arms=0.62;
+     public static double gripz=0.8;
+     public static double transfer_gripz=0.62;
+     public static double gripz_rotation=0.74;
+     public static double gripz_angle=0.93;
 
     @Override
     public void runOpMode() throws InterruptedException {

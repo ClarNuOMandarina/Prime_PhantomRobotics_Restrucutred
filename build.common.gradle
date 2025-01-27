@@ -12,7 +12,8 @@
  *      apply from: '../build.common.gradle'
  *
  * which will pick up this file here. This approach allows makes it easier to integrate
- * updates to the FTC SDK into your code */
+ * updates to the FTC SDK into your code.
+ */
 
 import java.util.regex.Pattern
 
@@ -20,7 +21,7 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     signingConfigs {
         release {
@@ -107,10 +108,6 @@ android {
 
     packagingOptions {
         pickFirst '**/*.so'
-    }
-    sourceSets.main {
-        jni.srcDirs = []
-        jniLibs.srcDir rootProject.file('libs')
     }
     ndkVersion '21.3.6528147'
 }
