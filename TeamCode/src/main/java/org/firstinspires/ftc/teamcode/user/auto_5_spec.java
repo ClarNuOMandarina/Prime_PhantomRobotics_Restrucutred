@@ -25,7 +25,7 @@ public class auto_5_spec extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Pose2d initialPose = new Pose2d(new Vector2d(7.2,-62), Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(new Vector2d(8,-60), Math.toRadians(90));
 
 
         PinpointDrive drive = new PinpointDrive(hardwareMap,initialPose);
@@ -36,22 +36,28 @@ public class auto_5_spec extends LinearOpMode {
         slides.slide_init();
         colection.init_config();
         extension.extend(extension.extension_retracted);
-        scoring.scoring_arm_score_specimen_score();
+        scoring.scoring_arm_score_specimen_collect();
         scoring.gripper_grab();
         slides.reset_encoder();
-
         TrajectoryActionBuilder start_to_score = drive.actionBuilder(initialPose)
-                .afterTime(0.2,slides.auto_score())
-                .lineToY(-37.5)
-                .afterTime(0,scoring.specimen_score_2());
 
-        TrajectoryActionBuilder transfer_sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(7.2,-37.5),Math.toRadians(-90)))
-                .afterTime(0.5,scoring.gripper_release())
-                .afterTime(1.2,scoring.auto_End())
-                .afterTime(1,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(36,-40),Math.toRadians(20.5))
+                .afterTime(0.7,slides.specimen_score_high())
+                .afterTime(0.2,slides.specimen_score_high())
+                .afterTime(1,slides.specimen_score_high())
+                .strafeTo(new Vector2d(4,-27))
+                .afterTime(0,slides.auto_score());
+
+        TrajectoryActionBuilder transfer_sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(8,-27),Math.toRadians(90)))
+
+                .afterTime(0,slides.auto_score())
+                .afterTime(0.2,scoring.gripper_release())
+                .afterTime(0.5,scoring.auto_End())
+                .afterTime(0.8,slides.slide_init())
+                .strafeToLinearHeading(new Vector2d(10,-50),Math.toRadians(90))
+                .afterTime(0,colection.collecting_arm_default())
+
                 .strafeToLinearHeading(new Vector2d(49,-39),Math.toRadians(90));
-        TrajectoryActionBuilder transfer_sample_1_finish = drive.actionBuilder(new Pose2d(new Vector2d(49,-38),Math.toRadians(90)))
+        TrajectoryActionBuilder transfer_sample_1_finish = drive.actionBuilder(new Pose2d(new Vector2d(49,-39),Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(50.5,-49.5),Math.toRadians(-62));
 
 
@@ -67,78 +73,66 @@ public class auto_5_spec extends LinearOpMode {
         TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(58,-25),Math.toRadians(0)))
                 .strafeToLinearHeading(new Vector2d(57,-48),Math.toRadians(241));
 
-        TrajectoryActionBuilder specimen_collect_pre = drive.actionBuilder(new Pose2d(new Vector2d(57,-48),Math.toRadians(246)))
-                .strafeToLinearHeading(new Vector2d(40,-45),Math.toRadians(84));
-        TrajectoryActionBuilder specimen_collect_pre_cicling = drive.actionBuilder(new Pose2d(new Vector2d(14,-35),Math.toRadians(-74)))
+        TrajectoryActionBuilder specimen_collect_pre = drive.actionBuilder(new Pose2d(new Vector2d(57,-48),Math.toRadians(241)))
+                .strafeToLinearHeading(new Vector2d(40,-58),Math.toRadians(90));
+        TrajectoryActionBuilder specimen_collect_pre_cicling = drive.actionBuilder(new Pose2d(new Vector2d(2,-27),Math.toRadians(90)))
                 .afterTime(0.4,scoring.gripper_release())
                 .afterTime(1,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(40,-45),Math.toRadians(90));
-        TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(40,-45),Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(40,-57),Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(40,-58),Math.toRadians(90));
+        TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(40,-58),Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(40,-62),Math.toRadians(90));
 
-        TrajectoryActionBuilder scoring_poz_pre = drive.actionBuilder(new Pose2d(new Vector2d(40,-57),Math.toRadians(90)))
-                .afterTime(0.1,slides.auto_score())
-                .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(14,-32),Math.toRadians(-76))
-                .afterTime(0,scoring.specimen_score_2());
+        TrajectoryActionBuilder scoring_poz_pre = drive.actionBuilder(new Pose2d(new Vector2d(40,-62),Math.toRadians(90)))
+                .afterTime(0.1,slides.specimen_score_high())
+                .afterTime(0.5,slides.specimen_score_high())
+                .strafeToLinearHeading(new Vector2d(6,-28),Math.toRadians(90))
+                .afterTime(0,slides.auto_score());
 
 
-        TrajectoryActionBuilder scoring_poz_pre_2 = drive.actionBuilder(new Pose2d(new Vector2d(40,-57),Math.toRadians(90)))
+        TrajectoryActionBuilder scoring_poz_pre_2 = drive.actionBuilder(new Pose2d(new Vector2d(40,-62),Math.toRadians(90)))
 
-                .afterTime(0.1,slides.auto_score())
-                .afterTime(0.2,scoring.specimen_prepare())
-                .afterTime(0.4,slides.auto_score())
-                .afterTime(1.2,slides.auto_score())
+                .afterTime(0.1,slides.specimen_score_high())
+                .afterTime(0.5,slides.specimen_score_high())
+                .strafeToLinearHeading(new Vector2d(4,-28),Math.toRadians(90))
+                .afterTime(0,slides.auto_score());
 
-                .strafeToLinearHeading(new Vector2d(10,-31),Math.toRadians(-74))
-                .afterTime(0,scoring.specimen_score_2());
 
-        TrajectoryActionBuilder scoring_poz_pre_3 = drive.actionBuilder(new Pose2d(new Vector2d(40,-57),Math.toRadians(90)))
-                .afterTime(0.1,slides.auto_score())
-                .afterTime(0.4,slides.auto_score())
-                .afterTime(1.2,slides.auto_score())
+        TrajectoryActionBuilder scoring_poz_pre_3 = drive.actionBuilder(new Pose2d(new Vector2d(40,-62),Math.toRadians(90)))
 
-                .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(8,-32),Math.toRadians(-72))
-                .afterTime(0,scoring.specimen_score_2());
 
-        TrajectoryActionBuilder scoring_poz_pre_4 = drive.actionBuilder(new Pose2d(new Vector2d(40,-57),Math.toRadians(90)))
-                .afterTime(0.1,slides.auto_score())
-                .afterTime(0.4,slides.auto_score())
-                .afterTime(1.2,slides.auto_score())
+                .afterTime(0.1,slides.specimen_score_high())
+                .afterTime(0.5,slides.specimen_score_high())
+                .strafeToLinearHeading(new Vector2d(2,-28),Math.toRadians(90))
+                .afterTime(0,slides.auto_score());
 
-                .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(6,-32),Math.toRadians(-72))
-                .afterTime(0,scoring.specimen_score_2());
+        TrajectoryActionBuilder scoring_poz_pre_4 = drive.actionBuilder(new Pose2d(new Vector2d(40,62),Math.toRadians(90)))
+
+                .afterTime(0.1,slides.specimen_score_high())
+                .afterTime(0.5,slides.specimen_score_high())
+                .strafeToLinearHeading(new Vector2d(0,-28),Math.toRadians(90))
+                .afterTime(0,slides.auto_score());
 
 
 
 
-        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(6,-32),Math.toRadians(-72)))
+        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(0,-28),Math.toRadians(90)))
 
                 .afterTime(0.4,scoring.gripper_release())
                 .afterTime(0.5,scoring.auto_End())
                 .afterTime(1,slides.slide_init())
                 .afterTime(0, extension.max_extension())
-                .strafeToLinearHeading(new Vector2d(40,-100),Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(-40,-100),Math.toRadians(90));
 
         scoring.gripper(scoring.gripper_hold);
         colection.gripper.setPosition(colection.gripper_release_auto);
         waitForStart();
-        if (isStopRequested()) {
-            ElapsedTime kok = new ElapsedTime();
-            while(kok.seconds()<0.4)scoring.grip_transfer.setPosition(scoring.gripper_release);
-            return;
-        }
-        scoring.scoring_arm_specimen_prepare();
-        slides.culisante(slides.slides_auto_score);
+        slides.culisante(slides.slides_specimen_high_score);
+        scoring.scoring_arm_specimen_score_auto();
         Actions.runBlocking(
                 new SequentialAction(
                         start_to_score.build()
                 ));
-        colection.gripper.setPosition(colection.gripper_release_auto);
-        colection.colection_arm(colection.colection_default);
-        colection.default_config();
+
         colection.gripper.setPosition(colection.gripper_release_auto);
         Actions.runBlocking(
                 new SequentialAction(
@@ -148,6 +142,7 @@ public class auto_5_spec extends LinearOpMode {
         sleep(200);
         colection.gripper_grab();
         sleep(300);
+
         colection.colection_arm(colection.colection_default);
         Actions.runBlocking(
                 new SequentialAction(
@@ -188,7 +183,7 @@ public class auto_5_spec extends LinearOpMode {
                 ));
         colection.gripper.setPosition(colection.gripper_release_auto);
         sleep(200);
-
+        colection.init_config();
 
 
         Actions.runBlocking(
@@ -198,9 +193,10 @@ public class auto_5_spec extends LinearOpMode {
 
                         specimen_collect.build()
                 ));
-        scoring.gripper(scoring.gripper_hold);
+        scoring.gripper(scoring.gripper_semi_hold);
         sleep(200);
-        slides.culisante(slides.slides_auto_score+300);
+        slides.culisante(slides.slides_specimen_high_score);
+        scoring.scoring_arm_score_specimen_score();
         Actions.runBlocking(
                 new SequentialAction(
                         scoring_poz_pre.build()
@@ -217,9 +213,10 @@ public class auto_5_spec extends LinearOpMode {
 
                         specimen_collect.build()
                 ));
-        scoring.gripper(scoring.gripper_hold);
+        scoring.gripper(scoring.gripper_semi_hold);
         sleep(200);
-        slides.culisante(slides.slides_auto_score+300);
+        slides.culisante(slides.slides_specimen_high_score);
+        scoring.scoring_arm_score_specimen_score();
         Actions.runBlocking(
                 new SequentialAction(
                         scoring_poz_pre_2.build()
@@ -238,10 +235,10 @@ public class auto_5_spec extends LinearOpMode {
 
                         specimen_collect.build()
                 ));
-//        sleep(200);
-        scoring.gripper(scoring.gripper_hold);
+        scoring.gripper(scoring.gripper_semi_hold);
         sleep(200);
-        slides.culisante(slides.slides_auto_score+300);
+        slides.culisante(slides.slides_specimen_high_score);
+        scoring.scoring_arm_score_specimen_score();
         Actions.runBlocking(
                 new SequentialAction(
                         scoring_poz_pre_3.build()
@@ -253,16 +250,14 @@ public class auto_5_spec extends LinearOpMode {
 
                         specimen_collect.build()
                 ));
-//        sleep(200);
         scoring.gripper(scoring.gripper_semi_hold);
         sleep(200);
-        slides.culisante(slides.slides_specimen_high+300);
+        slides.culisante(slides.slides_specimen_high_score);
+        scoring.scoring_arm_score_specimen_score();
         Actions.runBlocking(
                 new SequentialAction(
-                        scoring.gripper_grab(),
                         scoring_poz_pre_4.build(),
                         parking.build()
-
                 ));
 
 

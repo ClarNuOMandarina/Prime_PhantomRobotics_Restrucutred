@@ -129,10 +129,7 @@ public class auto_basket_4_sample extends LinearOpMode {
                 colection.gripper.setPosition(colection.gripper_transfer);
 
             }
-            if (timer.seconds() > 0.6 && timer.seconds() < 0.7) {
-                colection.gripper.setPosition(colection.gripper_transfer_almost_open);
 
-            }
             if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
                 scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
 
@@ -187,10 +184,7 @@ public class auto_basket_4_sample extends LinearOpMode {
                 colection.gripper.setPosition(colection.gripper_transfer);
 
             }
-            if (timer.seconds() > 0.6 && timer.seconds() < 0.7) {
-                colection.gripper.setPosition(colection.gripper_transfer_almost_open);
 
-            }
             if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
                 scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
 
@@ -249,10 +243,7 @@ public class auto_basket_4_sample extends LinearOpMode {
                 colection.gripper.setPosition(colection.gripper_transfer);
 
             }
-            if (timer.seconds() > 0.6 && timer.seconds() < 0.7) {
-                colection.gripper.setPosition(colection.gripper_transfer_almost_open);
 
-            }
             if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
                 scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
 

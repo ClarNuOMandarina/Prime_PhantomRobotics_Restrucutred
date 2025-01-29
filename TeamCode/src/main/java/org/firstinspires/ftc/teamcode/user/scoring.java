@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.user;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -16,24 +18,22 @@ public class scoring {
     public double gripper_hold=0.57;
     public double gripper_semi_hold=0.585;
     public double gripper_release=0.625  ;
-    public double scoring_arm_left_colect=0.16;
-    public double scoring_arm_right_colect=0.12;
-    public double scoring_arm_left_default=0.23;
-    public double scoring_arm_right_default=0.23;
-    public double scoring_arm_left_basket=0.12;
-    public double scoring_arm_right_basket=0.48  ;
-    public double scoring_arm_left_specimen_score=0.02 ;
-    public double scoring_arm_right_specimen_score=0.78 ;
-    public double scoring_arm_left_specimen_score_auto=0 ;
-    public double scoring_arm_right_specimen_score_auto=1 ;
-    public double scoring_arm_left_specimen_prepare=0.2 ;
-    public double scoring_arm_right_specimen_prepare=0.8 ;
-    public double scoring_arm_left_auto_end_init=0.06 ;
-    public double scoring_arm_right_auto_end_init=0.42 ;
+    public double scoring_arm_left_colect=0.55;
+    public double scoring_arm_right_colect=0.19;
+    public double scoring_arm_left_default=0.55;
+    public double scoring_arm_right_default=0.19;
+    public double scoring_arm_left_basket=0.18;
+    public double scoring_arm_right_basket=0.18  ;
+    public double scoring_arm_left_specimen_score=0.56 ;
+    public double scoring_arm_right_specimen_score=0.58 ;
+    public double scoring_arm_left_specimen_score_auto=0.56 ;
+    public double scoring_arm_right_specimen_score_auto=0.58 ;
+    public double scoring_arm_left_auto_end_init=0.3 ;
+    public double scoring_arm_right_auto_end_init=0.3 ;
     public double scoring_arm_left_auto_park=0.25 ;
     public double scoring_arm_right_auto_park=0.55 ;
-    public double scoring_arm_left_specimen_collect=0.31;
-    public double scoring_arm_right_specimen_collect=0.67;
+    public double scoring_arm_left_specimen_collect=0;
+    public double scoring_arm_right_specimen_collect=0;
 
     public scoring(HardwareMap hardwareMap){
         // detalierea modului de functionare a mecanismelor
@@ -46,10 +46,7 @@ public class scoring {
         scoring_arm_left.setPosition(x);
         scoring_arm_right.setPosition(y);
     }
-    public void scoring_arm_specimen_prepare(){
-        scoring_arm_left.setPosition(scoring_arm_left_specimen_prepare);
-        scoring_arm_right.setPosition(scoring_arm_right_specimen_prepare);
-    }
+
     public void scoring_arm_colect(){
         scoring_arm_left.setPosition(scoring_arm_left_colect);
         scoring_arm_right.setPosition(scoring_arm_right_colect);
@@ -105,13 +102,10 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if(scoring_arm_right.getPosition()!=scoring_arm_right_default)
+            if(true)
 
-            {
                 init_config();
 
-                return true;
-            }
             return false;
         }
 
@@ -171,22 +165,7 @@ public class scoring {
 //    public Action gripper_grabber() {
 //        return new Gripper_grabing();
 //    }
-    public class Specimen_prepare implements Action {
 
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-
-
-            scoring_arm_specimen_prepare();
-
-
-            return false;
-        }
-
-    }
-    public Action specimen_prepare(){
-        return new Specimen_prepare();
-    }
     public class Transfer  implements Action {
 
         @Override
@@ -209,6 +188,7 @@ public class scoring {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
+            if(true)
 
 
             scoring_arm_colect();
@@ -226,6 +206,7 @@ public class scoring {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
+            if(true)
 
 
             scoring_arm_score_basket();
@@ -242,6 +223,7 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if(true)
 
             scoring_arm_score_specimen_score();
 
@@ -257,6 +239,7 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if(true)
 
             gripper(gripper_hold);
 
@@ -272,6 +255,7 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if(true)
 
             gripper(gripper_release);
 
@@ -288,10 +272,10 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-
-            scoring_arm_auto_init_end();
-            grip_transfer_release();
-
+            if(true) {
+                scoring_arm_auto_init_end();
+                grip_transfer_release();
+            }
             return false;
         }
 

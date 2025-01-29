@@ -20,11 +20,11 @@ public class slides  {
     public int slides_low_basket=1000;
     public int slides_high_basket=2480;
     public int slides_specimen_low=0;
-    public int slides_specimen_high=1400;
-    public int slides_specimen_high_score=700   ;
-    public int slides_specimen_high_score_tepeop=700   ;
+    public int slides_specimen_high=1300;
+    public int slides_specimen_high_score=1680  ;
+    public int slides_specimen_high_score_tepeop=1680   ;
     public int slides_hang=1500;
-    public int slides_auto_score=1700   ;
+    public int slides_auto_score=1680   ;
     public int slides_auto_park=500   ;
 
     public slides(HardwareMap hardwareMap){
@@ -104,7 +104,7 @@ public class slides  {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-            culisante(slides_auto_score);
+            culisante(slides_specimen_high_score);
 
 
             return false;
@@ -119,7 +119,7 @@ public class slides  {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-            culisante(slides_specimen_high+150);
+            culisante(slides_specimen_high);
             return false;
         }
 

@@ -62,14 +62,12 @@ public class teleop extends LinearOpMode {
         boolean first_automated_cycle=false;
         boolean is_collected=false;
         TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-57),Math.toRadians(90)))
-                .afterTime(0.1,slides.auto_score())
+                .afterTime(0.1,slides.specimen_score_high())
+                .afterTime(2,slides.specimen_score_high())
                 .afterTime(1,scoring.gripper_grab())
-                .afterTime(0.4,slides.auto_score())
-                .afterTime(1.2,slides.auto_score())
-                .afterTime(1.5,slides.auto_score())
-                .afterTime(2,slides.auto_score())
 
-                .afterTime(0.2,scoring.specimen_prepare())
+
+//                .afterTime(0.2,scoring.specimen_prepare())
                 .strafeToLinearHeading(new Vector2d(12,-31),Math.toRadians(-90))
                 .afterTime(0,scoring.specimen_score_2());
 
@@ -80,7 +78,7 @@ public class teleop extends LinearOpMode {
                 .afterTime(1.2,slides.auto_score())
                 .afterTime(1.5,slides.auto_score())
                 .afterTime(2,slides.auto_score())
-                .afterTime(0.2,scoring.specimen_prepare())
+//                .afterTime(0.2,scoring.specimen_prepare())
                 .strafeToLinearHeading(new Vector2d(14,-31),Math.toRadians(-90))
                 .afterTime(0,scoring.specimen_score_2());
 
@@ -88,7 +86,7 @@ public class teleop extends LinearOpMode {
                 .afterTime(0,slides.auto_score())
                 .strafeToLinearHeading(new Vector2d(-8,-34),Math.toRadians(-90))
                 .afterTime(0,slides.auto_score())
-                .afterTime(0.2,scoring.specimen_prepare())
+//                .afterTime(0.2,scoring.specimen_prepare())
 
                 .strafeTo(new Vector2d(6,-32))
                 .afterTime(0.1,scoring.specimen_score_2())
@@ -231,11 +229,12 @@ public class teleop extends LinearOpMode {
                 }
                 // transfers the sample from a colected config to a scoring config, also blocks off other controls while the transfer is happening
                 // and is automated based on a distance/color sensor, can also be used manually
-                if(gamepad2.touchpad || (transfer_retracted_counter && timer.seconds()>0.8) ||(transfer_extend_counter==true && timer.seconds()>0.9)){
+                if(gamepad2.touchpad || (transfer_retracted_counter && timer.seconds()>0.3) ||(transfer_extend_counter==true && timer.seconds()>0.4)){
                     transfer_extend_counter=false;
                     transfer_retracted_counter=false;
                     if ( blockage == false
                             && slides.right_slide.getCurrentPosition() < 15) {
+                    colection.gripper_rotation.setPosition(colection.gripper_angle_default);
                         alt_transfer=false;
                         colection.scoring_config();
                         scoring.scoring_arm_default();
@@ -297,11 +296,11 @@ public class teleop extends LinearOpMode {
                 }
                 if(to_score==true) {
                     if (timer_score.seconds() > 0.5) {
-                        scoring.gripper_release();
+//                        scoring.gripper_release();
 
                     }
                     if(timer_score.seconds()>1){
-                        scoring.init_config();
+//                        scoring.init_config();
                         to_score=false;
                     }
                 }
@@ -319,8 +318,10 @@ public class teleop extends LinearOpMode {
                 if(timer2.seconds()>0.1 && grab==true) {
                     colection.gripper_grab();
                 }
+
                 if(timer2.seconds()>0.5 &&grab ==true)
                 {
+                    colection.gripper_angle.setPosition(colection.gripper_angle_default);
                     colection.colection_arm(colection.colection_default);
                     if(timer2.seconds()>0.7) {
                         if (specimen_cycling == false) {
@@ -328,7 +329,7 @@ public class teleop extends LinearOpMode {
                             if (!manual){
 
                                 if (colection.senzor.getDistance(DistanceUnit.CM) <colection.distance_to_collected_sample) {
-
+                                colection.gripper_angle.setPosition(colection.gripper_angle_default);
                                     colection.gripper.setPosition(colection.gripper_transfer);
                                     colection.scoring_config();
 
@@ -342,6 +343,7 @@ public class teleop extends LinearOpMode {
 
                             else if (manual){
                                 colection.gripper.setPosition(colection.gripper_transfer);
+                                colection.gripper_angle.setPosition(colection.gripper_angle_default);
 
                                 colection.scoring_config();
                             }
@@ -486,26 +488,14 @@ public class teleop extends LinearOpMode {
             }
             if(blockage==true) {
                 extension.extend(extension.extension_forced);
-                if ( timer.seconds() > 0.2 && timer.seconds()<0.22) {
-                    scoring.scoring_arm_colect();
+                if ( timer.seconds() < 0.1) {
+                    scoring.grip_transfer.setPosition(scoring.gripper_hold);
 
-                }
-                if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
-                    colection.gripper.setPosition(colection.gripper_transfer);
-
-                }
-                if (timer.seconds() > 0.6 && timer.seconds() < 0.7) {
-                    colection.gripper.setPosition(colection.gripper_transfer_almost_open);
-
-                }
-                if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
-                    scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
-
-                } if (timer.seconds() >0.8  && timer.seconds() < 0.9) {
+                } if (timer.seconds() >0.1  && timer.seconds() < 0.2) {
                     colection.gripper.setPosition(colection.gripper_release);
 
                 }
-                if (timer.seconds() > 1.1 ) {
+                if (timer.seconds() > 0.4 ) {
                     colection.default_config();
                     extension.extend(extension.extension_retracted);
                     blockage = false;
