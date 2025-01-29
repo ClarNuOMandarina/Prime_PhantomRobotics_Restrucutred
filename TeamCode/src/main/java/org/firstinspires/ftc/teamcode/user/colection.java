@@ -116,6 +116,21 @@ public class colection {
     public Action auto_end(){
         return new AUTO_end();
     }
+//    public class Gripper_release  implements Action {
+//
+//        @Override
+//        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+//            if(true)
+//
+//                gripper_release();
+//
+//            return false;
+//        }
+//
+//    }
+//    public Action gripper_release_action(){
+//        return new Gripper_release();
+//    }
     public class Collecting_arm_collect  implements Action {
 
         @Override
@@ -175,7 +190,7 @@ public class colection {
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
 
-
+            if(true)
             gripper.setPosition(gripper_release);
 
             return false;
