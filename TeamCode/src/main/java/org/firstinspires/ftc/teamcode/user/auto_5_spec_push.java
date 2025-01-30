@@ -53,7 +53,7 @@ public class auto_5_spec_push extends LinearOpMode {
                 .afterTime(0.2,scoring.gripper_release())
                 .afterTime(0.5,scoring.auto_End())
                 .afterTime(0.8,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(10,-40),Math.toRadians(90))
+                .strafeToLinearHeading(new Vector2d(30,-40),Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(40,-10),Math.toRadians(90))
                 .strafeToLinearHeading(new Vector2d(55,-55),Math.toRadians(90));
 
@@ -123,7 +123,7 @@ public class auto_5_spec_push extends LinearOpMode {
         colection.gripper.setPosition(colection.gripper_release_auto);
         waitForStart();
         slides.culisante(slides.slides_specimen_high_score);
-        scoring.scoring_arm_specimen_score_auto();
+//        scoring.scoring_arm_specimen_score_auto();
         Actions.runBlocking(
                 new SequentialAction(
                         start_to_score.build(),

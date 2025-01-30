@@ -121,29 +121,18 @@ public class auto_basket_4_sample extends LinearOpMode {
         transferz=true;
         while (transferz) {
             extension.extend(extension.extension_forced);
-            if ( timer.seconds() > 0.2 && timer.seconds()<0.22) {
-                scoring.scoring_arm_colect();
+            if ( timer.seconds() < 0.1) {
+                scoring.grip_transfer.setPosition(scoring.gripper_hold);
 
-            }
-            if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
-                colection.gripper.setPosition(colection.gripper_transfer);
-
-            }
-
-            if (timer.seconds() > 0.5 && timer.seconds() < 0.6) {
-                scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
-
-            } if (timer.seconds() >0.8  && timer.seconds() < 0.9) {
+            } if (timer.seconds() >0.1  && timer.seconds() < 0.2) {
                 colection.gripper.setPosition(colection.gripper_release);
 
             }
-            if (timer.seconds() > 1.1 ) {
+            if (timer.seconds() > 0.4 ) {
                 colection.default_config();
                 extension.extend(extension.extension_retracted);
                 slides.culisante(slides.slides_high_basket);
-
-                transferz=false;
-
+                transferz = false;
             }
 
         }        sleep(400);

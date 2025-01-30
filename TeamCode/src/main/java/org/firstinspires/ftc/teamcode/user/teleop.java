@@ -61,53 +61,47 @@ public class teleop extends LinearOpMode {
         boolean is_automation_ready=false;
         boolean first_automated_cycle=false;
         boolean is_collected=false;
-        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(45,-62),Math.toRadians(90)))
+        TrajectoryActionBuilder scoring_spec = drive.actionBuilder(new Pose2d(new Vector2d(42,-62),Math.toRadians(90)))
                 .afterTime(0.1,slides.specimen_score_high())
-                .afterTime(0.1,scoring.specimen_score())
+                .afterTime(0.1,scoring.specimen_prepare())
                 .afterTime(0.8,slides.specimen_score_high())
-                .afterTime(1,scoring.gripper_grab())
 
 
 //                .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(12,-27),Math.toRadians(90))
-                .afterTime(0,slides.auto_score());
+                .strafeToLinearHeading(new Vector2d(8,-27),Math.toRadians(90));
 
-        TrajectoryActionBuilder scoring_spec_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(45,-62),Math.toRadians(90)))
+        TrajectoryActionBuilder scoring_spec_first_cycle = drive.actionBuilder(pose)
                 .afterTime(0.1,slides.specimen_score_high())
-                .afterTime(0.1,scoring.specimen_score())
+                .afterTime(0.1,scoring.specimen_prepare())
                 .afterTime(0.8,slides.specimen_score_high())
-                .afterTime(1,scoring.gripper_grab())
 //                .afterTime(0.2,scoring.specimen_prepare())
-                .strafeToLinearHeading(new Vector2d(-2,-27),Math.toRadians(90))
-                .afterTime(0,slides.auto_score());
+                .strafeToLinearHeading(new Vector2d(4,-27),Math.toRadians(90));
 
-        TrajectoryActionBuilder scoring_spec_finish_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(-2,-27),Math.toRadians(90)))
-                .afterTime(0,slides.auto_score())
-                .strafeToLinearHeading(new Vector2d(8,-27),Math.toRadians(90))
-                .afterTime(0.4,slides.auto_score())
+        TrajectoryActionBuilder scoring_spec_finish_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(4,-27),Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(-4,-27),Math.toRadians(90))
 //                .afterTime(0.2,scoring.specimen_prepare())
 
                 .strafeTo(new Vector2d(2,-27))
                 .afterTime(0.1,scoring.gripper_release())
                 .afterTime(0.4,scoring.specimen_collect())
                 .afterTime(0.4,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
+                .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
 
-        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(12,-27),Math.toRadians(90)))
+        TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(8,-27),Math.toRadians(90)))
                 .afterTime(0,slides.auto_score())
                 .strafeTo(new Vector2d(4,-32))
                 .strafeTo(new Vector2d(8,-32))
                 .afterTime(0.5,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
-//        TrajectoryActionBuilder scoring_spec_finish_5    = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(90)))
-//                .afterTime(0,slides.auto_score())
-//                .strafeTo(new Vector2d(8,-32))
-//                .afterTime(0.6,scoring.gripper_release())
-//                .afterTime(1,scoring.specimen_collect())
-//                .afterTime(1,slides.slide_init())
-//                .strafeToLinearHeading(new Vector2d(45,-47),Math.toRadians(90));
+                .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
+        TrajectoryActionBuilder scoring_spec_finish_5    = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(90)))
+                .afterTime(0,slides.auto_score())
+                .strafeTo(new Vector2d(8,-32))
+                .afterTime(0.6,scoring.gripper_release())
+                .afterTime(1,scoring.specimen_collect())
+                .afterTime(1,slides.slide_init())
+                .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
 
         TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(90)))
                 .afterTime(0,slides.auto_score())
@@ -120,8 +114,9 @@ public class teleop extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-12,-47),Math.toRadians(90));
 
 
-        TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(45,-47),Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(45,-62),Math.toRadians(90));
+
+
+
 
 
         while(!opModeIsActive()){
@@ -130,12 +125,12 @@ public class teleop extends LinearOpMode {
         }
         waitForStart();
         // default init config
-        colection.start_config();
+//        colection.start_config();
         scoring.init_config();
         // resets slides encoder after start is pressed
         slides.reset_encoder();
 
-        while(opModeIsActive() && !isStopRequested()){
+        while(opModeIsActive() ){
 
 
 
@@ -180,7 +175,7 @@ public class teleop extends LinearOpMode {
                 if(gamepad2.dpad_right) {
                     is_automation_ready=false;
                     slides.culisante(slides.slides_specimen_high);
-                    scoring.scoring_arm_score_specimen_score();                }
+                    scoring.scoring_arm_specimen_prepare();                }
                 // low specimen score config
                 if(gamepad2.dpad_down) {
                     slides.culisante(slides.slides_specimen_low);
@@ -290,7 +285,7 @@ public class teleop extends LinearOpMode {
                 if(gamepad1.b){
                     to_score=true;
                     timer_score.reset();
-                    slides.culisante(slides.slides_specimen_high_score_tepeop);
+                    scoring.scoring_arm_score_specimen_score();
                 }
                 if(to_score==true) {
                     if (timer_score.seconds() > 0.5) {
@@ -414,20 +409,26 @@ public class teleop extends LinearOpMode {
 
                     telemetry.addData("STOP AUTO",auto_specimen_intermediary);
                     telemetry.update();
+
+
                     if(gamepad2.right_trigger!=0)auto_specimen_intermediary=true;
 
                     if(gamepad2.left_trigger!=0)auto_specimen_score=false;
                     if(auto_specimen_intermediary)break;
                     if(first_automated_cycle){
+
                         Actions.runBlocking(
                                 new SequentialAction(
-                                        scoring_spec_first_cycle.build()
+                                        scoring_spec_first_cycle.build(),
+                                        scoring.specimen_score()
                                 ));
-                        Actions.runBlocking(
-                                new SequentialAction(
-                                        scoring_spec_finish_first_cycle.build(),
-                                        specimen_collect.build()
+sleep(100);
+                                        Actions.runBlocking(
+                                                new SequentialAction(
+                                        scoring_spec_finish_first_cycle.build()
                                 ));
+
+
                         scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
                         sleep(300);
                     }
@@ -436,23 +437,28 @@ public class teleop extends LinearOpMode {
 
                             Actions.runBlocking(
                                     new SequentialAction(
-                                            scoring_spec.build()
+                                            scoring_spec.build(),
+                                            scoring.specimen_score()
                                     ));
+                                    sleep(100);
+
                             if (gamepad2.right_trigger != 0) auto_specimen_intermediary = true;
                             if (!auto_specimen_intermediary) {
                                 if (auto_specimen_score_counter < 9) {
                                     Actions.runBlocking(
                                             new SequentialAction(
-                                                    scoring_spec_finish.build(),
-                                                    specimen_collect.build()
+                                                    scoring_spec_finish.build()
                                             ));
+
+
                                 }
                                 else{
                                     Actions.runBlocking(
                                             new SequentialAction(
-//                                                    scoring_spec_finish_5.build(),
-                                                    specimen_collect.build()
+                                                    scoring_spec_finish_5.build()
                                             ));
+
+
                                 }
                             }
                         }
@@ -469,6 +475,7 @@ public class teleop extends LinearOpMode {
                                             scoring_spec.build(),
                                             specimen_end.build()
                                     ));
+
                         }
                         if (gamepad2.left_trigger != 0) auto_specimen_score = false;
                         if (!auto_specimen_score) break;
@@ -482,6 +489,8 @@ public class teleop extends LinearOpMode {
 //                    auto_specimen_score_counter+=1;
                     first_automated_cycle=false;
                 }
+
+            }
 
             }
             if(blockage==true) {
@@ -510,5 +519,5 @@ public class teleop extends LinearOpMode {
 
         }
 
-    }}
+    }
 

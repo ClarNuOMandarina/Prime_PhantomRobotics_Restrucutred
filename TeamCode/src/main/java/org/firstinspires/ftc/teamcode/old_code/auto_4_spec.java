@@ -1,21 +1,18 @@
-package org.firstinspires.ftc.teamcode.user;
+package org.firstinspires.ftc.teamcode.old_code;
 
-import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.TrajectoryBuilder;
-import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.user.colection;
+import org.firstinspires.ftc.teamcode.user.extension;
+import org.firstinspires.ftc.teamcode.user.scoring;
+import org.firstinspires.ftc.teamcode.user.slides;
 
 @Autonomous(name="auto 4 spec")
 public class auto_4_spec extends LinearOpMode {

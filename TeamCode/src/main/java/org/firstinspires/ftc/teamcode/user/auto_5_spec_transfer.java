@@ -75,7 +75,9 @@ public class auto_5_spec_transfer extends LinearOpMode {
                 .afterTime(0.4,scoring.specimen_collect())
                 .afterTime(0.4,colection.collecting_arm_default())
                 .strafeToLinearHeading(new Vector2d(56,-49.5),Math.toRadians(90))
-                .afterTime(0,scoring.gripper_release());        TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(56,-48),Math.toRadians(250)))
+
+                .afterTime(0,scoring.gripper_release());
+        TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(56,-49),Math.toRadians(90)))
                 .afterTime(0.1,scoring.gripper_grab())
                 .afterTime(0.2,colection.griper_release())
                 .afterTime(0.4,scoring.specimen_collect())
@@ -83,7 +85,7 @@ public class auto_5_spec_transfer extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(56,-49.5),Math.toRadians(90))
                 .afterTime(0,scoring.gripper_release());
 
-        TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(58,-25),Math.toRadians(90)))
+        TrajectoryActionBuilder transfer_sample_3_finish = drive.actionBuilder(new Pose2d(new Vector2d(56,-49),Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(57,-48),Math.toRadians(90));
 
 //        TrajectoryActionBuilder specimen_collect_pre = drive.actionBuilder(new Pose2d(new Vector2d(57,-48),Math.toRadians(90)))
@@ -142,7 +144,7 @@ public class auto_5_spec_transfer extends LinearOpMode {
         colection.gripper.setPosition(colection.gripper_release_auto);
         waitForStart();
         slides.culisante(slides.slides_specimen_high_score);
-        scoring.scoring_arm_specimen_score_auto();
+//        scoring.scoring_arm_specimen_score_auto();
         Actions.runBlocking(
                 new SequentialAction(
                         start_to_score.build()
@@ -170,7 +172,7 @@ public class auto_5_spec_transfer extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        transfer_sample_1.build()
+                        transfer_sample_2.build()
                 ));
         colection.colection_arm(colection.colection_extended_auto);
         sleep(200);
@@ -188,7 +190,7 @@ public class auto_5_spec_transfer extends LinearOpMode {
         colection.gripper_angle.setPosition(colection.gripper_angle_vertical);
         Actions.runBlocking(
                 new SequentialAction(
-                        transfer_sample_1.build()
+                        transfer_sample_3.build()
                 ));
         colection.colection_arm(colection.colection_extended_auto);
         sleep(200);

@@ -39,7 +39,7 @@ public class colection {
 
     double gripper_angle_default=0.83;
     double gripper_angle_tranfer=0.2;
-    double gripper_angle_vertical=1;
+    public double gripper_angle_vertical=1;
 
     public colection(HardwareMap hardwareMap){
         colection_arm_left= hardwareMap.get(Servo.class,"colection_arm_left");

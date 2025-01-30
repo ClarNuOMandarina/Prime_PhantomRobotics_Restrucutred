@@ -15,19 +15,20 @@ public class scoring {
     public Servo scoring_arm_right;
     public Servo grip_transfer;
     // declarare/memorare pozitii utilizate
-    public double gripper_hold=0.57;
+    public double gripper_hold=0.6;
     public double gripper_semi_hold=0.585;
-    public double gripper_release=0.625  ;
+    public double gripper_release=0.4  ;
     public double scoring_arm_left_colect=0.55;
     public double scoring_arm_right_colect=0.19;
     public double scoring_arm_left_default=0.55;
     public double scoring_arm_right_default=0.19;
     public double scoring_arm_left_basket=0.18;
     public double scoring_arm_right_basket=0.18  ;
-    public double scoring_arm_left_specimen_score=0.56 ;
-    public double scoring_arm_right_specimen_score=0.58 ;
-    public double scoring_arm_left_specimen_score_auto=0.56 ;
-    public double scoring_arm_right_specimen_score_auto=0.58 ;
+    public double scoring_arm_left_specimen_score=0.3 ;
+    public double scoring_arm_right_specimen_score=0.3 ;
+    public double scoring_arm_left_specimen_prepare=0.56 ;
+    public double scoring_arm_right_specimen_prepare=0.58 ;
+
     public double scoring_arm_left_auto_end_init=0.3 ;
     public double scoring_arm_right_auto_end_init=0.3 ;
     public double scoring_arm_left_auto_park=0.25 ;
@@ -55,10 +56,14 @@ public class scoring {
         scoring_arm_left.setPosition(scoring_arm_left_auto_end_init);
         scoring_arm_right.setPosition(scoring_arm_right_auto_end_init);
     }
-    public void scoring_arm_specimen_score_auto(){
-        scoring_arm_left.setPosition(scoring_arm_left_specimen_score_auto);
-        scoring_arm_right.setPosition(scoring_arm_right_specimen_score_auto);
+    public void scoring_arm_specimen_prepare(){
+        scoring_arm_left.setPosition(scoring_arm_left_specimen_prepare);
+        scoring_arm_right.setPosition(scoring_arm_right_specimen_prepare);
     }
+//    public void scoring_arm_specimen_score_auto(){
+//        scoring_arm_left.setPosition(scoring_arm_left_specimen_score_auto);
+//        scoring_arm_right.setPosition(scoring_arm_right_specimen_score_auto);
+//    }
     public void scoring_arm_init(){
         scoring_arm_left.setPosition(scoring_arm_left_colect);
         scoring_arm_right.setPosition(scoring_arm_right_colect);
@@ -131,40 +136,24 @@ public class scoring {
     }
     public Action specimen_collect(){
         return new Specimen_collect();
-    }  public class Specimen_score_2  implements Action {
+    }
+    public class Specimen_prepare  implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             if(true)
 
 
-                scoring_arm_specimen_score_auto();
+                scoring_arm_specimen_prepare();
 
 
             return false;
         }
 
     }
-    public Action specimen_score_2(){
-        return new Specimen_score_2();
+    public Action specimen_prepare(){
+        return new Specimen_prepare();
     }
-    //    public class Gripper_grabing  implements Action {
-//
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//            if(true)
-//
-//
-//                gripper(gripper_hold);
-//
-//
-//            return false;
-//        }
-//
-//    }
-//    public Action gripper_grabber() {
-//        return new Gripper_grabing();
-//    }
 
     public class Transfer  implements Action {
 
