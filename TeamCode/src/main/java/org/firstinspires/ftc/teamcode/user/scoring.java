@@ -31,8 +31,8 @@ public class scoring {
 
     public double scoring_arm_left_auto_end_init=0.3 ;
     public double scoring_arm_right_auto_end_init=0.3 ;
-    public double scoring_arm_left_auto_park=0.25 ;
-    public double scoring_arm_right_auto_park=0.55 ;
+    public double scoring_arm_left_auto_park=0.3 ;
+    public double scoring_arm_right_auto_park=0.3 ;
     public double scoring_arm_left_specimen_collect=0;
     public double scoring_arm_right_specimen_collect=0;
 

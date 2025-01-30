@@ -67,24 +67,23 @@ public class teleop extends LinearOpMode {
                 .afterTime(0.8,slides.specimen_score_high())
 
 
-//                .afterTime(0.2,scoring.specimen_prepare())
                 .strafeToLinearHeading(new Vector2d(8,-27),Math.toRadians(90));
 
         TrajectoryActionBuilder scoring_spec_first_cycle = drive.actionBuilder(pose)
                 .afterTime(0.1,slides.specimen_score_high())
                 .afterTime(0.1,scoring.specimen_prepare())
                 .afterTime(0.8,slides.specimen_score_high())
-//                .afterTime(0.2,scoring.specimen_prepare())
+                .afterTime(1.2,slides.specimen_score_high())
                 .strafeToLinearHeading(new Vector2d(4,-27),Math.toRadians(90));
 
         TrajectoryActionBuilder scoring_spec_finish_first_cycle = drive.actionBuilder(new Pose2d(new Vector2d(4,-27),Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(-4,-27),Math.toRadians(90))
-//                .afterTime(0.2,scoring.specimen_prepare())
 
                 .strafeTo(new Vector2d(2,-27))
                 .afterTime(0.1,scoring.gripper_release())
-                .afterTime(0.4,scoring.specimen_collect())
-                .afterTime(0.4,slides.slide_init())
+                .afterTime(0.2,scoring.specimen_collect())
+                .afterTime(0.2,slides.slide_init())
+                .setTangent(Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
 
         TrajectoryActionBuilder scoring_spec_finish = drive.actionBuilder(new Pose2d(new Vector2d(8,-27),Math.toRadians(90)))
@@ -94,24 +93,25 @@ public class teleop extends LinearOpMode {
                 .afterTime(0.5,scoring.gripper_release())
                 .afterTime(1,scoring.specimen_collect())
                 .afterTime(1,slides.slide_init())
+                .setTangent(Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
-        TrajectoryActionBuilder scoring_spec_finish_5    = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(90)))
-                .afterTime(0,slides.auto_score())
-                .strafeTo(new Vector2d(8,-32))
-                .afterTime(0.6,scoring.gripper_release())
-                .afterTime(1,scoring.specimen_collect())
-                .afterTime(1,slides.slide_init())
-                .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
+//        TrajectoryActionBuilder scoring_spec_finish_5    = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(90)))
+//                .afterTime(0,slides.auto_score())
+//                .strafeTo(new Vector2d(8,-32))
+//                .afterTime(0.6,scoring.gripper_release())
+//                .afterTime(1,scoring.specimen_collect())
+//                .afterTime(1,slides.slide_init())
+//                .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
 
-        TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(90)))
-                .afterTime(0,slides.auto_score())
-                .afterTime(0.2,slides.auto_score())
-                .afterTime(0.4,slides.auto_score())
-                .strafeTo(new Vector2d(8,-32))
-                .afterTime(0.6,scoring.gripper_release())
-                .afterTime(1,scoring.specimen_collect())
-                .afterTime(1,slides.slide_init())
-                .strafeToLinearHeading(new Vector2d(-12,-47),Math.toRadians(90));
+//        TrajectoryActionBuilder specimen_end = drive.actionBuilder(new Pose2d(new Vector2d(12,-32),Math.toRadians(90)))
+//                .afterTime(0,slides.auto_score())
+//                .afterTime(0.2,slides.auto_score())
+//                .afterTime(0.4,slides.auto_score())
+//                .strafeTo(new Vector2d(8,-32))
+//                .afterTime(0.6,scoring.gripper_release())
+//                .afterTime(1,scoring.specimen_collect())
+//                .afterTime(1,slides.slide_init())
+//                .strafeToLinearHeading(new Vector2d(-12,-47),Math.toRadians(90));
 
 
 
@@ -178,8 +178,8 @@ public class teleop extends LinearOpMode {
                     scoring.scoring_arm_specimen_prepare();                }
                 // low specimen score config
                 if(gamepad2.dpad_down) {
-                    slides.culisante(slides.slides_specimen_low);
-                    scoring.scoring_arm_score_specimen_score();                }
+                    slides.culisante(slides.slides_init);
+                               }
                 //changes the robots config to the specimen colection config
                 if(gamepad2.share){
                     is_automation_ready=true;
@@ -405,88 +405,50 @@ public class teleop extends LinearOpMode {
                     first_automated_cycle=true;
                 }
 
-                while(auto_specimen_score && !isStopRequested() && !auto_specimen_intermediary ){
+                while(auto_specimen_score && opModeIsActive() && !auto_specimen_intermediary ){
+                   colection.init_config();
+                    if(gamepad2.dpad_right)auto_specimen_score=false;
+                    if(auto_specimen_score) {
+                        if (first_automated_cycle) {
+                            Actions.runBlocking(
+                                    new SequentialAction(
+                                            scoring_spec_first_cycle.build(),
+                                            scoring.specimen_score()
 
-                    telemetry.addData("STOP AUTO",auto_specimen_intermediary);
-                    telemetry.update();
-
-
-                    if(gamepad2.right_trigger!=0)auto_specimen_intermediary=true;
-
-                    if(gamepad2.left_trigger!=0)auto_specimen_score=false;
-                    if(auto_specimen_intermediary)break;
-                    if(first_automated_cycle){
-
-                        Actions.runBlocking(
-                                new SequentialAction(
-                                        scoring_spec_first_cycle.build(),
-                                        scoring.specimen_score()
-                                ));
-sleep(100);
-                                        Actions.runBlocking(
-                                                new SequentialAction(
-                                        scoring_spec_finish_first_cycle.build()
-                                ));
-
-
-                        scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
-                        sleep(300);
-                    }
-                    if(!first_automated_cycle) {
-                        if (auto_specimen_score) {
+                                    ));
+                            sleep(100);
+                            Actions.runBlocking(
+                                    new SequentialAction(
+                                            scoring_spec_finish_first_cycle.build()
+                                    ));
+                        } else {
+                            scoring.gripper_grab();
+                            sleep(200);
 
                             Actions.runBlocking(
                                     new SequentialAction(
                                             scoring_spec.build(),
                                             scoring.specimen_score()
+
                                     ));
-                                    sleep(100);
-
-                            if (gamepad2.right_trigger != 0) auto_specimen_intermediary = true;
-                            if (!auto_specimen_intermediary) {
-                                if (auto_specimen_score_counter < 9) {
-                                    Actions.runBlocking(
-                                            new SequentialAction(
-                                                    scoring_spec_finish.build()
-                                            ));
-
-
-                                }
-                                else{
-                                    Actions.runBlocking(
-                                            new SequentialAction(
-                                                    scoring_spec_finish_5.build()
-                                            ));
-
-
-                                }
-                            }
-                        }
-                        if (gamepad2.left_trigger != 0) auto_specimen_score = false;
-                        if (gamepad2.right_trigger != 0) auto_specimen_intermediary = true;
-                        if (auto_specimen_intermediary) break;
-
-                        telemetry.update();
-                        if (!auto_specimen_score) {
-                            scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
-                            sleep(300);
-                            Actions.runBlocking(
-                                    new SequentialAction(
-                                            scoring_spec.build(),
-                                            specimen_end.build()
-                                    ));
-
-                        }
-                        if (gamepad2.left_trigger != 0) auto_specimen_score = false;
-                        if (!auto_specimen_score) break;
-                        if (auto_specimen_intermediary) break;
-                        if (!auto_specimen_intermediary) {
-                            scoring.grip_transfer.setPosition(scoring.gripper_semi_hold);
-                            sleep(300);
+                            sleep(100);
+//                            if(auto_specimen_score_counter<7) {
+                                Actions.runBlocking(
+                                        new SequentialAction(
+                                                scoring_spec_finish.build()
+                                        ));
+//                            }
+//                            else{
+//                                Actions.runBlocking(
+//                                        new SequentialAction(
+//                                                scoring_spec_finish_5.build()
+//                                        ));
+//                            }
                         }
                     }
-                    telemetry.update();
-//                    auto_specimen_score_counter+=1;
+
+                    if(gamepad2.dpad_right)auto_specimen_score=false;
+                    auto_specimen_score_counter+=1;
                     first_automated_cycle=false;
                 }
 
@@ -505,6 +467,8 @@ sleep(100);
                 if (timer.seconds() > 0.4 ) {
                     colection.default_config();
                     extension.extend(extension.extension_retracted);
+                    scoring.scoring_arm_score_basket();
+                    slides.culisante(slides.slides_high_basket);
                     blockage = false;
                 }
             }

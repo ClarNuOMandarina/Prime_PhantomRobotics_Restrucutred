@@ -37,7 +37,7 @@ public class colection {
     public double gripper_rotation_default=0.05;
     public double gripper_rotation_collect=0.05;
 
-    double gripper_angle_default=0.83;
+    public double gripper_angle_default=0.83;
     double gripper_angle_tranfer=0.2;
     public double gripper_angle_vertical=1;
 
