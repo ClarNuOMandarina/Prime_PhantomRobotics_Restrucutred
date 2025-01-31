@@ -50,7 +50,7 @@ public class auto_5_spec extends LinearOpMode {
         TrajectoryActionBuilder transfer_sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(8,-27),Math.toRadians(90)))
 
                 .afterTime(0,slides.auto_score())
-                .afterTime(0.3,scoring.gripper_release())
+                .afterTime(0.2,scoring.gripper_release())
                 .afterTime(0.5,scoring.auto_End())
                 .afterTime(0.8,slides.slide_init())
                 .strafeToLinearHeading(new Vector2d(20,-40),Math.toRadians(0))
@@ -70,11 +70,23 @@ public class auto_5_spec extends LinearOpMode {
         TrajectoryActionBuilder specimen_collect_pre = drive.actionBuilder(new Pose2d(new Vector2d(65,-50),Math.toRadians(90)))
                                 .strafeToLinearHeading(new Vector2d(40,-62),Math.toRadians(90));
 
-        TrajectoryActionBuilder specimen_collect_pre_cicling = drive.actionBuilder(new Pose2d(new Vector2d(2,-27),Math.toRadians(90)))
+        TrajectoryActionBuilder specimen_collect_pre_cicling1 = drive.actionBuilder(new Pose2d(new Vector2d(8,-27),Math.toRadians(90)))
                 .afterTime(0.3,scoring.gripper_release())
                 .afterTime(0.4,scoring.specimen_collect())
                 .afterTime(0.4,slides.slide_init())
                 .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
+        TrajectoryActionBuilder specimen_collect_pre_cicling2 = drive.actionBuilder(new Pose2d(new Vector2d(-3,-27),Math.toRadians(90)))
+                .afterTime(0.3,scoring.gripper_release())
+                .afterTime(0.4,scoring.specimen_collect())
+                .afterTime(0.4,slides.slide_init())
+                .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
+        TrajectoryActionBuilder specimen_collect_pre_cicling3 = drive.actionBuilder(new Pose2d(new Vector2d(-5,-27),Math.toRadians(90)))
+                .afterTime(0.3,scoring.gripper_release())
+                .afterTime(0.4,scoring.specimen_collect())
+                .afterTime(0.4,slides.slide_init())
+                .splineToConstantHeading(new Vector2d(42,-62),-Math.PI/8);
+
+
 
 //        TrajectoryActionBuilder specimen_collect = drive.actionBuilder(new Pose2d(new Vector2d(40,-58),Math.toRadians(90)))
 //                .strafeToLinearHeading(new Vector2d(40,-62),Math.toRadians(90));
@@ -97,7 +109,7 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(0.7,slides.specimen_score_high())
                 .afterTime(0.2,slides.specimen_score_high())
                 .afterTime(1,slides.specimen_score_high())
-                .strafeToConstantHeading(new Vector2d(2,-27));
+                .strafeToConstantHeading(new Vector2d(-3,-27));
 
 
 
@@ -109,7 +121,7 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(0.7,slides.specimen_score_high())
                 .afterTime(0.2,slides.specimen_score_high())
                 .afterTime(1,slides.specimen_score_high())
-                .strafeToConstantHeading(new Vector2d(0,-27));
+                .strafeToConstantHeading(new Vector2d(-5,-27));
 
         TrajectoryActionBuilder scoring_poz_pre_4 = drive.actionBuilder(new Pose2d(new Vector2d(42,-62),Math.toRadians(90)))
                 .afterTime(0,slides.specimen_score_high())
@@ -118,18 +130,18 @@ public class auto_5_spec extends LinearOpMode {
                 .afterTime(0.7,slides.specimen_score_high())
                 .afterTime(0.2,slides.specimen_score_high())
                 .afterTime(1,slides.specimen_score_high())
-                .strafeToConstantHeading(new Vector2d(-2,-27));
+                .strafeToConstantHeading(new Vector2d(-7,-27));
 
 
 
 
-        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(0,-28),Math.toRadians(90)))
+        TrajectoryActionBuilder parking = drive.actionBuilder(new Pose2d(new Vector2d(-7,-27),Math.toRadians(90)))
 
-                .afterTime(0.4,scoring.gripper_release())
+                .afterTime(0.3,scoring.gripper_release())
                 .afterTime(0.5,scoring.auto_End())
                 .afterTime(1,slides.slide_init())
                 .afterTime(1, extension.max_extension())
-                .strafeToLinearHeading(new Vector2d(20,-40),Math.toRadians(44));
+                .strafeToLinearHeading(new Vector2d(20,-48),Math.toRadians(-35));
 
         scoring.gripper(scoring.gripper_hold);
         colection.gripper.setPosition(colection.gripper_release_auto);
@@ -163,7 +175,7 @@ public class auto_5_spec extends LinearOpMode {
         sleep(100);
         Actions.runBlocking(
                 new SequentialAction(
-                    specimen_collect_pre_cicling.build(),
+                    specimen_collect_pre_cicling1.build(),
                         scoring.specimen_collect()
 
                     //    specimen_collect.build()
@@ -179,7 +191,7 @@ public class auto_5_spec extends LinearOpMode {
         sleep(100);
         Actions.runBlocking(
                 new SequentialAction(
-                specimen_collect_pre_cicling.build(),
+                specimen_collect_pre_cicling2.build(),
                         scoring.specimen_collect()
 
                     //    specimen_collect.build()
@@ -195,7 +207,7 @@ public class auto_5_spec extends LinearOpMode {
         sleep(100);
         Actions.runBlocking(
                 new SequentialAction(
-                        specimen_collect_pre_cicling.build(),
+                        specimen_collect_pre_cicling3.build(),
                         scoring.specimen_collect()
 
                      //   specimen_collect.build()

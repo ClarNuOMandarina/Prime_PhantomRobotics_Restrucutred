@@ -15,17 +15,19 @@ public class scoring {
     public Servo scoring_arm_right;
     public Servo grip_transfer;
     // declarare/memorare pozitii utilizate
-    public double gripper_hold=0.6;
-    public double gripper_semi_hold=0.585;
+    public double gripper_hold=0.585;
+    public double gripper_semi_hold=0.55;
     public double gripper_release=0.4  ;
-    public double scoring_arm_left_colect=0.55;
-    public double scoring_arm_right_colect=0.19;
-    public double scoring_arm_left_default=0.55;
-    public double scoring_arm_right_default=0.19;
+    public double scoring_arm_left_colect=0.53;
+    public double scoring_arm_right_colect=0.17;
+    public double scoring_arm_left_default=0.53;
+    public double scoring_arm_right_default=0.17;
     public double scoring_arm_left_basket=0.18;
     public double scoring_arm_right_basket=0.18  ;
     public double scoring_arm_left_specimen_score=0.3 ;
     public double scoring_arm_right_specimen_score=0.3 ;
+    public double scoring_arm_left_specimen_first_cycle=0.6 ;
+    public double scoring_arm_right_specimen_first_cycle=0.6 ;
     public double scoring_arm_left_specimen_prepare=0.56 ;
     public double scoring_arm_right_specimen_prepare=0.58 ;
 
@@ -35,6 +37,7 @@ public class scoring {
     public double scoring_arm_right_auto_park=0.3 ;
     public double scoring_arm_left_specimen_collect=0;
     public double scoring_arm_right_specimen_collect=0;
+
 
     public scoring(HardwareMap hardwareMap){
         // detalierea modului de functionare a mecanismelor
@@ -51,6 +54,10 @@ public class scoring {
     public void scoring_arm_colect(){
         scoring_arm_left.setPosition(scoring_arm_left_colect);
         scoring_arm_right.setPosition(scoring_arm_right_colect);
+    }
+    public void scoring_arm_first_cycle(){
+        scoring_arm_left.setPosition(scoring_arm_left_specimen_first_cycle);
+        scoring_arm_right.setPosition(scoring_arm_right_specimen_first_cycle);
     }
     public void scoring_arm_auto_init_end(){
         scoring_arm_left.setPosition(scoring_arm_left_auto_end_init);
@@ -117,6 +124,21 @@ public class scoring {
     }
     public Action init_config_auto(){
         return new Specimen_collect();
+    }
+    public class First_cycle  implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if(true)
+
+                scoring_arm_first_cycle();
+
+            return false;
+        }
+
+    }
+    public Action first_cycle(){
+        return new First_cycle();
     }
 
 

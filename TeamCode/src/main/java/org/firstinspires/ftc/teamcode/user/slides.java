@@ -26,6 +26,7 @@ public class slides  {
     public int slides_hang=1500;
     public int slides_auto_score=1000   ;
     public int slides_auto_park=500   ;
+    public int slides_first_cycle=800;
 
     public slides(HardwareMap hardwareMap){
         // declarari motoare si modul lor de functionare
@@ -113,6 +114,21 @@ public class slides  {
     }
     public Action slide_sample(){
         return new Slide_sample();
+    }
+    public class First_slide_cycle  implements Action{
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            culisante(slides_first_cycle);
+
+
+            return false;
+        }
+
+    }
+    public Action first_slide_cycle(){
+        return new First_slide_cycle();
     }
     public class Slide_specimen_score  implements Action{
         // actiune pentru a misca glisierele pe durata autonomiei(pe durata traiectorilor)
