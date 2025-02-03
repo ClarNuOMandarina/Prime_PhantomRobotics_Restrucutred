@@ -4,12 +4,10 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class colection {
 
@@ -116,21 +114,7 @@ public class colection {
     public Action auto_end(){
         return new AUTO_end();
     }
-//    public class Gripper_release  implements Action {
 //
-//        @Override
-//        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//            if(true)
-//
-//                gripper_release();
-//
-//            return false;
-//        }
-//
-//    }
-//    public Action gripper_release_action(){
-//        return new Gripper_release();
-//    }
     public class Collecting_arm_collect  implements Action {
 
         @Override
@@ -189,9 +173,7 @@ public class colection {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-
-            if(true)
-            gripper.setPosition(gripper_release);
+            if(true) gripper.setPosition(gripper_release);
 
             return false;
         }

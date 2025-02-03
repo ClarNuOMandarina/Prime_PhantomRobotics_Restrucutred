@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.user;
 
-import android.transition.Slide;
 
 import androidx.annotation.NonNull;
 
@@ -20,13 +19,13 @@ public class slides  {
     public int slides_low_basket=1000;
     public int slides_high_basket=2480;
     public int slides_specimen_low=0;
-    public int slides_specimen_high=1000;
-    public int slides_specimen_high_score=1000  ;
-    public int slides_specimen_high_score_tepeop=1000   ;
+    public int slides_specimen_high=1350;
+    public int slides_specimen_high_score=1350  ;
+    public int slides_specimen_high_score_tepeop=1350   ;
     public int slides_hang=1500;
-    public int slides_auto_score=1000   ;
+    public int slides_auto_score=1350   ;
     public int slides_auto_park=500   ;
-    public int slides_first_cycle=800;
+    public int slides_first_cycle=900;
 
     public slides(HardwareMap hardwareMap){
         // declarari motoare si modul lor de functionare

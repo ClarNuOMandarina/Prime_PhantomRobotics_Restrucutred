@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.user;
 
-import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 
@@ -199,11 +198,7 @@ public class scoring {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-            if(true)
-
-
-            scoring_arm_colect();
-
+            if(true) scoring_arm_colect();
 
             return false;
         }
@@ -217,10 +212,7 @@ public class scoring {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-            if(true)
-
-
-            scoring_arm_score_basket();
+            if(true) scoring_arm_score_basket();
 
 
             return false;
@@ -234,11 +226,7 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if(true)
-
-            scoring_arm_score_specimen_score();
-
-
+            if(true) scoring_arm_score_specimen_score();
             return false;
         }
 
