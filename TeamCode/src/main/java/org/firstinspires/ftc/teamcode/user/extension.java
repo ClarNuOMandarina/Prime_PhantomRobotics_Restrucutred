@@ -61,5 +61,37 @@ public class extension {
     public Action max_extension(){
         return new Max_extension();
     }
+    public class Retracted_forced  implements Action{
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+
+                extend(extension_forced);
+
+                return true;
+
+        }
+
+    }
+    public Action retracted_forced(){
+        return new Retracted_forced();
+    }
+ public class Retracted  implements Action{
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+
+                extend(extension_retracted);
+
+                return true;
+
+        }
+
+    }
+    public Action retracted(){
+        return new Retracted();
+    }
 
 }

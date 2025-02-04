@@ -51,6 +51,11 @@ public class auto_basket_5_SAMPLE extends LinearOpMode {
         TrajectoryActionBuilder start_to_score_to_preload = drive.actionBuilder(new Pose2d(new Vector2d(-57, -55), Math.toRadians(46.5)))
                 .strafeToLinearHeading(new Vector2d(31, -63), Math.toRadians(0));
         TrajectoryActionBuilder sample_finish_preload = drive.actionBuilder(new Pose2d(new Vector2d(0, -63), Math.toRadians(0)))
+                .afterTime(0.4,colection.collecting_arm_score())
+                .afterTime(1,scoring.gripper_grab())
+                .afterTime(1.2,colection.griper_release())
+                .afterTime(1.6,slides.slide_sample())
+
                 .strafeToLinearHeading(new Vector2d(-57, -55), Math.toRadians(46.5));
         TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-57, -55), Math.toRadians(46.5)))
                 .afterTime(0.4, slides.slide_init())
@@ -106,50 +111,27 @@ public class auto_basket_5_SAMPLE extends LinearOpMode {
         scoring.gripper(scoring.gripper_release);
         slides.auto_park();
         slides.culisante(slides.slides_init);
+        extension.extend(extension.extension_forced);
         Actions.runBlocking(
                 new SequentialAction(
                         start_to_score_to_preload.build()
                 ));
+        extension.extend(extension.extension_retracted);
+
         scoring.scoring_arm_default();
         colection.colection_arm(colection.colection_extended_auto);
         sleep(200);
         colection.gripper_grab();
         sleep(300);
         colection.scoring_config();
-//        ElapsedTime timer= new ElapsedTime();
-//        timer.reset();
-//        while(timer.seconds()<)
 
 
         Actions.runBlocking(
                 new SequentialAction(
                         sample_finish_preload.build()
                 ));
-        colection.gripper.setPosition(colection.gripper_transfer);
 
-        timer.reset();
-        transferz = true;
-        while (transferz) {
-            while (transferz) {
-                extension.extend(extension.extension_forced);
-                if (timer.seconds() < 0.1) {
-                    scoring.grip_transfer.setPosition(scoring.gripper_hold);
-
-                }
-                if (timer.seconds() > 0.1 && timer.seconds() < 0.2) {
-                    colection.gripper.setPosition(colection.gripper_release);
-
-                }
-                if (timer.seconds() > 0.4) {
-                    colection.default_config();
-                    extension.extend(extension.extension_retracted);
-                    slides.culisante(slides.slides_high_basket);
-                    transferz = false;
-                }
-
-            }
-
-
+            colection.collecting_config();
             sleep(1000);
             scoring.scoring_arm_score_basket();
             sleep(600);
@@ -319,4 +301,3 @@ public class auto_basket_5_SAMPLE extends LinearOpMode {
             telemetry.update();
         }
     }
-}

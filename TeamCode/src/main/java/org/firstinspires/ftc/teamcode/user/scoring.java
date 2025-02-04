@@ -122,7 +122,7 @@ public class scoring {
 
     }
     public Action init_config_auto(){
-        return new Specimen_collect();
+        return new Init_config();
     }
     public class First_cycle  implements Action {
 
