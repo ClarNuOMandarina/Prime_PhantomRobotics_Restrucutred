@@ -108,9 +108,6 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
-    packagingOptions {
-        pickFirst '**/*.so'
-    }
     ndkVersion '21.3.6528147'
 }
 
