@@ -14,15 +14,15 @@ public class scoring {
     public Servo scoring_arm_right;
     public Servo grip_transfer;
     // declarare/memorare pozitii utilizate
-    public double gripper_hold=0.585;
-    public double gripper_semi_hold=0.55;
-    public double gripper_release=0.4  ;
-    public double scoring_arm_left_colect=0.53;
-    public double scoring_arm_right_colect=0.17;
-    public double scoring_arm_left_default=0.53;
-    public double scoring_arm_right_default=0.17;
-    public double scoring_arm_left_basket=0.18;
-    public double scoring_arm_right_basket=0.18  ;
+    public double gripper_hold=0.59;
+    public double gripper_semi_hold=0.565;
+    public double gripper_release=0.42  ;
+    public double scoring_arm_left_colect=0.55;
+    public double scoring_arm_right_colect=0.1;
+    public double scoring_arm_left_default=0.55;
+    public double scoring_arm_right_default=0.1;
+    public double scoring_arm_left_basket=0.2;
+    public double scoring_arm_right_basket=0.2  ;
     public double scoring_arm_left_specimen_score=0.3 ;
     public double scoring_arm_right_specimen_score=0.3 ;
     public double scoring_arm_left_specimen_first_cycle=0.6 ;
@@ -36,7 +36,10 @@ public class scoring {
     public double scoring_arm_right_auto_park=0.3 ;
     public double scoring_arm_left_specimen_collect=0;
     public double scoring_arm_right_specimen_collect=0;
-
+ public double scoring_arm_left_auto_init=0.04;
+    public double scoring_arm_right_auto_init=0.34;
+    public double scoring_arm_left_auto_park_basket=0.05 ;
+    public double scoring_arm_right_auto_park_basket=0.05 ;
 
     public scoring(HardwareMap hardwareMap){
         // detalierea modului de functionare a mecanismelor
@@ -49,7 +52,15 @@ public class scoring {
         scoring_arm_left.setPosition(x);
         scoring_arm_right.setPosition(y);
     }
-
+    public void init_auto_arms(){
+        scoring_arm_left.setPosition(scoring_arm_left_auto_init);
+        scoring_arm_right.setPosition(scoring_arm_right_auto_init);
+    }
+    public void park_basket(){
+        scoring_arm_left.setPosition(scoring_arm_left_auto_park_basket);
+        scoring_arm_right.setPosition(scoring_arm_right_auto_park_basket);
+        grip_transfer.setPosition(gripper_hold);
+    }
     public void scoring_arm_colect(){
         scoring_arm_left.setPosition(scoring_arm_left_colect);
         scoring_arm_right.setPosition(scoring_arm_right_colect);
@@ -123,6 +134,20 @@ public class scoring {
     }
     public Action init_config_auto(){
         return new Init_config();
+    }
+    public class Park_basket  implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                park_basket();
+
+            return false;
+        }
+
+    }
+    public Action park_basket_auto_new(){
+        return new Park_basket();
     }
     public class First_cycle  implements Action {
 
@@ -238,8 +263,6 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if(true)
-
             gripper(gripper_hold);
 
 
@@ -254,8 +277,6 @@ public class scoring {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if(true)
-
             gripper(gripper_release);
 
 

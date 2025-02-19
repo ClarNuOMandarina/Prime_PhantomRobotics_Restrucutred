@@ -27,6 +27,7 @@ public class config extends LinearOpMode {
      public static double transfer_gripz=0.62;
      public static double gripz_rotation=0.74;
      public static double gripz_angle=0.93;
+     public static double agatz=0.2;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,9 +40,14 @@ public class config extends LinearOpMode {
         boolean blockage=false;
         ElapsedTime timer =new ElapsedTime(0);
         boolean extend=false;
+        slides.hanging.setPosition(0.5);
+
         waitForStart();
         while( opModeIsActive())
         {
+            if(gamepad1.cross){
+                slides.hanging.setPosition(agatz);
+            }
             if(gamepad1.dpad_up)
             {
                 slides.culisante(slidez);
@@ -107,6 +113,7 @@ public class config extends LinearOpMode {
             telemetry.addData("CULI",slides.left_slide.getCurrentPosition());
             telemetry.addData("CULI2",slides.right_slide.getCurrentPosition());
             telemetry.addData("extend",extension.left_extension.getPosition());
+            telemetry.addData("hang",slides.hanging.getPortNumber());
             telemetry.update();
         }
     }

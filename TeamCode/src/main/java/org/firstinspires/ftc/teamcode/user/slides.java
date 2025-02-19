@@ -9,11 +9,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class slides  {
     public DcMotorEx left_slide,right_slide;
+    Servo hanging;
 
 // pozitii culisanta
+public double hang=1;
+    public double not_hang=0.55;
 
     public int slides_init=0;
     public int slides_low_basket=1000;
@@ -26,15 +30,17 @@ public class slides  {
     public int slides_auto_score=1350   ;
     public int slides_auto_park=500   ;
     public int slides_first_cycle=900;
+    public int slide_auto_parking_new=770;
 
     public slides(HardwareMap hardwareMap){
         // declarari motoare si modul lor de functionare
         left_slide=hardwareMap.get(DcMotorEx.class,"left_slide");
         right_slide=hardwareMap.get(DcMotorEx.class,"right_slide");
+        hanging=hardwareMap.get(Servo.class,"hang");
         right_slide.setDirection(DcMotorSimple.Direction.REVERSE);
         left_slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+hanging.setPosition(not_hang);
     }
     public void reset_encoder(){
         left_slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -98,6 +104,21 @@ public class slides  {
     }
     public Action auto_score(){
         return new Auto_score();
+    }
+    public class Auto_park_basket_new  implements Action{
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            culisante(slide_auto_parking_new);
+
+
+            return false;
+        }
+
+    }
+    public Action auto_park_basket_new(){
+        return new Auto_park_basket_new();
     }
     public class Auto_score  implements Action{
 

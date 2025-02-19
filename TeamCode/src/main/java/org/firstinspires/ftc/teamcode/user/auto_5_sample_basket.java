@@ -20,8 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.PinpointDrive;
 
-@Autonomous(name="auto_basket_4_sample")
-public class auto_basket_4_sample extends LinearOpMode {
+@Autonomous(name="auto_basket_5_sample")
+public class auto_5_sample_basket extends LinearOpMode {
 
 
     @Override
@@ -48,6 +48,23 @@ public class auto_basket_4_sample extends LinearOpMode {
                 .afterTime(0.4,slides.slide_sample())
                 .afterTime(0.8,colection.collecting_arm_default())
                 .strafeToLinearHeading(new Vector2d(-57,-57),Math.toRadians(46.5));
+
+        TrajectoryActionBuilder start_to_score_to_preload = drive.actionBuilder(new Pose2d(new Vector2d(-57, -57), Math.toRadians(46.5)))
+
+                .afterTime(0.4,slides.slide_init())
+                .afterTime(0.7,slides.slide_init())
+                .afterTime(0.1,scoring.sample_collect())
+                .strafeToLinearHeading(new Vector2d(31, -65), Math.toRadians(0));
+        TrajectoryActionBuilder sample_finish_preload = drive.actionBuilder(new Pose2d(new Vector2d(31, -65), Math.toRadians(0)))
+                .afterTime(0, colection.collecting_arm_score())
+                .afterTime(0.6, scoring.gripper_grab())
+                .afterTime(0.8, colection.griper_release())
+                .afterTime(1, scoring.specimen_collect())
+                .afterTime(1.2,slides.slide_sample())
+                .afterTime(1.2,scoring.sample_score())
+
+                .strafeToLinearHeading(new Vector2d(-57, -57), Math.toRadians(46.5));
+
 
         TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-57),Math.toRadians(46.5)))
                 .afterTime(0.4,slides.slide_init())
@@ -105,7 +122,7 @@ public class auto_basket_4_sample extends LinearOpMode {
 //        slides.culisante(slides.slides_init);
         Actions.runBlocking(
                 new SequentialAction(
-                        sample_1.build()
+                        start_to_score_to_preload.build()
                 ));
 //        ElapsedTime timer= new ElapsedTime();
 //        timer.reset();
@@ -116,24 +133,44 @@ public class auto_basket_4_sample extends LinearOpMode {
         colection.gripper_grab();
         sleep(300);
         colection.scoring_config();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        sample_finish_preload.build()
+                ));
+
+        scoring.gripper(scoring.gripper_release);
+        sleep(400);
+        colection.default_config();
+        colection.gripper_angle.setPosition(colection.gripper_angle_default);
+        sleep(200);
+        Actions.runBlocking(
+                new SequentialAction(
+                        sample_1.build()
+                ));
+//        ElapsedTime timer= new ElapsedTime();
+//        timer.reset();
+//        while(timer.seconds()<)
+        scoring.scoring_arm_default();
+        colection.default_config();
+        colection.colection_arm(colection.colection_extended_auto);
+        sleep(200);
+        colection.gripper_grab();
+        sleep(300);
+        colection.scoring_config();
         sleep(700);        colection.gripper.setPosition(colection.gripper_transfer);
         timer.reset();
         transferz=true;
         while (transferz) {
+            extension.extend(extension.extension_forced);
             if ( timer.seconds() < 0.1) {
-                extension.extend(extension.extension_forced);
-
                 scoring.grip_transfer.setPosition(scoring.gripper_hold);
 
             } if (timer.seconds() >0.1  && timer.seconds() < 0.2) {
                 colection.gripper.setPosition(colection.gripper_release);
 
             }
-            if (timer.seconds() >0.7  && timer.seconds() < 0.8) {
-                scoring.grip_transfer.setPosition(scoring.gripper_hold);
-
-            }
-            if (timer.seconds() > 0.9 ) {
+            if (timer.seconds() > 0.4 ) {
                 colection.default_config();
                 extension.extend(extension.extension_retracted);
                 slides.culisante(slides.slides_high_basket);
@@ -169,20 +206,15 @@ public class auto_basket_4_sample extends LinearOpMode {
         timer.reset();
         transferz=true;
         while (transferz) {
+            extension.extend(extension.extension_forced);
             if ( timer.seconds() < 0.1) {
-                extension.extend(extension.extension_forced);
-
                 scoring.grip_transfer.setPosition(scoring.gripper_hold);
 
             } if (timer.seconds() >0.1  && timer.seconds() < 0.2) {
                 colection.gripper.setPosition(colection.gripper_release);
 
             }
-            if (timer.seconds() >0.7  && timer.seconds() < 0.8) {
-                scoring.grip_transfer.setPosition(scoring.gripper_hold);
-
-            }
-            if (timer.seconds() > 0.9 ) {
+            if (timer.seconds() > 0.4 ) {
                 colection.default_config();
                 extension.extend(extension.extension_retracted);
                 slides.culisante(slides.slides_high_basket);
@@ -230,10 +262,6 @@ public class auto_basket_4_sample extends LinearOpMode {
 
             } if (timer.seconds() >0.1  && timer.seconds() < 0.2) {
                 colection.gripper.setPosition(colection.gripper_release);
-
-            }
-            if (timer.seconds() >0.2  && timer.seconds() < 0.4) {
-                scoring.grip_transfer.setPosition(scoring.gripper_hold);
 
             }
             if (timer.seconds() > 0.4 ) {
