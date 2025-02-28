@@ -312,10 +312,12 @@ public class teleop_new_automatization extends LinearOpMode {
                 // and is automated based on a distance/color sensor, can also be used manually
                 try {
                     if (gamepad2.touchpad || (transfer_retracted_counter && timer.seconds() > 0.3) || (transfer_extend_counter == true && timer.seconds() > 0.8)) {
+                        extension.extend(extension.extension_extended);
                         transfer_extend_counter = false;
                         transfer_retracted_counter = false;
                         if (blockage == false
                                 && slides.right_slide.getCurrentPosition() < 15) {
+                            extension.extend(extension.extension_extended);
                             colection.gripper_rotation.setPosition(colection.gripper_angle_default);
                             alt_transfer = false;
                             colection.scoring_config();
@@ -519,127 +521,6 @@ public class teleop_new_automatization extends LinearOpMode {
                 } catch (Exception e) {
                     telemetry.addData("Error during transfer gripper open/closing sequence", e.getMessage());
                 }
-//                try {
-//                    if (gamepad1.dpad_up && is_automation_ready) {
-//                        manual_scoring_during_automation=false;
-//                        auto_specimen_score_collect = true;
-//                        is_automation_ready = false;
-//                        drive.pose = initialPose;
-//                        slides.culisante(slides.slides_auto_score + 300);
-//                        drive.updatePoseEstimate();
-//                    }
-//                    while (auto_specimen_score_collect && opModeIsActive() && specimen_is_collected) {
-//                        telemetry.addData("robot pose", drive.pose.position);
-//                        telemetry.addData("robot heading", drive.pose.heading);
-//                        telemetry.addData("robot ", drive.pose);
-//
-//                        drive.updatePoseEstimate();
-//
-//                        colection.default_config();
-//                        if(manual_scoring_during_automation){
-//                            Actions.runBlocking(
-//                                    new SequentialAction(
-//                                            scoring_spec_new_manual.build()
-//                                    ));
-//                        }
-//                        else {
-//                            if (auto_specimen_score_counter < 7) {
-//                                telemetry.addData("-<7", "x");
-//                                telemetry.update();
-//                                Actions.runBlocking(
-//                                        new SequentialAction(
-//                                                scoring_spec_new.build()
-//                                        ));
-//                            }
-//                            if (auto_specimen_score_counter == 7) {
-//                                telemetry.addData("==7", "0");
-//                                telemetry.update();
-//                                Actions.runBlocking(
-//                                        new SequentialAction(
-//                                                scoring_spec_new_big_reset.build(),
-//                                                slides.slide_init()
-//
-//                                        ));
-//                            }
-//                            if (auto_specimen_score_counter > 7) {
-//                                telemetry.addData(">7", "X");
-//                                telemetry.update();
-//                                Actions.runBlocking(
-//                                        new SequentialAction(
-//                                                scoring_spec_new_right_scoring.build(),
-//                                                slides.slide_init()
-//
-//                                        ));
-//                            }
-//                        }
-//                        auto_specimen_score_counter+=1;
-//                        auto_specimen_score_collect = false;
-//                        specimen_is_collected = false;
-//                        is_collecting = true;
-//                    }
-//
-//
-//                    while (is_collecting && !specimen_is_collected && specimen_cycling && gamepad1.left_trigger == 0 && is_collected) {
-//                        extension.extend(extension.extension_forced);
-//                        colection.colection_arm(colection.colection_default);
-//                        sleep(200);
-//                        drive.updatePoseEstimate();
-//
-//                        if (drive.pose.position.y < -38 || drive.pose.position.x < 10) {
-//                            telemetry.addData("-32","10");
-//                            telemetry.update();
-//                            drive.updatePoseEstimate();
-//
-//                            TrajectoryActionBuilder finish_spec_new = drive.actionBuilder(drive.pose)
-//                                    .strafeToLinearHeading(new Vector2d(-2, -40), Math.toRadians(120))
-//                                    .afterTime(0, colection.collecting_arm_score())
-//                                    .afterTime(0.6, scoring.gripper_grab())
-//                                    .afterTime(0.8, colection.griper_release())
-//                                    .afterTime(1, scoring.specimen_collect())
-//                                    .strafeToLinearHeading(new Vector2d(55, -45), Math.toRadians(120))
-//                                    .afterTime(0, scoring.gripper_release())
-//                                    .afterTime(0, colection.collecting_arm_score())
-//                                    .strafeToLinearHeading(new Vector2d(46, -65), Math.toRadians(90));
-//                            drive.updatePoseEstimate();
-//                            Actions.runBlocking(
-//                                    new SequentialAction(
-//                                            finish_spec_new.build()
-//                                    ));
-//                        } else {
-//                            telemetry.addData("-32","10");
-//                            telemetry.update();
-//                            TrajectoryActionBuilder finish_spec_new = drive.actionBuilder(drive.pose)
-//
-//                                    .afterTime(0, colection.collecting_arm_score())
-//                                    .afterTime(0.6, scoring.gripper_grab())
-//                                    .afterTime(0.8, colection.griper_release())
-//                                    .afterTime(1, scoring.specimen_collect())
-//                                    .strafeToLinearHeading(new Vector2d(55, -45), Math.toRadians(120))
-//                                    .afterTime(0, scoring.gripper_release())
-//                                    .afterTime(0, colection.collecting_arm_score())
-//                                    .strafeToLinearHeading(new Vector2d(46, -65), Math.toRadians(90));
-//                            drive.updatePoseEstimate();
-//                            Actions.runBlocking(
-//                                    new SequentialAction(
-//                                            finish_spec_new.build()
-//                                    ));
-//                        }
-//                        drive.updatePoseEstimate();
-//
-//
-//                        extension.extend(extension.extension_retracted);
-//                        scoring.gripper(scoring.gripper_semi_hold);
-//                        sleep(200);
-//                        auto_specimen_score_collect = true;
-//                        specimen_is_collected = true;
-//                        is_collecting = false;
-//                        is_collected = false;
-//
-//                    }
-//                } catch (Exception e) {
-//                    telemetry.addData("Error during second automation", e.getMessage());
-          //      }
-
 
                 try {
                     if (gamepad1.dpad_down && is_automation_ready) {
@@ -755,6 +636,7 @@ public class teleop_new_automatization extends LinearOpMode {
             }
                 try {
                     if (blockage == true) {
+
                         extension.extend(extension.extension_forced);
                         if (timer.seconds()>0.2  && timer.seconds() < 0.3) {
                             scoring.grip_transfer.setPosition(scoring.gripper_hold);

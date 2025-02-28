@@ -63,8 +63,8 @@ public class auto_5_spec extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(61,-50),Math.toRadians(90));
 
         TrajectoryActionBuilder transfer_sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(61,-50),Math.toRadians(90)))
-                .splineToConstantHeading(new Vector2d(68,-14),Math.PI/8)
-                .strafeToConstantHeading(new Vector2d(68,-50));
+                .splineToConstantHeading(new Vector2d(67,-14),Math.PI/8)
+                .strafeToConstantHeading(new Vector2d(67,-50));
 
 
         TrajectoryActionBuilder specimen_collect_pre = drive.actionBuilder(new Pose2d(new Vector2d(67,-50),Math.toRadians(90)))

@@ -47,39 +47,39 @@ public class auto_basket_4_sample extends LinearOpMode {
                 .afterTime(0,slides.slide_sample())
                 .afterTime(0.4,slides.slide_sample())
                 .afterTime(0.8,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-57,-57),Math.toRadians(46.5));
+                .strafeToLinearHeading(new Vector2d(-57,-59),Math.toRadians(46.5));
 
-        TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-57),Math.toRadians(46.5)))
+        TrajectoryActionBuilder sample_1 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-59),Math.toRadians(46.5)))
                 .afterTime(0.4,slides.slide_init())
                 .afterTime(0.7,slides.slide_init())
                 .afterTime(0.1,scoring.sample_collect())
-                .strafeToLinearHeading(new Vector2d(-50,-40),Math.toRadians(93));
-        TrajectoryActionBuilder sample_finish = drive.actionBuilder(new Pose2d(new Vector2d(-50,-40),Math.toRadians(93)))
+                .strafeToLinearHeading(new Vector2d(-50,-42),Math.toRadians(93));
+        TrajectoryActionBuilder sample_finish = drive.actionBuilder(new Pose2d(new Vector2d(-50,-42),Math.toRadians(93)))
 
-                .strafeToLinearHeading(new Vector2d(-57,-57),Math.toRadians(46.5));
+                .strafeToLinearHeading(new Vector2d(-57,-59),Math.toRadians(46.5));
 
-        TrajectoryActionBuilder sample_2 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-57),Math.toRadians(46.5)))
+        TrajectoryActionBuilder sample_2 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-59),Math.toRadians(46.5)))
                 .afterTime(0.4,slides.slide_init())
                 .afterTime(0.7,slides.slide_init())
                 .afterTime(0.5,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-63,-39),Math.toRadians(90));
+                .strafeToLinearHeading(new Vector2d(-61,-41),Math.toRadians(90));
 
-        TrajectoryActionBuilder sample_finish_2 = drive.actionBuilder(new Pose2d(new Vector2d(-63,-39),Math.toRadians(90)))
+        TrajectoryActionBuilder sample_finish_2 = drive.actionBuilder(new Pose2d(new Vector2d(-61,-41),Math.toRadians(90)))
 
-                .strafeToLinearHeading(new Vector2d(-57,-57),Math.toRadians(46.5));
+                .strafeToLinearHeading(new Vector2d(-57,-59),Math.toRadians(46.5));
 
-        TrajectoryActionBuilder sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-57),Math.toRadians(46.5)))
+        TrajectoryActionBuilder sample_3 = drive.actionBuilder(new Pose2d(new Vector2d(-57,-59),Math.toRadians(46.5)))
                 .afterTime(0.4,slides.slide_init())
                 .afterTime(0.7,slides.slide_init())
                 .afterTime(0.5,colection.collecting_arm_default())
-                .strafeToLinearHeading(new Vector2d(-58,-26),Math.toRadians(-180));
-        TrajectoryActionBuilder sample_3_end = drive.actionBuilder(new Pose2d(new Vector2d(-58,-26),Math.toRadians(-180)))
+                .strafeToLinearHeading(new Vector2d(-58,-28),Math.toRadians(-180));
+        TrajectoryActionBuilder sample_3_end = drive.actionBuilder(new Pose2d(new Vector2d(-58,-28),Math.toRadians(-180)))
                 .strafeTo(new Vector2d(-49,-24.5));
         TrajectoryActionBuilder sample_finish_3 = drive.actionBuilder(new Pose2d(new Vector2d(-49,-24.5),Math.toRadians(-180)))
 
-                .strafeToLinearHeading(new Vector2d(-57,-57),Math.toRadians(46.5));
+                .strafeToLinearHeading(new Vector2d(-57,-59),Math.toRadians(46.5));
 
-        TrajectoryActionBuilder parking_pre = drive.actionBuilder(new Pose2d(new Vector2d(-57,-57),Math.toRadians(46.5)))
+        TrajectoryActionBuilder parking_pre = drive.actionBuilder(new Pose2d(new Vector2d(-57,-59),Math.toRadians(46.5)))
                 .afterTime(0.2,slides.auto_park_basket_new())
                 .afterTime(0.2,scoring.park_basket_auto_new())
                 .strafeToLinearHeading(new Vector2d(-43,-13),Math.toRadians(180));
@@ -116,7 +116,11 @@ public class auto_basket_4_sample extends LinearOpMode {
         colection.gripper_grab();
         sleep(300);
         colection.scoring_config();
-        sleep(700);        colection.gripper.setPosition(colection.gripper_transfer);
+        extension.extend(extension.extension_extended);
+        sleep(200);
+        extension.extend(extension.extension_retracted);
+        sleep(500);
+        colection.gripper.setPosition(colection.gripper_transfer);
         timer.reset();
         transferz=true;
         while (transferz) {
@@ -125,7 +129,8 @@ public class auto_basket_4_sample extends LinearOpMode {
 
                 scoring.grip_transfer.setPosition(scoring.gripper_hold);
 
-            } if (timer.seconds() >0.1  && timer.seconds() < 0.2) {
+            }
+            if (timer.seconds() >0.1  && timer.seconds() < 0.2) {
                 colection.gripper.setPosition(colection.gripper_release);
 
             }
@@ -165,7 +170,10 @@ public class auto_basket_4_sample extends LinearOpMode {
         colection.gripper_grab();
         sleep(300);
         colection.scoring_config();
-        sleep(700);        colection.gripper.setPosition(colection.gripper_transfer);
+        extension.extend(extension.extension_extended);
+        sleep(200);
+        extension.extend(extension.extension_retracted);
+        sleep(500);        colection.gripper.setPosition(colection.gripper_transfer);
         timer.reset();
         transferz=true;
         while (transferz) {
@@ -220,7 +228,10 @@ public class auto_basket_4_sample extends LinearOpMode {
                         sample_3_end.build()
                 ));
         colection.scoring_config();
-        sleep(700);        colection.gripper.setPosition(colection.gripper_transfer);
+        extension.extend(extension.extension_extended);
+        sleep(200);
+        extension.extend(extension.extension_retracted);
+        sleep(500);        colection.gripper.setPosition(colection.gripper_transfer);
         timer.reset();
         transferz=true;
         while (transferz) {
