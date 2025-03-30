@@ -20,7 +20,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.messages.PoseMessage;
-
+//0.6 la dreapta robotului
+//0.4 su
+//15.1 stanga dreapta
+//2.2 sus jos
 /**
  * Experimental extension of MecanumDrive that uses the Gobilda Pinpoint sensor for localization.
  * <p>
@@ -45,8 +48,8 @@ public class PinpointDrive extends MecanumDrive {
          */
         //These are tuned for 3110-0002-0001 Product Insight #1
         // RR localizer note: These units are inches, presets are converted from mm (which is why they are inexact)
-        public double xOffset = 2.401575;
-        public double yOffset = 6.771654;
+        public double xOffset =-0.8661417;
+        public double yOffset =5.944882;
 
         /*
         Set the kind of pods used by your robot. If you're using goBILDA odometry pods, select either
@@ -88,7 +91,7 @@ public class PinpointDrive extends MecanumDrive {
         pinpoint = hardwareMap.get(GoBildaPinpointDriverRR.class,PARAMS.pinpointDeviceName);
 
         if (PARAMS.usePinpointIMUForTuning) {
-            lazyImu = new LazyImu(hardwareMap, PARAMS.pinpointDeviceName, new RevHubOrientationOnRobot(zyxOrientation(0, 0, 1.181102)));
+            lazyImu = new LazyImu(hardwareMap, PARAMS.pinpointDeviceName, new RevHubOrientationOnRobot(zyxOrientation(0, -0.2362205, 0.1574803)));
         }
 
         // RR localizer note: don't love this conversion (change driver?)

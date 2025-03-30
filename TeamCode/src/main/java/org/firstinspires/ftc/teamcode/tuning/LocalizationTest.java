@@ -45,7 +45,7 @@ public class LocalizationTest extends LinearOpMode {
         boolean blockage=false;
         ElapsedTime timer =new ElapsedTime(0);
         boolean extend=false;
-        PinpointDrive drive = new PinpointDrive(hardwareMap, new Pose2d(new Vector2d(7.2,-62), Math.toRadians(-90)));
+        PinpointDrive drive = new PinpointDrive(hardwareMap, new Pose2d(new Vector2d(-40,-58), Math.toRadians(90)));
 
         waitForStart();
 
@@ -65,10 +65,10 @@ public class LocalizationTest extends LinearOpMode {
                 extension.extend(extendz);
             }
             if(gamepad1.dpad_right){
-                scoring.score(scoring_left_arm,scoring_right_arm);
+//                scoring.score(scoring_left_arm,scoring_right_arm);
             }
             if(gamepad1.dpad_down){
-                colection.colection_arm(colecting_arms);
+//                colection.colection_arm(colecting_arms);
 
             }
             if(gamepad2.dpad_right)
@@ -102,7 +102,7 @@ public class LocalizationTest extends LinearOpMode {
 
                 } if (timer.seconds() > 1.6 && timer.seconds() < 1.8) {
                     colection.gripper.setPosition(colection.gripper_release);
-                    colection.colection_arm(colection.colection_extended);
+//                    colection.colection_arm(colection.colection_extended);
 
                 }
                 if (timer.seconds() > 2 && timer.seconds() < 2.2) {
@@ -117,8 +117,7 @@ public class LocalizationTest extends LinearOpMode {
 
             if(gamepad1.share)colection.gripper_grab();
 
-            if(gamepad2.touchpad)extension.extend_forced(extend);
-            extension.extend_forced_cond(extend);
+//            extension.extend_forced_cond(extend);
             telemetry.addData("CULI",slides.left_slide.getCurrentPosition());
             telemetry.addData("CULI2",slides.right_slide.getCurrentPosition());
             telemetry.addData("extend",extension.left_extension.getPosition());
