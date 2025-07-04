@@ -82,9 +82,9 @@ public class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 4;
+        public double axialGain = 8;
         public double lateralGain = 8;
-        public double headingGain = 8; // shared with turn
+        public double headingGain = 16; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
@@ -292,7 +292,7 @@ public class MecanumDrive {
                 t = Actions.now() - beginTs;
             }
 
-            if (t >= timeTrajectory.duration-0.3    ) {
+            if (t >= timeTrajectory.duration-0   ) {
                 leftFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);

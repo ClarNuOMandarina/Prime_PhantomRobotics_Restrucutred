@@ -1,8 +1,4 @@
-package org.firstinspires.ftc.teamcode.user;
-
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import android.util.Half;
+package org.firstinspires.ftc.teamcode.Mechanisms;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
@@ -12,30 +8,22 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.List;
 
-public class Limelight {
-    public static double Kpang = -0.5;
+public class LimeLight {
     public static double KprotBase = -0.32;
     public static double Kp = 0.195;
-    public static double Kpanginstant = -0.5;
-    public static double KprotBaseinstant = -0.06;
-    public static double Kpinstant = 0.1;
-
     public static double distanceFactorRotBase = 1.9;
-    public static double distanceFactorAngBase = 1;
     public static double distanceFactorExtBase = 0.065;
 
     private double objectwidth = 0.0;
     private double xError = 0.0;
     private double yError = 0.0;
-
     public static double xErrorThreshold = 10002; // In degrees
     public static double yErrorThreshold = 10002; // In degrees
-    double coral=0;
     Limelight3A limelight;
-    public Limelight(HardwareMap hardwareMap){
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(1);
-        limelight.start();
+    public LimeLight(HardwareMap hardwareMap){
+    limelight= hardwareMap.get(Limelight3A.class, "LimeLight");
+    limelight.pipelineSwitch(1);
+    limelight.start();
     }
 
     public void angle_detect(Servo angle) {
@@ -76,6 +64,7 @@ public class Limelight {
         }
 
     }
+
     public void rot_detect(Servo rot) {
         LLResult result = limelight.getLatestResult();
 
@@ -94,22 +83,23 @@ public class Limelight {
             if (Math.abs(xError) < xErrorThreshold &&Math.abs(yError) < yErrorThreshold) {
                 distanceFactorRot = 1;
             }
-double normalizedSignalRot=0;
+            double normalizedSignalRot=0;
             double Kprot = KprotBase * distanceFactorRot;
             if(Math.abs(xError)>4) {
                 double xErrorMax = 24;
                 double normalizedErrorRot = Math.max(-1.0, Math.min(1.0, (Kprot * xError) / xErrorMax));
                 double targetPositionRot = rot.getPosition() + (normalizedErrorRot * 0.42);
-                 normalizedSignalRot = Math.min(0.73, Math.max(0.15, targetPositionRot));
+                normalizedSignalRot = Math.min(0.73, Math.max(0.15, targetPositionRot));
             }
             else
-              normalizedSignalRot = 0.42;
+                normalizedSignalRot = 0.42;
 
             rot.setPosition(normalizedSignalRot);
 
         }
 
     }
+
     public void extend_detect(Servo extend,Servo extendz) {
         LLResult result = limelight.getLatestResult();
 
@@ -136,27 +126,21 @@ double normalizedSignalRot=0;
             double targetPositionExt = extend.getPosition()+ (normalizedErrorExt * 0.8);
             double normalizedSignalExt = Math.min(1, Math.max(0.69, targetPositionExt));
 
-            extend.setPosition(normalizedSignalExt);
             extendz.setPosition(normalizedSignalExt);
 
 
         }
 
     }
+
     public boolean is_detecting() {
         LLResult result = limelight.getLatestResult();
 
         if (result != null && result.isValid() && !result.getDetectorResults().isEmpty()) {
             List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
             return true;
-
-
-
         }
-        else return false;
+            return false;
 
     }
-
-
-
 }
