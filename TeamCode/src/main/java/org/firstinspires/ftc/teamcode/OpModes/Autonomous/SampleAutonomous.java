@@ -7,7 +7,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Actions.AutonomousActions;
+import org.firstinspires.ftc.teamcode.Actions.AutonomousSampleActions;
 import org.firstinspires.ftc.teamcode.FieldMap.SampleFieldMap;
 import org.firstinspires.ftc.teamcode.PinpointDrive;
 @Autonomous(name= "Sample Autonomous")
@@ -16,34 +16,34 @@ public class SampleAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        AutonomousActions autonomousActions=new AutonomousActions(hardwareMap,gamepad1);
-        autonomousActions.mecanisme.slides.ResetEncoders();
-        autonomousActions.mecanisme.AutoInitSample();
+        AutonomousSampleActions autonomousActions=new AutonomousSampleActions(hardwareMap,gamepad1);
+        autonomousActions.actionBuilder.mecanisme.slides.ResetEncoders();
+        autonomousActions.actionBuilder.mecanisme.AutoInitSample();
         PinpointDrive drive= new PinpointDrive(hardwareMap,autonomousActions.sampleFieldMap.initialPose );
         waitForStart();
         autonomousActions.PreloadScore(drive);
         sleep(200);
-        autonomousActions.mecanisme.outtake.gripper.OpenGripper();
+        autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(200);
         autonomousActions.CollectFirstSample(drive);
-        autonomousActions.CollectSample();
+        autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreFirstSample(drive);
         sleep(200);
-        autonomousActions.mecanisme.outtake.gripper.OpenGripper();
+        autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
 
         sleep(200);
         autonomousActions.CollectSecondSample(drive);
-        autonomousActions.CollectSample();
+        autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreSecondSample(drive);
         sleep(500);
-        autonomousActions.mecanisme.outtake.gripper.OpenGripper();
+        autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(200);
 
         autonomousActions.CollectThirdSample(drive);
-        autonomousActions.CollectSample();
+        autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreThirdSample(drive);
         sleep(500);
-        autonomousActions.mecanisme.outtake.gripper.OpenGripper();
+        autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(200);
 
         autonomousActions.SubmersibleCollect(drive);
