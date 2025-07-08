@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.AbstractRobotBehaviour;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
+import org.firstinspires.ftc.teamcode.Actions.TeleOpActions;
 import org.firstinspires.ftc.teamcode.RobotStates.RobotState;
 
 public class Specimenscore extends  AbstractRobotBehaviour{
@@ -12,8 +12,9 @@ public class Specimenscore extends  AbstractRobotBehaviour{
     private boolean ChangingState;
     private ElapsedTime BasicTimer;
     private double TimerLag=0.1;
-    public Specimenscore(Mecanisme mecanisme, Gamepad gamepad) {
-        super(mecanisme, gamepad);
+    public Specimenscore(TeleOpActions teleOpActions, Gamepad gamepad) {
+        super(teleOpActions,gamepad);
+
         StrategyInitialized=false;
         ChangingState=false;
         BasicTimer= new ElapsedTime();
@@ -25,7 +26,7 @@ public class Specimenscore extends  AbstractRobotBehaviour{
 
             if(BasicTimer.seconds()>TimerLag){
                 StrategyInitialized=true;
-                mecanisme.SpecimenScoreConfig();
+                teleOpActions.mecanisme.SpecimenScoreConfig();
 
             }
 
@@ -33,7 +34,7 @@ public class Specimenscore extends  AbstractRobotBehaviour{
 
         if(gamepad.circle && StrategyInitialized)
         {
-            mecanisme.outtake.gripper.OpenGripper();
+            teleOpActions.mecanisme.outtake.gripper.OpenGripper();
             ChangingState=true;
             BasicTimer.reset();
         }

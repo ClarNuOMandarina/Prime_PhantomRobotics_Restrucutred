@@ -28,4 +28,7 @@ public class IntakeLight {
         else return false;
 
     }
+    public void LightCalibration(double x){
+        Light.setPosition(x);
+    }
 }

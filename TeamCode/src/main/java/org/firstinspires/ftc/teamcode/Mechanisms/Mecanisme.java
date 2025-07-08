@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,17 +14,15 @@ public class Mecanisme {
     public Outtake outtake;
     public Extendo extendo;
     public Slides slides;
-    private final Gamepad gamepad;
 
 
-    public Mecanisme(HardwareMap hardwareMap, Gamepad gamepad) {
+    public Mecanisme(HardwareMap hardwareMap) {
 
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
         extendo = new Extendo(hardwareMap);
         slides = new Slides(hardwareMap);
 
-        this.gamepad = gamepad;
     }
 
     public void InitConfig() {
@@ -29,6 +31,12 @@ public class Mecanisme {
         outtake.InitConfig();
         extendo.Retracted();
         slides.InitSlides();
+    }
+    public void DefenseConfig(){
+        intake.DefenseConfig();
+        outtake.DefenseConfig();
+        slides.InitSlides();
+        extendo.Retracted();
     }
 
     public void SampleCollectConfig() {
@@ -40,6 +48,15 @@ public class Mecanisme {
     public void SampleScoreConfig() {
         intake.SampleScoreConfig();
         outtake.SampleScoreConfig();
+        extendo.Retracted();
+    }
+    public void AutoSampleScoreConfig() {
+        intake.AutoSampleScoreConfig();
+        outtake.AutoSampleScoreConfig();
+        extendo.Retracted();
+    }
+    public void SampleScoreAutoConfig() {
+        intake.SampleScoreConfig();
         extendo.Retracted();
     }
 
@@ -66,50 +83,17 @@ public class Mecanisme {
         slides.InitSlides();
         extendo.Retracted();
     }
-
-    public void HeightLowerControls() {
-
-        if(gamepad.right_trigger!=0){
-            intake.height.HeightCollecting();
-        }
-        else {
-            intake.height.HeightDefault();
-        }
+    public void AutoInitSample(){
+        intake.AutoInitSampleConfig();
+        outtake.AutoInitSampleConfig();
+        extendo.Retracted();
+        slides.Transfer();
     }
-    public void AngleControl(boolean isAngleChanged, ElapsedTime BasicTimer){
-
-        if(gamepad.right_bumper){
-            BasicTimer.reset();
-            isAngleChanged=true;
-        }
-
-        if(isAngleChanged){
-
-            if(BasicTimer.seconds()>0.3){
-
-                if(intake.angle.IsHorizontal()){
-                    intake.angle.VerticalAngle();
-                }
-                else {
-                    intake.angle.HorizontalAngle();
-                }
-                isAngleChanged=false;
-            }
-
-        }
-
+    public void AutoThirdSampleConfig(){
+        intake.AutoThirdSampleConfig();
+        outtake.TransferConfig();
+        extendo.Extend();
+        slides.Transfer();
     }
-    public void ExtendoControl(){
-
-        if(gamepad.left_trigger!=0) {
-            extendo.Extend();
-        }
-        else{
-                extendo.Retracted();
-            }
-
-
-    }
-
 
 }

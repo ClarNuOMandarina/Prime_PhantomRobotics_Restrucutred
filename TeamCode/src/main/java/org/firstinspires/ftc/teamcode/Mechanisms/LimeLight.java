@@ -13,20 +13,21 @@ public class LimeLight {
     public static double Kp = 0.195;
     public static double distanceFactorRotBase = 1.9;
     public static double distanceFactorExtBase = 0.065;
-
+    public static int HorizontalSampleClose=120;
+    public static int HorizontalSampleFar=90;
     private double objectwidth = 0.0;
     private double xError = 0.0;
     private double yError = 0.0;
     public static double xErrorThreshold = 10002; // In degrees
     public static double yErrorThreshold = 10002; // In degrees
-    Limelight3A limelight;
+    public Limelight3A limelight;
     public LimeLight(HardwareMap hardwareMap){
     limelight= hardwareMap.get(Limelight3A.class, "LimeLight");
     limelight.pipelineSwitch(1);
     limelight.start();
     }
 
-    public void angle_detect(Servo angle) {
+    public double AngleMovement() {
         LLResult result = limelight.getLatestResult();
 
         if (result != null && result.isValid() && !result.getDetectorResults().isEmpty()) {
@@ -48,24 +49,24 @@ public class LimeLight {
             }
             double maxWidth = 325 - 100;
             double normalizedSignalAng;
-            if(Math.abs(xError)>8.5
+            if(Math.abs(yError)<=10
             )
             {
-                if(objectwidth<120)normalizedSignalAng =0.52;
+                if(objectwidth<HorizontalSampleClose)normalizedSignalAng =0.52;
                 else normalizedSignalAng =0.25;
             }
             else {
-                if (objectwidth < 190) normalizedSignalAng = 0.52;
+                if (objectwidth < HorizontalSampleFar) normalizedSignalAng = 0.52;
                 else normalizedSignalAng = 0.25;
             }
 
-            angle.setPosition(normalizedSignalAng);
 
+            return normalizedSignalAng;
         }
-
+        return 0.52;
     }
 
-    public void rot_detect(Servo rot) {
+    public double TurretMovement() {
         LLResult result = limelight.getLatestResult();
 
         if (result != null && result.isValid() && !result.getDetectorResults().isEmpty()) {
@@ -88,19 +89,20 @@ public class LimeLight {
             if(Math.abs(xError)>4) {
                 double xErrorMax = 24;
                 double normalizedErrorRot = Math.max(-1.0, Math.min(1.0, (Kprot * xError) / xErrorMax));
-                double targetPositionRot = rot.getPosition() + (normalizedErrorRot * 0.42);
+                double targetPositionRot = 0.405 + (normalizedErrorRot * 0.42);
                 normalizedSignalRot = Math.min(0.73, Math.max(0.15, targetPositionRot));
             }
             else
                 normalizedSignalRot = 0.42;
 
-            rot.setPosition(normalizedSignalRot);
+            return normalizedSignalRot;
 
         }
 
+        return 0;
     }
 
-    public void extend_detect(Servo extend,Servo extendz) {
+    public double ExtendoMovement() {
         LLResult result = limelight.getLatestResult();
 
         if (result != null && result.isValid() && !result.getDetectorResults().isEmpty()) {
@@ -123,14 +125,15 @@ public class LimeLight {
 
             double yErrorMax = 26;
             double normalizedErrorExt = Math.max(-1, Math.min(1, (KpScaled * yError) / yErrorMax));
-            double targetPositionExt = extend.getPosition()+ (normalizedErrorExt * 0.8);
+            double targetPositionExt = 0.69+ (normalizedErrorExt * 0.8);
             double normalizedSignalExt = Math.min(1, Math.max(0.69, targetPositionExt));
 
-            extendz.setPosition(normalizedSignalExt);
+            return normalizedSignalExt;
 
 
         }
 
+        return 0.69;
     }
 
     public boolean is_detecting() {

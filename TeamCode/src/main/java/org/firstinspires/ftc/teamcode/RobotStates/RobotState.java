@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.RobotStates;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.AbstractRobotBehaviour.AbstractRobotBehaviour;
+import org.firstinspires.ftc.teamcode.Actions.TeleOpActions;
 import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
 
 public enum RobotState {
@@ -35,13 +36,13 @@ public enum RobotState {
         throw new IllegalAccessException("Invalid state choice");
     }
 
-    public AbstractRobotBehaviour getStrategy(Mecanisme mecanisme, Gamepad gamepad) {
+    public AbstractRobotBehaviour getStrategy(TeleOpActions teleOpActions, Gamepad gamepad) {
         try {
             String className = this.name().charAt(0) + this.name().substring(1).toLowerCase();
             String fullClassName = "org.firstinspires.ftc.teamcode.AbstractRobotBehaviour." + className;
 
             Class<?> strategyClass = Class.forName(fullClassName);
-            return (AbstractRobotBehaviour) strategyClass.getDeclaredConstructor(Mecanisme.class,Gamepad.class).newInstance(mecanisme,gamepad);
+            return (AbstractRobotBehaviour) strategyClass.getDeclaredConstructor(TeleOpActions.class,Gamepad.class).newInstance(teleOpActions,gamepad);
 
         } catch (Exception e) {
             throw new RuntimeException("Behavior strategy not found for " + this.name(), e);

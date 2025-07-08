@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -56,10 +60,26 @@ public class Intake{
     public void SampleScoreConfig(){
         DefenseConfig();
     }
+    public void AutoSampleScoreConfig(){
+        DefenseConfig();
+        turret.TurretDefault();
+    }
     public void SpecimenScore(){
         DefenseConfig();
     }
 
+    public void AutoInitSampleConfig(){
+        turret.TurretAlternative();
+        height.HeightSampleSecured();
+        angle.VerticalAngle();
+        gripper.ClosedGripper();
+    }
+    public void AutoThirdSampleConfig(){
+        turret.AutoThirdSampleCollect();
+        height.HeightDefault();
+        angle.AutoThirdSample();
+        gripper.OpenGripper();
+    }
 
 
 }

@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.AbstractRobotBehaviour;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
+import org.firstinspires.ftc.teamcode.Actions.TeleOpActions;
 import org.firstinspires.ftc.teamcode.RobotStates.RobotState;
 
 public class Samplecollect extends AbstractRobotBehaviour{
@@ -15,8 +15,9 @@ public class Samplecollect extends AbstractRobotBehaviour{
     private boolean ChangingState;
     private boolean IsAngleChanged;
     private double TimerLag=0.2;
-    public Samplecollect(Mecanisme mecanisme, Gamepad gamepad) {
-        super(mecanisme, gamepad);
+    public Samplecollect(TeleOpActions teleOpActions, Gamepad gamepad) {
+        super(teleOpActions,gamepad);
+
         StrategyInitialized=false;
         CollectionCheck=false;
         ChangingState=false;
@@ -28,9 +29,9 @@ public class Samplecollect extends AbstractRobotBehaviour{
     public RobotState UpdateBehaviour() {
         // Init behaviour
         if(!StrategyInitialized) {
-            mecanisme.SampleCollectConfig();
+            teleOpActions.mecanisme.SampleCollectConfig();
             StrategyInitialized=true;
-            mecanisme.intake.gripper.OpenGripper();
+            teleOpActions.mecanisme.intake.gripper.OpenGripper();
         }
 
         //Change state from sample to specimen collection
@@ -48,7 +49,7 @@ public class Samplecollect extends AbstractRobotBehaviour{
         }
 
         // Height control
-        mecanisme.HeightLowerControls();
+        teleOpActions.HeightLowerControls();
 
         //Gripper Angle
         if(gamepad.right_bumper){
@@ -60,37 +61,37 @@ public class Samplecollect extends AbstractRobotBehaviour{
 
             if (BasicTimer.seconds() > 0.1) {
 
-                if (mecanisme.intake.angle.IsHorizontal()) {
-                    mecanisme.intake.angle.VerticalAngle();
+                if (teleOpActions.mecanisme.intake.angle.IsHorizontal()) {
+                    teleOpActions.mecanisme.intake.angle.VerticalAngle();
                 } else {
-                    mecanisme.intake.angle.HorizontalAngle();
+                    teleOpActions.mecanisme.intake.angle.HorizontalAngle();
                 }
                 IsAngleChanged = false;
             }
         }
         // Exendo control
-        mecanisme.ExtendoControl();
+        teleOpActions.ExtendoControl();
 
         //Timer reset and collection sequqnce start
-        if(gamepad.square && mecanisme.intake.height.IsCollecting()){
+        if(gamepad.square && teleOpActions.mecanisme.intake.height.IsCollecting()){
             BasicTimer.reset();
             CollectionCheck=true;
         }
         //Reset Collection after miss and switch to transfer class if collected
         if(CollectionCheck){
-            mecanisme.intake.gripper.ClosedGripper();
+            teleOpActions.mecanisme.intake.gripper.ClosedGripper();
 
             if(BasicTimer.seconds()>TimerLag) {
 
-                if (mecanisme.intake.sensor.IsCollected()) {
-                    if(mecanisme.extendo.getExtendedStatus())
+                if (teleOpActions.mecanisme.intake.sensor.IsCollected()) {
+                    if(teleOpActions.mecanisme.extendo.getExtendedStatus())
                         return RobotState.EXTENDEDTRANSFER;
 
                     return RobotState.RETRACTEDTRANSFER;
 
                 }
 
-                 return RobotState.STATERESET;
+                return RobotState.STATERESET;
             }
 
         }

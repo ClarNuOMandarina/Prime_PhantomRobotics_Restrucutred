@@ -292,7 +292,7 @@ public class MecanumDrive {
                 t = Actions.now() - beginTs;
             }
 
-            if (t >= timeTrajectory.duration-0   ) {
+            if (t >= timeTrajectory.duration+0.1   ) {
                 leftFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);

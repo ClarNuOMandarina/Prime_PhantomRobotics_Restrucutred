@@ -3,15 +3,16 @@ package org.firstinspires.ftc.teamcode.AbstractRobotBehaviour;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
+import org.firstinspires.ftc.teamcode.Actions.TeleOpActions;
 import org.firstinspires.ftc.teamcode.RobotStates.RobotState;
 
 public class Retractedtransfer extends AbstractRobotBehaviour{
     private ElapsedTime BasicTimer;
     private boolean IsInitialized;
     private boolean IsExtendReady;
-    public Retractedtransfer(Mecanisme mecanisme, Gamepad gamepad) {
-        super(mecanisme, gamepad);
+    public Retractedtransfer(TeleOpActions teleOpActions, Gamepad gamepad) {
+        super(teleOpActions,gamepad);
+
         BasicTimer= new ElapsedTime();
         IsInitialized=false;
         IsExtendReady=false;
@@ -21,7 +22,7 @@ public class Retractedtransfer extends AbstractRobotBehaviour{
     public RobotState UpdateBehaviour() {
         // initalizing all local variables
         if(!IsInitialized){
-            mecanisme.Transfer();
+            teleOpActions.mecanisme.Transfer();
             IsInitialized=true;
             BasicTimer.reset();
         }
@@ -30,11 +31,11 @@ public class Retractedtransfer extends AbstractRobotBehaviour{
         if(!IsExtendReady) {
 
             if (BasicTimer.seconds() < 0.35) {
-                mecanisme.extendo.Extend();
+                teleOpActions.mecanisme.extendo.Extend();
             }
 
             if(BasicTimer.seconds()>0.4) {
-                mecanisme.extendo.Transfer();
+                teleOpActions.mecanisme.extendo.Transfer();
             }
 
             if(BasicTimer.seconds()>0.5){
@@ -48,10 +49,10 @@ public class Retractedtransfer extends AbstractRobotBehaviour{
 
         if(IsExtendReady){
 
-            mecanisme.outtake.gripper.ClosedGripper();
+            teleOpActions.mecanisme.outtake.gripper.ClosedGripper();
 
             if(BasicTimer.seconds()>0.2){
-                mecanisme.intake.gripper.OpenGripper();
+                teleOpActions.mecanisme.intake.gripper.OpenGripper();
             }
 
             if(BasicTimer.seconds()>0.3) {

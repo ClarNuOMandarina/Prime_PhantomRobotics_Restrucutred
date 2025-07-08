@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -10,8 +14,8 @@ public class Slides {
     private int InitPosition=0;
     private int HighBasketPosition=770;
     private int LowBasketPosition=390;
-    private int SpecimenScorePosition=440;
-    private int SpecimenCollectionPosition=0;
+    private int SpecimenScorePosition=425;
+    private int SpecimenCollectionPosition=40;
     private int TransferPosition=0;
 
     public Slides(HardwareMap hardwareMap){
@@ -69,4 +73,27 @@ public class Slides {
         SlideMovement(TransferPosition);
     }
 
+
+    public class transfer  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            Transfer();
+            return false;
+        }
+
+    }
+    public Action TransferAction(){
+        return new transfer();
+    }
+    public class highBasket  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            HighBasket();
+            return false;
+        }
+
+    }
+    public Action HighBasketAction(){
+        return new highBasket();
+    }
 }

@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -34,6 +38,40 @@ public class IntakeHeight {
     }
     public void HeightSampleSecured(){
         IntakeHeightServo.setPosition(SampleSecuredPosition);
+    }
+
+    public class heightCollecting  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            HeightCollecting();
+            return false;
+        }
+
+    }
+    public Action HeightCollectingAction(){
+        return new heightCollecting();
+    }
+    public class heightTransfer  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            HeightTransfer();
+            return false;
+        }
+
+    }
+    public Action HeightTransferAction(){
+        return new heightTransfer();
+    }
+    public class heightDefault  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            HeightDefault();
+            return false;
+        }
+
+    }
+    public Action HeightDefaultAction(){
+        return new heightDefault();
     }
 
 }

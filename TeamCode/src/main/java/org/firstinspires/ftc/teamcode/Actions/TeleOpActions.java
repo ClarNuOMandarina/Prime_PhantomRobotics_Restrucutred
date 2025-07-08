@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Actions;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
@@ -9,9 +10,9 @@ public class TeleOpActions {
     private final Gamepad gamepad;
     public Mecanisme mecanisme;
 
-    public TeleOpActions(Mecanisme mecanisme, Gamepad gamepad) {
+    public TeleOpActions(Gamepad gamepad, HardwareMap hardwareMap) {
         this.gamepad = gamepad;
-        this.mecanisme=mecanisme;
+        this.mecanisme= new Mecanisme(hardwareMap);
     }
     public void HeightLowerControls() {
 

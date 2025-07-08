@@ -19,17 +19,20 @@ public class Outtake{
         gripper.OpenGripper();
         arms.Transfer();
     }
-    public void AutoInitConfig(){
-        extendo.Retracted();
-        gripper.ClosedGripper();
-        arms.SpecimenAutoInit();
+    public void DefenseConfig(){
+        SampleCollectConfig();
     }
+
     public void SampleCollectConfig(){
         extendo.Retracted();
         arms.Transfer();
         gripper.OpenGripper();
     }
     public void SampleScoreConfig(){
+        arms.BasketScore();
+
+    }
+    public void AutoSampleScoreConfig(){
         arms.BasketScore();
 
     }
@@ -41,6 +44,7 @@ public class Outtake{
     public void SpecimenCollectConfig(){
         arms.SpecimenCollection();
         extendo.SpecimenCollection();
+
     }
 
    public void TransferConfig(){
@@ -51,6 +55,10 @@ public class Outtake{
    public void SecureSampleConfig(){
         SpecimenCollectConfig();
    }
-
+    public void AutoInitSampleConfig(){
+        extendo.Retracted();
+        gripper.ClosedGripper();
+        arms.AutoInitSample();
+    }
 
 }

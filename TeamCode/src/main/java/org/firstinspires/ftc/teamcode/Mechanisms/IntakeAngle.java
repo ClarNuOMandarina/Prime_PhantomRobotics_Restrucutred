@@ -7,6 +7,7 @@ public class IntakeAngle{
     private Servo IntakeAngleServo;
     private double HorizontalPoz=0.52;
     private double VerticalPoz=0.25;
+    private double AutoThirdSamplePosition=0.2;
 
 
     public IntakeAngle(HardwareMap hardwareMap) {
@@ -29,5 +30,8 @@ public class IntakeAngle{
     }
     public void VerticalAngle(){
         IntakeAngleServo.setPosition(VerticalPoz);
+    }
+    public void AutoThirdSample(){
+        IntakeAngleServo.setPosition(AutoThirdSamplePosition);
     }
 }
