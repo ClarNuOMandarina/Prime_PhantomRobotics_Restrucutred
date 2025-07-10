@@ -27,6 +27,9 @@ public class Extendo {
         RightExtendo.setPosition(poz);
         LeftExtendo.setPosition(poz);
     }
+    public double getExtendoPosition(){
+        return LeftExtendo.getPosition();
+    }
     public void ExtendoCallibration(double x){
         ExtendoMovement(x);
     }
