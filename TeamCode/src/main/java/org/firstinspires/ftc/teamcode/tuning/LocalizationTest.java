@@ -33,18 +33,19 @@ public class LocalizationTest extends LinearOpMode {
 
     public static double KprotBaseClose = -0.32;
     public static double KprotBaseCloseY = -0.32;
-    public static double KprotBaseFarX = -0.38;
-    public static double KprotBaseFar2X = -0.38;
-    public static double KprotBaseMaxXHorizontal = -0.32;
-    public static double KprotBaseMaxXVertical = -0.7;
+    public static double KprotBaseFarY = -0.5;
+    public static double KprotBaseFarthestY = -0.5;
+    public static double KprotBaseMaxY = -0.5;
+
 
 
     public static double KpClose = 0.195;
-    public static double KpCloseY = 0.195;
-    public static double KpFarX = 0.225;
-    public static double KpFar2X = 0.225;
-    public static double KpMaxXHorizontal = 0.195;
-    public static double KpMaxXVertical = 0.4;
+    public static double KpCloseY = 0.21;
+    public static double KpFarY = 0.2;
+    public static double KpFarthestY = 0.21;
+    public static double KpMaxY = 0.23;
+
+
     public static int slide=0;
     public static double extendo=0.68;
     public static double OuttakeExtendo=0.61;
@@ -59,15 +60,16 @@ public class LocalizationTest extends LinearOpMode {
     public static boolean UseLimelight=false;
     public static boolean Movement=false;
     public static int HorizontalSampleClose=120;
-    public static int HorizontalSampleMedium=90;
-    public static int HorizontalSampleFar=40;
+    public static int HorizontalSampleMedium=70;
+    public static int HorizontalSampleFar=30;
     public static int HorizontalSampleLimit=30;
-    public static int HorizontalSampleLimit2=40;
-    public static int HorizontalSampleLimitXMax=-30;
+
     public static double Ylimit=10;
     public static double Xlimit=17;
-    public static double Xlimit2=18;
-    public static double XFarlimit=20;
+    public static double YFar=17;
+    public static double YFarthest=28;
+    public static double YMax=29.5;
+
 
 
     public static double LightPoz=1;
@@ -95,29 +97,27 @@ public class LocalizationTest extends LinearOpMode {
             double KpScaled;
             KpScaled = KpClose;
 
-            if(Math.abs(xError)>Xlimit&& Math.abs(yError)<Ylimit){
+            if( Math.abs(yError)<YFar){
                 KpScaled = KpCloseY;
 
-            }
-            if(Math.abs(xError)>Xlimit&& Math.abs(yError)>Ylimit){
-                KpScaled = KpFarX;
+                if(Math.abs(yError)<Ylimit)
+                    KpScaled=KpClose;
 
             }
-            if(Math.abs(xError)>XFarlimit&& Math.abs(yError)>Ylimit){
-                if(objectwidth > HorizontalSampleLimit){
-                    KpScaled = KpMaxXHorizontal;
-                }
-                else{
-                    KpScaled = KpMaxXVertical;
-
-                }
+            if( Math.abs(yError)>YFar){
+                KpScaled = KpFarY;
 
             }
-            if(Math.abs(xError)>Xlimit2&& Math.abs(yError)>Ylimit){
-                    KpScaled = KpFar2X;
-
+            if( Math.abs(yError)>YFarthest){
+                KpScaled = KpFarthestY;
 
             }
+            if( Math.abs(yError)>YMax){
+                KpScaled = KpMaxY;
+
+            }
+
+
 
             double yErrorMax = 26;
             double normalizedErrorExt = Math.max(-1, Math.min(1, (KpScaled * yError) / yErrorMax));
@@ -169,16 +169,6 @@ public class LocalizationTest extends LinearOpMode {
                 else normalizedSignalAng = 0.25;
             }
 
-            if(Math.abs(xError)>XFarlimit&& Math.abs(yError)>Ylimit){
-                if(objectwidth > HorizontalSampleLimitXMax){
-                    normalizedSignalAng = 0.25;
-                }
-                else{
-                    normalizedSignalAng = 0.52;
-
-                }
-
-            }
             if(Math.abs(xError)>Xlimit&& Math.abs(yError)>Ylimit) {
 
                 if (objectwidth >HorizontalSampleLimit) {
@@ -191,17 +181,7 @@ public class LocalizationTest extends LinearOpMode {
                 }
 
             }
-            if(Math.abs(xError)>Xlimit2&& Math.abs(yError)>Ylimit){
-                if (objectwidth >HorizontalSampleLimit2) {
-                    normalizedSignalAng = 0.52;
 
-                }
-                else{
-                    normalizedSignalAng = 0.25;
-
-                }
-
-            }
             return normalizedSignalAng;
 
         }
@@ -232,26 +212,19 @@ public class LocalizationTest extends LinearOpMode {
             double normalizedSignalRot;
             double Kprot = KprotBaseClose;
 
-            if(Math.abs(xError)>Xlimit&& Math.abs(yError)<Ylimit){
+            if( Math.abs(yError)>Ylimit){
                 Kprot = KprotBaseCloseY;
 
             }
-            if(Math.abs(xError)>Xlimit&& Math.abs(yError)>Ylimit){
-                Kprot = KprotBaseFarX;
+            if( Math.abs(yError)>YFar){
+                Kprot = KprotBaseFarY;
 
             }
-            if(Math.abs(xError)>Xlimit2&& Math.abs(yError)>Ylimit){
-                Kprot = KpFar2X;
+            if( Math.abs(yError)>YFarthest){
+                Kprot = KprotBaseFarthestY;
 
             }
-            if(Math.abs(xError)>XFarlimit&& Math.abs(yError)>Ylimit){
-                if(objectwidth > HorizontalSampleLimit){
-                    Kprot = KprotBaseMaxXHorizontal;
-                }
-                else{
-                    Kprot = KprotBaseMaxXVertical;
 
-                }            }
 
             double xErrorMax = 24;
             double normalizedErrorRot = Math.max(-1.0, Math.min(1.0, (Kprot * xError) / xErrorMax));
@@ -302,7 +275,7 @@ public class LocalizationTest extends LinearOpMode {
                 mecanisme.intake.height.HeightDefault();
             }
 
-            if(Movement){
+            if(Movement && limeLight.is_detecting()){
                 mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
                 mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
                 mecanisme.extendo.ExtendoCallibration(ExtendoMovement(limeLight));
@@ -351,6 +324,7 @@ public class LocalizationTest extends LinearOpMode {
 
                 }
             }
+            telemetry.addData("is detecting",limeLight.is_detecting());
             telemetry.addData("extendoPoz",mecanisme.extendo.getExtendoPosition());
             telemetry.addData("x Error", xError);
             telemetry.addData("y Error", yError);

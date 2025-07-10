@@ -143,6 +143,22 @@ public void ScoreThirdSample(MecanumDrive drive){
             ));
     }
 
-
+    public void SubmersibleScore(MecanumDrive drive, double y){
+        TrajectoryActionBuilder SubmersibleScore = drive.actionBuilder( new Pose2d(new Vector2d(-19.5,y), Math.toRadians(0)))
+                .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
+                .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
+                .afterTime(1,actionBuilder.SampleScoreConfig())
+                .afterTime(1.2,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
+                .afterTime(1.1,actionBuilder.mecanisme.outtake.extendo.BasketScore())
+                .setReversed(true)
+                .splineToLinearHeading(
+                        sampleFieldMap.ScoreSubmersibleSample,
+                        Math.toRadians(0)
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        SubmersibleScore.build()
+                ));
+    }
 
 }

@@ -9,26 +9,46 @@ import com.qualcomm.robotcore.hardware.Servo;
 import java.util.List;
 
 public class LimeLight {
-    public static double KprotBase = -0.32;
-    public static double Kp = 0.195;
-    public static double distanceFactorRotBase = 1.9;
-    public static double distanceFactorExtBase = 0.065;
-    public static int HorizontalSampleClose=120;
-    public static int HorizontalSampleFar=90;
     private double objectwidth = 0.0;
     private double xError = 0.0;
     private double yError = 0.0;
-    public static double xErrorThreshold = 10002; // In degrees
-    public static double yErrorThreshold = 10002; // In degrees
+
+    public static double KprotBaseClose = -0.32;
+    public static double KprotBaseCloseY = -0.32;
+    public static double KprotBaseFarY = -0.5;
+    public static double KprotBaseFarthestY = -0.5;
+    public static double KprotBaseMaxY = -0.5;
+
+
+
+    public static double KpClose = 0.195;
+    public static double KpCloseY = 0.21;
+    public static double KpFarY = 0.2;
+    public static double KpFarthestY = 0.21;
+    public static double KpMaxY = 0.23;
+
+
+    public static int HorizontalSampleClose=120;
+    public static int HorizontalSampleMedium=70;
+    public static int HorizontalSampleFar=30;
+    public static int HorizontalSampleLimit=30;
+    public double YDetectlimit=10;
+    public double XDetectlimit=17;
+    public static double Ylimit=10;
+    public static double Xlimit=17;
+    public static double YFar=17;
+    public static double YFarthest=28;
+    public static double YMax=29.5;
+
     public Limelight3A limelight;
     public LimeLight(HardwareMap hardwareMap){
-    limelight= hardwareMap.get(Limelight3A.class, "LimeLight");
-    limelight.pipelineSwitch(1);
-    limelight.start();
+        limelight= hardwareMap.get(Limelight3A.class, "LimeLight");
+        limelight.pipelineSwitch(1);
+        limelight.start();
     }
 
     public double AngleMovement() {
-        LLResult result = limelight.getLatestResult();
+        LLResult result =limelight.getLatestResult();
 
         if (result != null && result.isValid() && !result.getDetectorResults().isEmpty()) {
             List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
@@ -47,21 +67,36 @@ public class LimeLight {
 
                 objectwidth = rightmostX - leftmostX - 100;
             }
-            double maxWidth = 325 - 100;
             double normalizedSignalAng;
-            if(Math.abs(yError)<=10
-            )
-            {
-                if(objectwidth<HorizontalSampleClose)normalizedSignalAng =0.52;
-                else normalizedSignalAng =0.25;
+
+            if (Math.abs(yError) <= 10
+            ) {
+                if (objectwidth < HorizontalSampleClose) normalizedSignalAng = 0.52;
+                else normalizedSignalAng = 0.25;
+            } else if (Math.abs(yError) <= 25) {
+                if (objectwidth < HorizontalSampleMedium) normalizedSignalAng = 0.52;
+                else normalizedSignalAng = 0.25;
             }
             else {
                 if (objectwidth < HorizontalSampleFar) normalizedSignalAng = 0.52;
                 else normalizedSignalAng = 0.25;
             }
 
+            if(Math.abs(xError)>Xlimit&& Math.abs(yError)>Ylimit) {
+
+                if (objectwidth >HorizontalSampleLimit) {
+                    normalizedSignalAng = 0.25;
+
+                }
+                else{
+                    normalizedSignalAng = 0.52;
+
+                }
+
+            }
 
             return normalizedSignalAng;
+
         }
         return 0.52;
     }
@@ -75,30 +110,49 @@ public class LimeLight {
             for (LLResultTypes.DetectorResult fr : detectorResults) {
 
                 xError = fr.getTargetXDegrees();
+                double corner1 = fr.getTargetCorners().get(0).get(0);
+                double corner2 = fr.getTargetCorners().get(3).get(0);
+                double corner3 = fr.getTargetCorners().get(2).get(0);
+                double corner4 = fr.getTargetCorners().get(1).get(0);
 
+                double leftmostX = Math.min(Math.min(corner1, corner2), Math.min(corner3, corner4));
+                double rightmostX = Math.max(Math.max(corner1, corner2), Math.max(corner3, corner4));
+
+                objectwidth = rightmostX - leftmostX - 100;
 
             }
-            double distanceFactorRot = distanceFactorRotBase * Math.abs(xError + 0.01);
 
 
-            if (Math.abs(xError) < xErrorThreshold &&Math.abs(yError) < yErrorThreshold) {
-                distanceFactorRot = 1;
+            double normalizedSignalRot;
+            double Kprot = KprotBaseClose;
+
+            if( Math.abs(yError)>Ylimit){
+                Kprot = KprotBaseCloseY;
+
             }
-            double normalizedSignalRot=0;
-            double Kprot = KprotBase * distanceFactorRot;
-            if(Math.abs(xError)>4) {
-                double xErrorMax = 24;
-                double normalizedErrorRot = Math.max(-1.0, Math.min(1.0, (Kprot * xError) / xErrorMax));
-                double targetPositionRot = 0.405 + (normalizedErrorRot * 0.42);
-                normalizedSignalRot = Math.min(0.73, Math.max(0.15, targetPositionRot));
+            if( Math.abs(yError)>YFar){
+                Kprot = KprotBaseFarY;
+
             }
-            else
+            if( Math.abs(yError)>YFarthest){
+                Kprot = KprotBaseFarthestY;
+
+            }
+
+
+            double xErrorMax = 24;
+            double normalizedErrorRot = Math.max(-1.0, Math.min(1.0, (Kprot * xError) / xErrorMax));
+            double targetPositionRot = 0.405 + (normalizedErrorRot * 0.42);
+            normalizedSignalRot = Math.min(0.73, Math.max(0.15, targetPositionRot));
+
+            if(Math.abs(xError)<=2 ) {
                 normalizedSignalRot = 0.42;
+
+            }
 
             return normalizedSignalRot;
 
         }
-
         return 0;
     }
 
@@ -111,24 +165,52 @@ public class LimeLight {
             for (LLResultTypes.DetectorResult fr : detectorResults) {
 
                 yError = -(fr.getTargetYDegrees() - 8);
-                xError = fr.getTargetXDegrees();
+                xError =  fr.getTargetXDegrees();
 
+                double corner1 = fr.getTargetCorners().get(0).get(0);
+                double corner2 = fr.getTargetCorners().get(3).get(0);
+                double corner3 = fr.getTargetCorners().get(2).get(0);
+                double corner4 = fr.getTargetCorners().get(1).get(0);
+
+                double leftmostX = Math.min(Math.min(corner1, corner2), Math.min(corner3, corner4));
+                double rightmostX = Math.max(Math.max(corner1, corner2), Math.max(corner3, corner4));
+
+                objectwidth = rightmostX - leftmostX - 100;
+            }
+            double KpScaled;
+            KpScaled = KpClose;
+
+            if( Math.abs(yError)<YFar){
+                KpScaled = KpCloseY;
+
+                if(Math.abs(yError)<Ylimit)
+                    KpScaled=KpClose;
+
+            }
+            if( Math.abs(yError)>YFar){
+                KpScaled = KpFarY;
+
+            }
+            if( Math.abs(yError)>YFarthest){
+                KpScaled = KpFarthestY;
+
+            }
+            if( Math.abs(yError)>YMax){
+                KpScaled = KpMaxY;
 
             }
 
-            double distanceFactorExt = distanceFactorExtBase * Math.abs(xError + 0.01);
 
-            if (distanceFactorExtBase==1|| Math.abs(xError)<15) {
-                distanceFactorExt = 1;
-            }
-            double KpScaled = Kp * distanceFactorExt;
 
             double yErrorMax = 26;
             double normalizedErrorExt = Math.max(-1, Math.min(1, (KpScaled * yError) / yErrorMax));
             double targetPositionExt = 0.69+ (normalizedErrorExt * 0.8);
-            double normalizedSignalExt = Math.min(1, Math.max(0.69, targetPositionExt));
+            double normalizedSignalExt;
+
+            normalizedSignalExt = Math.min(1, Math.max(0.69, targetPositionExt));
 
             return normalizedSignalExt;
+
 
 
         }
@@ -136,14 +218,29 @@ public class LimeLight {
         return 0.69;
     }
 
+
     public boolean is_detecting() {
         LLResult result = limelight.getLatestResult();
 
         if (result != null && result.isValid() && !result.getDetectorResults().isEmpty()) {
             List<LLResultTypes.DetectorResult> detectorResults = result.getDetectorResults();
+            for (LLResultTypes.DetectorResult fr : detectorResults) {
+
+                yError = -(fr.getTargetYDegrees() - 8);
+                xError = fr.getTargetXDegrees();
+
+
+            }
+            if( (Math.abs(yError)<YDetectlimit && Math.abs(xError)>4))
+                return false;
+
+            if(Math.abs(xError)>XDetectlimit)
+                return false;
+            if(Math.abs(yError)>29.5)
+                return false;
             return true;
         }
-            return false;
+        return false;
 
     }
 }
