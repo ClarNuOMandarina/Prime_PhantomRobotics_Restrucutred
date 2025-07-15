@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Actions;
+package org.firstinspires.ftc.teamcode.Actions.SampleAutonomous;
 
 import static java.lang.Thread.sleep;
 

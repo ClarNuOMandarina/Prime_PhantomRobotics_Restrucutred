@@ -15,6 +15,7 @@ public class OuttakeExtendo{
     private double TransferPosition=RetractedPosition;
     private double SpecimenScorePosition=0.12;
     private double SpecimenCollectionPosition=RetractedPosition;
+    private double SpecimenCollectionFirstCyclePosition=RetractedPosition;
     public OuttakeExtendo(HardwareMap hardwareMap) {
         OuttakeExtendoServo=hardwareMap.get(Servo.class,"OuttakeExtendo");
     }
@@ -38,6 +39,9 @@ public class OuttakeExtendo{
     }
     public void SpecimenCollection(){
         OuttakeExtendoServo.setPosition(SpecimenCollectionPosition);
+    }
+    public void SpecimenCollectionFirstCycle(){
+        OuttakeExtendoServo.setPosition(SpecimenCollectionFirstCyclePosition);
     }
     public class basketScore  implements Action {
         @Override

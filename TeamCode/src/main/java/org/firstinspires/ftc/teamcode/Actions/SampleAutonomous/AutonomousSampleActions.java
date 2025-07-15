@@ -1,11 +1,7 @@
-package org.firstinspires.ftc.teamcode.Actions;
+package org.firstinspires.ftc.teamcode.Actions.SampleAutonomous;
 
 import static java.lang.Thread.sleep;
 
-import androidx.annotation.NonNull;
-
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -16,8 +12,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.FieldMap.SampleFieldMap;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
-import org.firstinspires.ftc.teamcode.Mechanisms.LimeLight;
-import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
 
 public class AutonomousSampleActions {
     public SampleFieldMap sampleFieldMap;

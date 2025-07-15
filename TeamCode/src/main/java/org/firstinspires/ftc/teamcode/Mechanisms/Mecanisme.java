@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.AbstractRobotBehaviour.Init;
+
 public class Mecanisme {
     public Intake intake;
     public Outtake outtake;
@@ -31,6 +33,10 @@ public class Mecanisme {
         outtake.InitConfig();
         extendo.Retracted();
         slides.InitSlides();
+    }
+    public void SpecimenAutoInitConfig() {
+        InitConfig();
+        outtake.gripper.ClosedGripper();
     }
     public void DefenseConfig(){
         intake.DefenseConfig();
@@ -55,9 +61,9 @@ public class Mecanisme {
         outtake.AutoSampleScoreConfig();
         extendo.Retracted();
     }
-    public void SampleScoreAutoConfig() {
-        intake.SampleScoreConfig();
-        extendo.Retracted();
+    public void SpecimenCollectAutoConfig() {
+        SpecimenCollectConfig();
+        intake.SpecimenScore();
     }
 
     public void SpecimenScoreConfig() {
