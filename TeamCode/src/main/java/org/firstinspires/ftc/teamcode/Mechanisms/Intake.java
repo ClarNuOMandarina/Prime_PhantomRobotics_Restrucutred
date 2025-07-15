@@ -72,7 +72,7 @@ public class Intake{
         turret.TurretAlternative();
         height.HeightSampleSecured();
         angle.VerticalAngle();
-        gripper.ClosedGripper();
+        gripper.ClosedGripperSample();
     }
     public void AutoThirdSampleConfig(){
         turret.AutoThirdSampleCollect();

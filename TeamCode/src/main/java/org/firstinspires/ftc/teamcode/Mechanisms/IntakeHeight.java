@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class IntakeHeight {
      private Servo IntakeHeightServo;
      private  double Colecting=0.94;
-     private double Transfer=0.385;
+     private double Transfer=0.41;
      private double Default=0.735;
      private double SampleSecuredPosition=Default;
     public IntakeHeight(HardwareMap hardwareMap) {

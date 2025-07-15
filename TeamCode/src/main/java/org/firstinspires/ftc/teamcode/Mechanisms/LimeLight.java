@@ -21,11 +21,11 @@ public class LimeLight {
 
 
 
-    public static double KpClose = 0.195;
-    public static double KpCloseY = 0.21;
-    public static double KpFarY = 0.2;
-    public static double KpFarthestY = 0.21;
-    public static double KpMaxY = 0.23;
+    public static double KpClose = 0.25;
+    public static double KpCloseY = 0.26;
+    public static double KpFarY = 0.25;
+    public static double KpFarthestY = 0.27;
+    public static double KpMaxY = 0.29;
 
 
     public static int HorizontalSampleClose=120;

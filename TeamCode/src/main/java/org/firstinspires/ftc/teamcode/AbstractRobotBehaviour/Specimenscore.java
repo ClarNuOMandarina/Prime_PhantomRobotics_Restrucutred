@@ -25,9 +25,13 @@ public class Specimenscore extends  AbstractRobotBehaviour{
         if(!StrategyInitialized) {
 
             if(BasicTimer.seconds()>TimerLag){
-                StrategyInitialized=true;
                 teleOpActions.mecanisme.SpecimenScoreConfig();
 
+            }
+
+            if(BasicTimer.seconds()>0.4){
+                StrategyInitialized=true;
+                teleOpActions.mecanisme.outtake.gripper.ClosedGripper();
             }
 
         }

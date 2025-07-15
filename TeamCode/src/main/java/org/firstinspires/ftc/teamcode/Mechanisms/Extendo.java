@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -43,4 +47,26 @@ public class Extendo {
         ExtendoMovement(TransferPosition);
     }
 
+    public class ExtendedAction  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            Extend();
+            return false;
+        }
+
+    }
+    public Action ExtendedAction(){
+        return ExtendedAction();
+    }
+    public class RetractedAction  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            Retracted();
+            return false;
+        }
+
+    }
+    public Action RetractedAction(){
+        return RetractedAction();
+    }
 }

@@ -33,7 +33,7 @@ public class Outtake{
 
     }
     public void AutoSampleScoreConfig(){
-        arms.BasketScore();
+//        arms.BasketScore();
 
     }
     public void SpecimenScoreConfig(){

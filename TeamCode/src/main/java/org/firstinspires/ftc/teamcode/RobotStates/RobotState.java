@@ -16,7 +16,8 @@ public enum RobotState {
     DEFENSIVE(6),
     RETRACTEDTRANSFER(7),
     EXTENDEDTRANSFER(8),
-    STATERESET(9);
+    STATERESETSAMPLE(9),
+    STATERESETSPECIMEN(10);
     private final int value;
 
     RobotState(int value) {

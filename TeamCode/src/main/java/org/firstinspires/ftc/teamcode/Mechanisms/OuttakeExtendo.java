@@ -14,7 +14,7 @@ public class OuttakeExtendo{
     private double RetractedPosition=0.61;
     private double TransferPosition=RetractedPosition;
     private double SpecimenScorePosition=0.12;
-    private double SpecimenCollectionPosition=0.44;
+    private double SpecimenCollectionPosition=RetractedPosition;
     public OuttakeExtendo(HardwareMap hardwareMap) {
         OuttakeExtendoServo=hardwareMap.get(Servo.class,"OuttakeExtendo");
     }

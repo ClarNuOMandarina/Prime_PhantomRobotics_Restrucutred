@@ -31,10 +31,10 @@ public class AutonomousSampleActions {
 
 
     public void PreloadScore(MecanumDrive drive){
-        TrajectoryActionBuilder PreloadScore = drive.actionBuilder( sampleFieldMap.initialPose)
-                .afterTime(0.2,actionBuilder.SampleScoreConfig())
+        TrajectoryActionBuilder PreloadScore = drive.actionBuilder( drive.pose)
+                .afterTime(0.1,actionBuilder.SampleScoreConfig())
                 .afterTime(0.4,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
-                .afterTime(0.6,actionBuilder.mecanisme.outtake.extendo.BasketScore())
+                .afterTime(0.3,actionBuilder.mecanisme.outtake.extendo.BasketScore())
                 .strafeToLinearHeading(
                         sampleFieldMap.PreloadScorePosition.position,
                         sampleFieldMap.PreloadScorePosition.heading
@@ -45,8 +45,8 @@ public class AutonomousSampleActions {
                 ));
     }
     public void CollectFirstSample(MecanumDrive drive){
-        TrajectoryActionBuilder CollectFirstSample = drive.actionBuilder( sampleFieldMap.PreloadScorePosition)
-                .afterTime(0.1,actionBuilder.SampleCollectConfig())
+        TrajectoryActionBuilder CollectFirstSample = drive.actionBuilder(drive.pose)
+                .afterTime(0,actionBuilder.SampleCollectConfig())
                 .strafeToLinearHeading(
                         sampleFieldMap.CollectFirstSample.position,
                         sampleFieldMap.CollectFirstSample.heading
@@ -57,12 +57,12 @@ public class AutonomousSampleActions {
                 ));
     }
 public void ScoreFirstSample(MecanumDrive drive){
-        TrajectoryActionBuilder ScoreFirstSample = drive.actionBuilder( sampleFieldMap.CollectFirstSample)
+        TrajectoryActionBuilder ScoreFirstSample = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
                 .afterTime(0.3,actionBuilder.SampleScoreConfig())
-                .afterTime(0.9,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
-                .afterTime(0.8,actionBuilder.mecanisme.outtake.extendo.BasketScore())
+                .afterTime(0.7,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
+                .afterTime(0.6,actionBuilder.mecanisme.outtake.extendo.BasketScore())
 
                 .strafeToLinearHeading(
                         sampleFieldMap.ScoreFirstSample.position,
@@ -74,7 +74,7 @@ public void ScoreFirstSample(MecanumDrive drive){
             ));
     }
     public void CollectSecondSample(MecanumDrive drive){
-        TrajectoryActionBuilder CollectSecondSample = drive.actionBuilder( sampleFieldMap.ScoreFirstSample)
+        TrajectoryActionBuilder CollectSecondSample = drive.actionBuilder( drive.pose)
                 .afterTime(0.1,actionBuilder.SampleCollectConfig())
                 .strafeToLinearHeading(
                         sampleFieldMap.CollectSecondSample.position,
@@ -86,12 +86,12 @@ public void ScoreFirstSample(MecanumDrive drive){
                 ));
     }
 public void ScoreSecondSample(MecanumDrive drive){
-        TrajectoryActionBuilder ScoreSecondSample = drive.actionBuilder( sampleFieldMap.CollectSecondSample)
+        TrajectoryActionBuilder ScoreSecondSample = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
                 .afterTime(0.3,actionBuilder.SampleScoreConfig())
-                .afterTime(0.9,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
-                .afterTime(0.8,actionBuilder.mecanisme.outtake.extendo.BasketScore())
+                .afterTime(0.7,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
+                .afterTime(0.6,actionBuilder.mecanisme.outtake.extendo.BasketScore())
                 .strafeToLinearHeading(
                         sampleFieldMap.ScoreSecondSample.position,
                         sampleFieldMap.ScoreSecondSample.heading
@@ -102,7 +102,7 @@ public void ScoreSecondSample(MecanumDrive drive){
             ));
     }
     public void CollectThirdSample(MecanumDrive drive){
-        TrajectoryActionBuilder CollectThirdSample = drive.actionBuilder( sampleFieldMap.ScoreSecondSample)
+        TrajectoryActionBuilder CollectThirdSample = drive.actionBuilder( drive.pose)
                 .afterTime(0.1,actionBuilder.CollectThirdSample())
                 .strafeToLinearHeading(
                         sampleFieldMap.CollectThirdSample.position,
@@ -114,12 +114,12 @@ public void ScoreSecondSample(MecanumDrive drive){
                 ));
     }
 public void ScoreThirdSample(MecanumDrive drive){
-        TrajectoryActionBuilder ScoreThirdSample = drive.actionBuilder( sampleFieldMap.CollectThirdSample)
+        TrajectoryActionBuilder ScoreThirdSample = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
                 .afterTime(0.3,actionBuilder.SampleScoreConfig())
-                .afterTime(0.9,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
-                .afterTime(0.8,actionBuilder.mecanisme.outtake.extendo.BasketScore())
+                .afterTime(0.7,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
+                .afterTime(0.6,actionBuilder.mecanisme.outtake.extendo.BasketScore())
 
                 .strafeToLinearHeading(
                         sampleFieldMap.ScoreThirdSample.position,
@@ -130,8 +130,8 @@ public void ScoreThirdSample(MecanumDrive drive){
                     ScoreThirdSample.build()
             ));
     }
-    public void SubmersibleCollect(MecanumDrive drive){
-        TrajectoryActionBuilder SubmersbleCollect = drive.actionBuilder( sampleFieldMap.ScoreThirdSample)
+    public void SubmersibleCollectFirstCycle(MecanumDrive drive){
+        TrajectoryActionBuilder SubmersbleCollect = drive.actionBuilder( drive.pose)
                 .afterTime(0.1,actionBuilder.SampleCollectSubmersibleConfig())
                 .splineToLinearHeading(
                         sampleFieldMap.CollectSubmersibleSample,
@@ -142,18 +142,29 @@ public void ScoreThirdSample(MecanumDrive drive){
                     SubmersbleCollect.build()
             ));
     }
+    public void SubmersibleCollect(MecanumDrive drive){
+        TrajectoryActionBuilder SubmersbleCollect = drive.actionBuilder( drive.pose)
+                .afterTime(0.1,actionBuilder.SampleCollectSubmersibleConfig())
+                .strafeToLinearHeading(
+                        sampleFieldMap.CollectSubmersibleSample.position,
+                        sampleFieldMap.CollectSubmersibleSample.heading
+                );
+    Actions.runBlocking(
+            new SequentialAction(
+                    SubmersbleCollect.build()
+            ));
+    }
 
     public void SubmersibleScore(MecanumDrive drive, double y){
-        TrajectoryActionBuilder SubmersibleScore = drive.actionBuilder( new Pose2d(new Vector2d(-19.5,y), Math.toRadians(0)))
+        TrajectoryActionBuilder SubmersibleScore = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
-                .afterTime(1,actionBuilder.SampleScoreConfig())
-                .afterTime(1.2,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
-                .afterTime(1.1,actionBuilder.mecanisme.outtake.extendo.BasketScore())
-                .setReversed(true)
-                .splineToLinearHeading(
-                        sampleFieldMap.ScoreSubmersibleSample,
-                        Math.toRadians(0)
+                .afterTime(0.5,actionBuilder.SampleScoreConfig())
+                .afterTime(0.8,actionBuilder.mecanisme.outtake.arms.BasketScoreAction())
+                .afterTime(0.7,actionBuilder.mecanisme.outtake.extendo.BasketScore())
+                .strafeToLinearHeading(
+                        sampleFieldMap.ScoreSubmersibleSample.position,
+                        sampleFieldMap.ScoreSubmersibleSample.heading
                 );
         Actions.runBlocking(
                 new SequentialAction(
@@ -161,4 +172,32 @@ public void ScoreThirdSample(MecanumDrive drive){
                 ));
     }
 
+    public void SubmersibleSearch(MecanumDrive drive, double y) throws InterruptedException {
+        Pose2d SearchSubmersibleSample = (new Pose2d(new Vector2d(-20.5, y), Math.toRadians(0)));
+
+        TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(
+                        SearchSubmersibleSample.position,
+                        SearchSubmersibleSample.heading
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        SearchSubmersibleSampleTraj.build()
+                ));
+        sleep(400);
+
+    }
+    public void Reset(MecanumDrive drive) throws InterruptedException {
+
+        TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(
+                       sampleFieldMap.initialPose.position,
+                        sampleFieldMap.initialPose.heading
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        SearchSubmersibleSampleTraj.build()
+                ));
+
+    }
 }

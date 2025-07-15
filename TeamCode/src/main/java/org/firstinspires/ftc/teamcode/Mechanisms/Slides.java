@@ -12,10 +12,10 @@ public class Slides {
     private DcMotorEx RightSlideMotor;
     private DcMotorEx LeftSlideMotor;
     private int InitPosition=0;
-    private int HighBasketPosition=770;
-    private int LowBasketPosition=390;
-    private int SpecimenScorePosition=425;
-    private int SpecimenCollectionPosition=40;
+    private int HighBasketPosition=1060;
+    private int LowBasketPosition=540;
+    private int SpecimenScorePosition=585;
+    private int SpecimenCollectionPosition=0;
     private int TransferPosition=0;
 
     public Slides(HardwareMap hardwareMap){

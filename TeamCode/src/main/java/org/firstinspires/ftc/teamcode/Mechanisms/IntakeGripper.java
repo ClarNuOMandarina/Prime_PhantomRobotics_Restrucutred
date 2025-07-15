@@ -7,11 +7,11 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Actions.AutonomousActions;
 
 public class IntakeGripper{
     private Servo IntakeGripperServo;
-    private double ClosedPoz=0.86;
+    private double ClosedPozSample=0.86;
+    private double ClosedPozSpecimen=0.86;
     private double OpenPoz=0.65;
     public IntakeGripper(HardwareMap hardwareMap) {
         IntakeGripperServo=hardwareMap.get(Servo.class,"IntakeGripper");
@@ -19,8 +19,11 @@ public class IntakeGripper{
     public void GripperCallibration(double x){
         IntakeGripperServo.setPosition(x);
     }
-    public void ClosedGripper(){
-        IntakeGripperServo.setPosition(ClosedPoz);
+    public void ClosedGripperSample(){
+        IntakeGripperServo.setPosition(ClosedPozSample);
+    }
+    public void ClosedGripperSpecimen(){
+        IntakeGripperServo.setPosition(ClosedPozSpecimen);
     }
     public void OpenGripper(){
         IntakeGripperServo.setPosition(OpenPoz);
@@ -37,15 +40,26 @@ public class IntakeGripper{
     public Action OpenGripperAction(){
         return new openGripper();
     }
-    public class closeGripper  implements Action {
+    public class closeGripperSpecimen  implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            ClosedGripper();
+            ClosedGripperSpecimen();
             return false;
         }
 
     }
-    public Action CloseGripperAction(){
-        return new closeGripper();
+    public Action CloseGripperSpecimenAction(){
+        return new closeGripperSpecimen();
+    }
+    public class closeGripperSample  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            ClosedGripperSample();
+            return false;
+        }
+
+    }
+    public Action CloseGripperSampleAction(){
+        return new closeGripperSample();
     }
 }

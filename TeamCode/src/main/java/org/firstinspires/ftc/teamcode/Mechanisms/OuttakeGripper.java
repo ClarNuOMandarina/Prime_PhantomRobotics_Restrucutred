@@ -10,7 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class OuttakeGripper{
     Servo OuttakeGripper;
     private double OpenGripperPosition=0.37;
-    private double ClosedGripperPosition=0.55;
+    private double SemiClosedGripperPosition=0.52;
+    private double ClosedGripperPosition=0.56;
     public OuttakeGripper(HardwareMap hardwareMap) {
         OuttakeGripper=hardwareMap.get(Servo.class,"OuttakeGripper");
     }
@@ -22,6 +23,8 @@ public class OuttakeGripper{
     }
     public void ClosedGripper(){
         OuttakeGripper.setPosition(ClosedGripperPosition);
+    } public void SemiClosedGripper(){
+        OuttakeGripper.setPosition(SemiClosedGripperPosition);
     }
 
 
@@ -47,5 +50,16 @@ public class OuttakeGripper{
     }
     public Action CloseGripperAction(){
         return new closeGripper();
+    }
+    public class SemiCloseGripper  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            ClosedGripper();
+            return false;
+        }
+
+    }
+    public Action SemiCloseGripperAction(){
+        return new SemiCloseGripper();
     }
 }

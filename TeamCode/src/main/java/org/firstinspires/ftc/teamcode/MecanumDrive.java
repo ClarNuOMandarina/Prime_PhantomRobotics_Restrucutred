@@ -73,9 +73,9 @@ public class MecanumDrive {
         public double kA = 0.025;
 
         // path profile parameters (in inches)
-        public double maxWheelVel = 80;
+        public double maxWheelVel = 1000;
         public double minProfileAccel = -50;
-        public double maxProfileAccel = 80;
+        public double maxProfileAccel = 1000;
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
@@ -292,7 +292,7 @@ public class MecanumDrive {
                 t = Actions.now() - beginTs;
             }
 
-            if (t >= timeTrajectory.duration+0.1   ) {
+            if (t >= timeTrajectory.duration   ) {
                 leftFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);

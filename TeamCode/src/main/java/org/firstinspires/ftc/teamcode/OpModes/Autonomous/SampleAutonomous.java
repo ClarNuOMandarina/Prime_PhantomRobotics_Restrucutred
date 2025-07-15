@@ -28,63 +28,78 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.PreloadScore(drive);
         sleep(200);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
-        sleep(200);
+        sleep(300);
         autonomousActions.CollectFirstSample(drive);
         autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreFirstSample(drive);
-        sleep(200);
+        sleep(400);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
-
-        sleep(200);
+        sleep(100);
         autonomousActions.CollectSecondSample(drive);
         autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreSecondSample(drive);
-        sleep(500);
+        sleep(400);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
-        sleep(200);
+        sleep(100);
 
         autonomousActions.CollectThirdSample(drive);
         autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreThirdSample(drive);
-        sleep(500);
+        sleep(400);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
-        sleep(200);
+        sleep(100);
 
-        autonomousActions.SubmersibleCollect(drive);
-        boolean isCollected = true;
+        autonomousActions.SubmersibleCollectFirstCycle(drive);
+        boolean isCollected =false;
         double y = -2;
-        //public Pose2d ScoreSubmersibleSample= new Pose2d(new Vector2d(-58,-50.7), Math.toRadians(65));
-
-        while (isCollected && opModeIsActive()) {
-            sleep(200);
+        sleep(400);
+        while (!isCollected && opModeIsActive()) {
+            sleep(400);
             if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
+                sleep(400);
                 autonomousActions.actionBuilder.SampleCollectUsingLimelight();
                 sleep(400);
                 if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
-                    isCollected = false;
+                    isCollected = true;
                 }
 
             } else {
-                y += 1;
-                Pose2d SearchSubmersibleSample = (new Pose2d(new Vector2d(-19.5, y), Math.toRadians(0)));
+                y += 5;
 
-                TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(new Pose2d(new Vector2d(-19.5, y - 1), Math.toRadians(0)))
-                        .strafeToLinearHeading(
-                                SearchSubmersibleSample.position,
-                                SearchSubmersibleSample.heading
-                        );
-                Actions.runBlocking(
-                        new SequentialAction(
-                                SearchSubmersibleSampleTraj.build()
-                        ));
-                sleep(200);
+                autonomousActions.SubmersibleSearch(drive,y);
+
             }
-
+            if(y>18)y=-2;
         }
         isCollected = false;
             autonomousActions.SubmersibleScore(drive,y);
-            autonomousActions.actionBuilder.mecanisme.intake.gripper.OpenGripper();
+            autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
             sleep(300);
 
+        autonomousActions.SubmersibleCollect(drive);
+        sleep(400);
+        while (!isCollected && opModeIsActive()) {
+            sleep(200);
+            if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
+                sleep(200);
+                autonomousActions.actionBuilder.SampleCollectUsingLimelight();
+                sleep(400);
+                if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
+                    isCollected = true;
+                }
+
+            } else {
+                y += 5;
+                autonomousActions.SubmersibleSearch(drive,y);
+            }
+            if(y>18)y=-2;
+        }
+        isCollected = false;
+        autonomousActions.SubmersibleScore(drive,y);
+        autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
+        sleep(300);
+
+
+        autonomousActions.Reset(drive);
     }
 }

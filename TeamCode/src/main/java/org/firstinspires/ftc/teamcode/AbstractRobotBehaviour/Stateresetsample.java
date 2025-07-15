@@ -6,8 +6,8 @@ import org.firstinspires.ftc.teamcode.Actions.TeleOpActions;
 import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
 import org.firstinspires.ftc.teamcode.RobotStates.RobotState;
 
-public class Statereset extends AbstractRobotBehaviour{
-    public Statereset(TeleOpActions teleOpActions, Gamepad gamepad) {
+public class Stateresetsample extends AbstractRobotBehaviour{
+    public Stateresetsample(TeleOpActions teleOpActions, Gamepad gamepad) {
         super(teleOpActions,gamepad);
 
     }

@@ -79,7 +79,7 @@ public class Samplecollect extends AbstractRobotBehaviour{
         }
         //Reset Collection after miss and switch to transfer class if collected
         if(CollectionCheck){
-            teleOpActions.mecanisme.intake.gripper.ClosedGripper();
+            teleOpActions.mecanisme.intake.gripper.ClosedGripperSample();
 
             if(BasicTimer.seconds()>TimerLag) {
 
@@ -91,7 +91,7 @@ public class Samplecollect extends AbstractRobotBehaviour{
 
                 }
 
-                return RobotState.STATERESET;
+                return RobotState.STATERESETSAMPLE;
             }
 
         }

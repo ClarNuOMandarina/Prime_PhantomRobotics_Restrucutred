@@ -53,9 +53,9 @@ public class LocalizationTest extends LinearOpMode {
     public static double IntakeGripper=0.65;
     public static double OuttakeGripper=0.35;
     public static double IntakeTurret=0.42  ;
-    /*
+
         public static double IntakeAngle=0.52;
-    */
+
     public static double IntakeHeight=0.735;
     public static boolean UseLimelight=false;
     public static boolean Movement=false;
@@ -265,32 +265,32 @@ public class LocalizationTest extends LinearOpMode {
                     -gamepad1.right_stick_x
             ));
 
-            if(!UseLimelight)
-            {
-            }
-            else{
-                mecanisme.intake.angle.HorizontalAngle();
-                mecanisme.intake.turret.TurretDefault();
-                mecanisme.extendo.Retracted();
-                mecanisme.intake.height.HeightDefault();
-            }
-
-            if(Movement && limeLight.is_detecting()){
-                mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
-                mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
-                mecanisme.extendo.ExtendoCallibration(ExtendoMovement(limeLight));
-                Movement=false;
-                sleep(500);
-                mecanisme.intake.height.HeightCollecting();
-
-            }
+//            if(!UseLimelight)
+//            {
+//            }
+//            else{
+//                mecanisme.intake.angle.HorizontalAngle();
+//                mecanisme.intake.turret.TurretDefault();
+//                mecanisme.extendo.Retracted();
+//                mecanisme.intake.height.HeightDefault();
+//            }
+//
+//            if(Movement && limeLight.is_detecting()){
+//                mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
+//                mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
+//                mecanisme.extendo.ExtendoCallibration(ExtendoMovement(limeLight));
+//                Movement=false;
+//                sleep(500);
+//                mecanisme.intake.height.HeightCollecting();
+//
+//            }
 
             mecanisme.intake.light.LightCalibration(LightPoz);
             mecanisme.slides.SlideCalibration(slide);
 
-//            mecanisme.extendo.ExtendoCallibration(extendo);
-//            mecanisme.intake.angle.AngleCallibration(IntakeAngle);
-//            mecanisme.intake.height.HeightCallibration(IntakeHeight);
+            mecanisme.extendo.ExtendoCallibration(extendo);
+            mecanisme.intake.angle.AngleCallibration(IntakeAngle);
+            mecanisme.intake.height.HeightCallibration(IntakeHeight);
             mecanisme.intake.gripper.GripperCallibration(IntakeGripper);
             mecanisme.outtake.arms.ArmsCalibration(Arms);
             mecanisme.outtake.gripper.GripperCalibration(OuttakeGripper);

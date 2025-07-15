@@ -79,7 +79,7 @@ public class Specimencollect extends AbstractRobotBehaviour{
         }
         //Reset Collection after miss and switch to transfer class if collected
         if(CollectionCheck){
-            teleOpActions.mecanisme.intake.gripper.ClosedGripper();
+            teleOpActions.mecanisme.intake.gripper.ClosedGripperSpecimen();
 
             if(BasicTimer.seconds() > TimerLag) {
 
@@ -88,13 +88,13 @@ public class Specimencollect extends AbstractRobotBehaviour{
                     return RobotState.SAMPLESECURE;
                 }
 
-                return RobotState.SPECIMENCOLLECT;
+                return RobotState.STATERESETSPECIMEN;
             }
 
         }
 
         if(gamepad.square && !teleOpActions.mecanisme.intake.height.IsCollecting()){
-            teleOpActions.mecanisme.outtake.gripper.ClosedGripper();
+            teleOpActions.mecanisme.outtake.gripper.SemiClosedGripper();
             AlternativeStateChange=true;
             BasicTimer.reset();
         }

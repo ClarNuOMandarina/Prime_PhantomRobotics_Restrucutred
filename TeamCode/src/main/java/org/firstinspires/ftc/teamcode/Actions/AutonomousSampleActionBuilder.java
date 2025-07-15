@@ -35,17 +35,34 @@ public class AutonomousSampleActionBuilder {
         }
 
     }
-    public void LimeLightCollect(boolean opModeIsActive) throws InterruptedException {
-        while(opModeIsActive) {
-            sleep(200);
-            if(limeLight.is_detecting()){
-                mecanisme.extendo.ExtendoCallibration(limeLight.ExtendoMovement());
-                mecanisme.intake.turret.TurretCalibration(limeLight.TurretMovement());
-            }
-        }
-    }
+
     public Action SampleCollectConfig(){
         return new sampleCollectConfig();
+    }
+    public class Extend  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            mecanisme.extendo.Extend();
+            return false;
+        }
+
+    }
+
+    public Action Extend(){
+        return new Extend();
+    }
+    public class sampleCollectConfigFirstSample  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            mecanisme.SampleCollectConfig();
+            mecanisme.slides.Transfer();
+            return false;
+        }
+
+    }
+
+    public Action SampleCollectConfigFirstSample(){
+        return new sampleCollectConfigFirstSample();
     }
     public class sampleScoreConfig  implements Action {
         @Override
@@ -87,31 +104,35 @@ public class AutonomousSampleActionBuilder {
         sleep(200);
         mecanisme.intake.height.HeightCollecting();
         sleep(200);
-        mecanisme.intake.gripper.ClosedGripper();
+        mecanisme.intake.gripper.ClosedGripperSample();
         sleep(200);
         if(mecanisme.intake.sensor.IsCollected()) {
             mecanisme.intake.angle.HorizontalAngle();
             mecanisme.intake.turret.TurretDefault();
             mecanisme.intake.height.HeightTransfer();
-            sleep(300);
+            sleep(200);
+            mecanisme.extendo.Extend();
+            sleep(200);
             mecanisme.extendo.Transfer();
             sleep(200);
-            return true;
+            if(mecanisme.intake.sensor.IsCollected()) {
+                return true;
+            }
         }
-        else{
+
             mecanisme.intake.height.HeightDefault();
             mecanisme.intake.angle.HorizontalAngle();
             mecanisme.intake.turret.TurretDefault();
             mecanisme.intake.gripper.OpenGripper();
             mecanisme.extendo.Retracted();
             return false;
-        }
+
     }
     public void CollectSample() throws InterruptedException {
         sleep(200);
         mecanisme.intake.height.HeightCollecting();
         sleep(200);
-        mecanisme.intake.gripper.ClosedGripper();
+        mecanisme.intake.gripper.ClosedGripperSample();
         sleep(200);
         mecanisme.intake.angle.HorizontalAngle();
         mecanisme.intake.turret.TurretDefault();
