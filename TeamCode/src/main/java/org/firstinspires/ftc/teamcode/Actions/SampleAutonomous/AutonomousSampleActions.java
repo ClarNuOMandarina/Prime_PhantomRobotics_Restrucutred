@@ -188,6 +188,8 @@ public void ScoreThirdSample(MecanumDrive drive){
                        sampleFieldMap.initialPose.position,
                         sampleFieldMap.initialPose.heading
                 );
+        actionBuilder.mecanisme.InitConfig();
+
         Actions.runBlocking(
                 new SequentialAction(
                         SearchSubmersibleSampleTraj.build()

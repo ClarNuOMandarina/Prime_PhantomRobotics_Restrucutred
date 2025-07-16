@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.OpModes.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Actions.SpecimenAutonomous.AutonomousSpecimenActions;
 import org.firstinspires.ftc.teamcode.PinpointDrive;
-
+@Autonomous(name="Specimen Autonomous")
 public class SpecimenAutonomous extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -14,10 +15,15 @@ public class SpecimenAutonomous extends LinearOpMode {
         PinpointDrive drive = new PinpointDrive(hardwareMap, autonomousActions.FieldMap.initialPose);
         autonomousActions.actionBuilder.mecanisme.SpecimenAutoInitConfig();
         waitForStart();
-        autonomousActions.PreloadScore(drive);
-        autonomousActions.IntermediaryPosition(drive);
+
         autonomousActions.ScoreFirstSample(drive);
         autonomousActions.ScoreSecondSample(drive);
-        autonomousActions.ScoreSecondSample(drive);
+        autonomousActions.ScoreThirdSample(drive);
+        sleep(200);
+        autonomousActions.actionBuilder.CollectSpecimen();
+        sleep(200);
+        autonomousActions.ScoreSpecimen(drive);
+        autonomousActions.CollectSpecimen(drive);
+        autonomousActions.Reset(drive);
     }
 }

@@ -27,28 +27,32 @@ public class AutonomousSpecimenActionBuilder {
     public void InitConfig(){
         mecanisme.SpecimenAutoInitConfig();
     }
-    public void CollectSpecimen(){
+    public void CollectSpecimenConfig(){
         mecanisme.SpecimenCollectAutoConfig();
     }
     public void ScoreSpecimen(){
         mecanisme.SpecimenScoreConfig();
     }
+    public void CollectSpecimen(){
+        mecanisme.outtake.gripper.SemiClosedGripper();
+
+    }
     public class collectSpecimen  implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            CollectSpecimen();
+            CollectSpecimenConfig();
             return false;
         }
 
     }
 
-    public Action CollectSpecimenAction(){
+    public Action CollectSpecimenConfigAction(){
         return new collectSpecimen();
     }
     public class collectFirstSpecimen  implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            CollectSpecimen();
+            CollectSpecimenConfig();
             mecanisme.outtake.extendo.SpecimenCollectionFirstCycle();
             return false;
         }

@@ -247,7 +247,7 @@ public class LocalizationTest extends LinearOpMode {
         LimeLight limeLight= new LimeLight(hardwareMap);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-        PinpointDrive drive = new PinpointDrive(hardwareMap, new Pose2d(new Vector2d(-40,-58), Math.toRadians(90)));
+        PinpointDrive drive = new PinpointDrive(hardwareMap, new Pose2d(new Vector2d(32, -60.5), Math.toRadians(90)));
         Mecanisme mecanisme=new Mecanisme(hardwareMap);
         mecanisme.slides.ResetEncoders();
         mecanisme.intake.light.SetDetectionLight();
