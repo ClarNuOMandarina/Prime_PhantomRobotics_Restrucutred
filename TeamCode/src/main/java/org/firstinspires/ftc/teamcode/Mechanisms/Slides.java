@@ -72,6 +72,12 @@ public class Slides {
     public void Transfer(){
         SlideMovement(TransferPosition);
     }
+    public void SlideKiller(){
+        if((getLeftSlidePoz()+getRightSlidePoz())/2<10 ){
+            LeftSlideMotor.setPower(0.2);
+            RightSlideMotor.setPower(0.2);
+        }
+    }
 
 
     public class transfer  implements Action {

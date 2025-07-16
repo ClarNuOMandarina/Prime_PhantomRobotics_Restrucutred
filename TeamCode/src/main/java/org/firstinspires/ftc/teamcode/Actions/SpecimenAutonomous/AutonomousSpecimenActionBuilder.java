@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Actions.SpecimenAutonomous;
 
+import static java.lang.Thread.sleep;
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -19,10 +21,12 @@ public class AutonomousSpecimenActionBuilder {
         limeLight= new LimeLight(hardwareMap);
 
     }
-    public void SampleCollectUsingLimelight(){
+    public void SampleCollectUsingLimelight() throws InterruptedException {
         mecanisme.intake.angle.AngleCallibration(limeLight.AngleMovement());
         mecanisme.intake.turret.TurretCalibration(limeLight.TurretMovement());
         mecanisme.extendo.ExtendoCallibration(limeLight.ExtendoMovement());
+        sleep(400);
+        CollectSample();
     }
     public void InitConfig(){
         mecanisme.SpecimenAutoInitConfig();
@@ -73,5 +77,15 @@ public class AutonomousSpecimenActionBuilder {
 
     public Action ScoreSpecimenAction(){
         return new scoreSpecimen();
+    }
+
+    public void CollectSample() throws InterruptedException {
+        sleep(200);
+        mecanisme.intake.height.HeightCollecting();
+        sleep(200);
+        mecanisme.intake.gripper.ClosedGripperSample();
+        sleep(200);
+        mecanisme.intake.SecureSampleConfig();
+        mecanisme.extendo.Retracted();
     }
 }
