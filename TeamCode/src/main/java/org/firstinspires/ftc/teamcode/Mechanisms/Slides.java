@@ -17,6 +17,7 @@ public class Slides {
     private int SpecimenScorePosition=585;
     private int SpecimenCollectionPosition=0;
     private int TransferPosition=0;
+    private int SlideKillerThreshold=30;
 
     public Slides(HardwareMap hardwareMap){
         RightSlideMotor=hardwareMap.get(DcMotorEx.class,"RightSlideMotor");
@@ -73,7 +74,7 @@ public class Slides {
         SlideMovement(TransferPosition);
     }
     public void SlideKiller(){
-        if((getLeftSlidePoz()+getRightSlidePoz())/2<10 ){
+        if((getLeftSlidePoz()+getRightSlidePoz())/2<SlideKillerThreshold ){
             LeftSlideMotor.setPower(0.2);
             RightSlideMotor.setPower(0.2);
         }

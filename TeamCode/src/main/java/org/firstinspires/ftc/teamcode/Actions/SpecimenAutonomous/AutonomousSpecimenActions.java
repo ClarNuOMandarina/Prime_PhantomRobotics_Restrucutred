@@ -67,7 +67,7 @@ public class AutonomousSpecimenActions {
     }
     public void ScoreSpecimen(MecanumDrive drive) {
         TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
-                .afterTime(0.4, actionBuilder.ScoreSpecimenAction())
+                .afterTime(0.7, actionBuilder.ScoreSpecimenAction())
                 .strafeToLinearHeading(
                         FieldMap.ScoreSpecimen.position,
                         FieldMap.ScoreSpecimen.heading

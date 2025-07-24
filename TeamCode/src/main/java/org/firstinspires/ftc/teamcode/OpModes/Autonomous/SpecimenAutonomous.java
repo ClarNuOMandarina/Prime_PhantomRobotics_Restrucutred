@@ -28,13 +28,13 @@ public class SpecimenAutonomous extends LinearOpMode {
         autonomousActions.actionBuilder.SampleCollectUsingLimelight();
 
 
-
-        autonomousActions.CollectSpecimen(drive);
-        sleep(200);
-        autonomousActions.actionBuilder.mecanisme.outtake.gripper.SemiClosedGripper();
-        sleep(200);
-        autonomousActions.ScoreSpecimen(drive);
-
+        while(opModeIsActive()) {
+            autonomousActions.CollectSpecimen(drive);
+            sleep(200);
+            autonomousActions.actionBuilder.mecanisme.outtake.gripper.SemiClosedGripper();
+            sleep(200);
+            autonomousActions.ScoreSpecimen(drive);
+        }
         autonomousActions.Reset(drive);
 
     }

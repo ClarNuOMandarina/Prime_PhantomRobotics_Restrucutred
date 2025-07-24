@@ -95,17 +95,10 @@ public class Specimencollect extends AbstractRobotBehaviour{
 
         if(gamepad.square && !teleOpActions.mecanisme.intake.height.IsCollecting()){
             teleOpActions.mecanisme.outtake.gripper.SemiClosedGripper();
-            AlternativeStateChange=true;
-            BasicTimer.reset();
-        }
-
-        if(AlternativeStateChange){
-
-            if(BasicTimer.seconds() > TimerLag){
-                return RobotState.SPECIMENSCORE;
-            }
+            return RobotState.SPECIMENSCORE;
 
         }
+
 
         return null;
     }

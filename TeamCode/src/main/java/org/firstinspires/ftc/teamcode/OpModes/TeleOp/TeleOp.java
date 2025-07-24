@@ -57,7 +57,7 @@ public class TeleOp extends LinearOpMode {
             }
 
             // Robot safety mode
-            if(gamepad1.share && !DefenseActive){
+            if(gamepad1.right_bumper && !DefenseActive){
 
                 if(currentState==RobotState.DEFENSIVE) {
                     currentState = RobotState.SAMPLECOLLECT;
