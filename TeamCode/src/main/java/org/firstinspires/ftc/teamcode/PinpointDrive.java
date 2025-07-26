@@ -74,7 +74,7 @@ public class PinpointDrive extends MecanumDrive {
         /*
         Use the pinpoint IMU for tuning
         If true, overrides any IMU setting in MecanumDrive and uses exclusively Pinpoint for tuning
-        You can also use the pinpoint directly in MecanumDrive if this doesn't work for some reason;
+        You can also use the pinpoint directly in MecanumDrive if   this doesn't work for some reason;
          replace "imu" with "pinpoint" or whatever your pinpoint is called in config.
          Note: Pinpoint IMU is always used for base localization
          */

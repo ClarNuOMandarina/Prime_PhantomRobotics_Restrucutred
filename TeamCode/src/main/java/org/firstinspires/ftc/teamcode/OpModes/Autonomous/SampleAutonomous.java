@@ -47,11 +47,11 @@ public class SampleAutonomous extends LinearOpMode {
         double y = -2;
         sleep(400);
         while (!isCollected && opModeIsActive()) {
-            sleep(400);
+            sleep(200);
             if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
-                sleep(400);
+                sleep(200);
                 autonomousActions.actionBuilder.SampleCollectUsingLimelight();
-                sleep(400);
+                sleep(200);
                 if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
                     isCollected = true;
                 }
@@ -76,7 +76,7 @@ public class SampleAutonomous extends LinearOpMode {
             if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
                 sleep(200);
                 autonomousActions.actionBuilder.SampleCollectUsingLimelight();
-                sleep(400);
+                sleep(200);
                 if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
                     isCollected = true;
                 }
@@ -91,7 +91,31 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.SubmersibleScore(drive,y);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(300);
+        autonomousActions.SubmersibleCollect(drive);
+        sleep(400);
 
+        while (!isCollected && opModeIsActive()) {
+            sleep(200);
+            if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
+                sleep(200);
+                autonomousActions.actionBuilder.SampleCollectUsingLimelight();
+                sleep(200);
+                if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
+                    isCollected = true;
+                }
+
+            } else {
+                y += 5;
+                autonomousActions.SubmersibleSearch(drive,y);
+            }
+            if(y>18)y=-2;
+        }
+        isCollected = false;
+        autonomousActions.SubmersibleScore(drive,y);
+        autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
+        sleep(300);
+        autonomousActions.SubmersibleCollect(drive);
+        sleep(400);
 
         autonomousActions.Reset(drive);
     }

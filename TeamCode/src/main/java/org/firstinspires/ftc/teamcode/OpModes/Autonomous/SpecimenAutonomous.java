@@ -17,23 +17,21 @@ public class SpecimenAutonomous extends LinearOpMode {
         waitForStart();
 
         autonomousActions.ScoreFirstSample(drive);
+        autonomousActions.actionBuilder.mecanisme.intake.turret.TurretDefault();
         autonomousActions.ScoreSecondSample(drive);
         autonomousActions.ScoreThirdSample(drive);
-        sleep(200);
+        autonomousActions.actionBuilder.mecanisme.intake.turret.TurretAlternative();
         autonomousActions.actionBuilder.CollectSpecimen();
-        sleep(200);
-        autonomousActions.ScoreSpecimen(drive);
+
         autonomousActions.CollectSubmersible(drive);
-        sleep(400);
+        autonomousActions.actionBuilder.mecanisme.SpecimenCollectConfig();
+        sleep(1000);
         autonomousActions.actionBuilder.SampleCollectUsingLimelight();
 
+        autonomousActions.CollectSpecimenSubmersibleCollect(drive);
 
         while(opModeIsActive()) {
             autonomousActions.CollectSpecimen(drive);
-            sleep(200);
-            autonomousActions.actionBuilder.mecanisme.outtake.gripper.SemiClosedGripper();
-            sleep(200);
-            autonomousActions.ScoreSpecimen(drive);
         }
         autonomousActions.Reset(drive);
 

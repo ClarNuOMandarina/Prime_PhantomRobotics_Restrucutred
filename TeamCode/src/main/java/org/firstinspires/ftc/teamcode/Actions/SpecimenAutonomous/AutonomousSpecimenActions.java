@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Actions.SpecimenAutonomous;
 
+import static java.lang.Thread.sleep;
+
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -26,10 +29,16 @@ public class AutonomousSpecimenActions {
     public void ScoreFirstSample(MecanumDrive drive){
         TrajectoryActionBuilder Traj = drive.actionBuilder( drive.pose)
                 .strafeToConstantHeading(
-                        FieldMap.CollectFirstSample.position
-                )
+                        FieldMap.CollectFirstSample.position,
+                        null,
+                        new ProfileAccelConstraint(-90.0, 140)
+        )
+
                 .strafeToConstantHeading(
                         FieldMap.ScoreFirstSample.position
+                        ,
+                        null,
+                        new ProfileAccelConstraint(-90.0, 140)
                 );
         Actions.runBlocking(
                 new SequentialAction(
@@ -41,9 +50,15 @@ public class AutonomousSpecimenActions {
                 .splineToConstantHeading(
                         FieldMap.CollectSecondSample.position,
                         Math.PI/8
+                        ,
+                        null,
+                        new ProfileAccelConstraint(-90.0, 140)
                 )
                 .strafeToConstantHeading(
                         FieldMap.ScoreSecondSample.position
+                        ,
+                        null,
+                        new ProfileAccelConstraint(-90.0, 140)
                 );
         Actions.runBlocking(
                 new SequentialAction(
@@ -56,42 +71,94 @@ public class AutonomousSpecimenActions {
                 .splineToConstantHeading(
                         FieldMap.CollectThirdSample.position,
                         Math.PI/8
+                        ,
+                        null,
+                        new ProfileAccelConstraint(-90.0, 140)
                 )
                 .strafeToConstantHeading(
                         FieldMap.ScoreThirdSample.position
+                        ,
+                        null,
+                        new ProfileAccelConstraint(-90.0, 140)
                 );
         Actions.runBlocking(
                 new SequentialAction(
                         Traj.build()
                 ));
     }
-    public void ScoreSpecimen(MecanumDrive drive) {
+
+    public void CollectSpecimen(MecanumDrive drive) throws InterruptedException {
         TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
-                .afterTime(0.7, actionBuilder.ScoreSpecimenAction())
+                .afterTime(0.05, actionBuilder.CollectSampleConfig())
+                .setReversed(true)
+                .splineToConstantHeading(
+                        FieldMap.CollectSpecimen.position,
+                        -Math.PI/4
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        Traj.build()
+                ));
+        sleep(100);
+        actionBuilder.mecanisme.outtake.gripper.SemiClosedGripper();
+        actionBuilder.mecanisme.intake.gripper.OpenGripper();
+        sleep(100);
+
+        TrajectoryActionBuilder Traj2 = drive.actionBuilder(drive.pose)
+                .afterTime(0, actionBuilder.ScoreSpecimenFirstSeqAction())
+                .afterTime(0.2, actionBuilder.ScoreSpecimenSecondAction())
                 .strafeToLinearHeading(
                         FieldMap.ScoreSpecimen.position,
                         FieldMap.ScoreSpecimen.heading
                 );
         Actions.runBlocking(
                 new SequentialAction(
-                        Traj.build()
+                        Traj2.build()
                 ));
     }
-    public void CollectSpecimen(MecanumDrive drive) {
+    public void CollectSpecimenSubmersibleCollect(MecanumDrive drive) throws InterruptedException {
         TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
-                .afterTime(0, actionBuilder.CollectSpecimenConfigAction())
+                .afterTime(0.4, actionBuilder.CollectSpecimenConfigAction())
+                .setReversed(true)
+                .splineToConstantHeading(
+                        FieldMap.CollectSpecimenFirstCycle.position,
+                        -Math.PI/4
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        Traj.build()
+                ));
+        sleep(100);
+        actionBuilder.mecanisme.outtake.gripper.SemiClosedGripper();
+        actionBuilder .mecanisme.intake.gripper.OpenGripper();
+        sleep(100);
+        TrajectoryActionBuilder Traj2 = drive.actionBuilder(drive.pose)
+                .afterTime(0, actionBuilder.ScoreSpecimenFirstSeqAction())
+                .afterTime(0.2, actionBuilder.ScoreSpecimenSecondAction())
                 .strafeToLinearHeading(
-                        FieldMap.CollectSpecimen.position,
-                        FieldMap.CollectSpecimen.heading
+                        FieldMap.ScoreSpecimen.position,
+                        FieldMap.ScoreSpecimen.heading
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        Traj2.build()
+                ));
+    }
+    public void CollectSubmersible(MecanumDrive drive) throws InterruptedException {
+        TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
+                .afterTime(0, actionBuilder.ScoreSpecimenFirstSeqAction())
+                .afterTime(0.2, actionBuilder.ScoreSpecimenSecondAction())
+                .strafeToLinearHeading(
+                        FieldMap.ScoreSpecimen.position,
+                        FieldMap.ScoreSpecimen.heading
                 );
         Actions.runBlocking(
                 new SequentialAction(
                         Traj.build(),
-                        actionBuilder.mecanisme.intake.gripper.OpenGripperAction()
+                        actionBuilder.mecanisme.outtake.gripper.OpenGripperAction()
                 ));
-    }
-    public void CollectSubmersible(MecanumDrive drive) {
-        TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
+
+        TrajectoryActionBuilder Traj2 = drive.actionBuilder(drive.pose)
                 .afterTime(0, actionBuilder.CollectSpecimenConfigAction())
                 .strafeToLinearHeading(
                         FieldMap.CollectSubmersible.position,
@@ -99,7 +166,7 @@ public class AutonomousSpecimenActions {
                 );
         Actions.runBlocking(
                 new SequentialAction(
-                        Traj.build()
+                        Traj2.build()
                 ));
     }
 
@@ -117,5 +184,6 @@ public class AutonomousSpecimenActions {
                     ));
 
         }
+
 
 }

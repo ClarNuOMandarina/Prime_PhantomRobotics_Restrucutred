@@ -295,7 +295,7 @@ public class LocalizationTest extends LinearOpMode {
             mecanisme.outtake.arms.ArmsCalibration(Arms);
             mecanisme.outtake.gripper.GripperCalibration(OuttakeGripper);
             mecanisme.outtake.extendo.ExtendoCalibration(OuttakeExtendo);
-            //   mecanisme.intake.turret.TurretCalibration(IntakeTurret);
+               mecanisme.intake.turret.TurretCalibration(IntakeTurret);
             LLResult result = limeLight.limelight.getLatestResult();
 
             if (result != null && result.isValid() && !result.getDetectorResults().isEmpty() ) {

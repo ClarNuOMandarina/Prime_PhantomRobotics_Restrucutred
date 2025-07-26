@@ -11,10 +11,10 @@ public class OuttakeArms{
 
     Servo LeftOuttakeArmServo;
     Servo RightOuttakeArmServo;
-    private double TransferPosition=0.22;
+    private double TransferPosition=0.24;
     private double BasketPosition=0.73;
-    private double SpecimenCollectionPosition=0.925;
-    private double SpecimenScorePosition=0.23;
+    private double SpecimenCollectionPosition=0.905;
+    private double SpecimenScorePosition=0.215;
     private double AutoInitSamplePosition=TransferPosition;
     private double AutoInitSpecimenPosition=SpecimenCollectionPosition;
 

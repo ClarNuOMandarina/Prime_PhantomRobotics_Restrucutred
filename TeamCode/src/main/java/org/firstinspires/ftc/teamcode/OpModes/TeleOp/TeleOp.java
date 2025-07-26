@@ -30,9 +30,11 @@ public class TeleOp extends LinearOpMode {
         ElapsedTime DefenseSwitch = new ElapsedTime();
         AbstractRobotBehaviour behaviour = currentState.getStrategy(teleOpActions,gamepad1);
         teleOpActions.mecanisme.intake.light.SetHighBasket();
+
         while(!isStarted() && !isStopRequested()){
             teleOpActions.mecanisme.slides.InitSlides();
         }
+
         waitForStart();
         teleOpActions.mecanisme.slides.ResetEncoders();
 
@@ -57,7 +59,7 @@ public class TeleOp extends LinearOpMode {
             }
 
             // Robot safety mode
-            if(gamepad1.right_bumper && !DefenseActive){
+            if(gamepad1.left_bumper && !DefenseActive){
 
                 if(currentState==RobotState.DEFENSIVE) {
                     currentState = RobotState.SAMPLECOLLECT;
@@ -65,6 +67,7 @@ public class TeleOp extends LinearOpMode {
                 else {
                     currentState = RobotState.DEFENSIVE;
                 }
+
                 behaviour = currentState.getStrategy(teleOpActions,gamepad1);
 
                 DefenseActive=true;
@@ -78,7 +81,7 @@ public class TeleOp extends LinearOpMode {
             }
 
             teleOpActions.mecanisme.slides.SlideKiller();
-            telemetry.addData("isSlideKillerOn",teleOpActions.mecanisme.slides.getLeftSlidePoz()<10);
+            telemetry.addData("isSlideKillerOn",teleOpActions.mecanisme.slides.getLeftSlidePoz()<20);
             telemetry.addData("Intake sensor distance to object",teleOpActions.mecanisme.intake.sensor.getSensorDistance());
             telemetry.addData("Current State",currentState);
             telemetry.addData("HighBasket Scoring",teleOpActions.mecanisme.intake.light.getBasketHeight());

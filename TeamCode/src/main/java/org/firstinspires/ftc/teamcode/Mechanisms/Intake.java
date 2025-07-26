@@ -67,12 +67,18 @@ public class Intake{
     public void SpecimenScore(){
         DefenseConfig();
     }
+    public void SpecimenScoreAuto(){
+        turret.TurretAlternative();
+        height.HeightSampleSecured();
+    }
+
 
     public void AutoInitSampleConfig(){
         turret.TurretAlternative();
         height.HeightSampleSecured();
         angle.VerticalAngle();
         gripper.ClosedGripperSample();
+        light.SetDetectionLight();
     }
     public void AutoThirdSampleConfig(){
         turret.AutoThirdSampleCollect();

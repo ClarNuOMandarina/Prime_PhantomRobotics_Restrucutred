@@ -62,8 +62,10 @@ public class Mecanisme {
         extendo.Retracted();
     }
     public void SpecimenCollectAutoConfig() {
-        SpecimenCollectConfig();
-        intake.SpecimenScore();
+        outtake.SpecimenCollectConfig();
+        intake.SpecimenScoreAuto();
+        slides.SpecimenCollect();
+        extendo.Retracted();
     }
 
     public void SpecimenScoreConfig() {

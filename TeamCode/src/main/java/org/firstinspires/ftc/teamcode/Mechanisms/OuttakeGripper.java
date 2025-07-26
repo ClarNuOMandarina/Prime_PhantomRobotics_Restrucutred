@@ -23,7 +23,8 @@ public class OuttakeGripper{
     }
     public void ClosedGripper(){
         OuttakeGripper.setPosition(ClosedGripperPosition);
-    } public void SemiClosedGripper(){
+    }
+    public void SemiClosedGripper(){
         OuttakeGripper.setPosition(SemiClosedGripperPosition);
     }
 
@@ -54,7 +55,7 @@ public class OuttakeGripper{
     public class SemiCloseGripper  implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            ClosedGripper();
+            SemiClosedGripper();
             return false;
         }
 

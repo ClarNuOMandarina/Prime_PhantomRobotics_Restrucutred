@@ -14,7 +14,7 @@ public class Slides {
     private int InitPosition=0;
     private int HighBasketPosition=1060;
     private int LowBasketPosition=540;
-    private int SpecimenScorePosition=585;
+    private int SpecimenScorePosition=570;
     private int SpecimenCollectionPosition=0;
     private int TransferPosition=0;
     private int SlideKillerThreshold=30;
@@ -75,8 +75,8 @@ public class Slides {
     }
     public void SlideKiller(){
         if((getLeftSlidePoz()+getRightSlidePoz())/2<SlideKillerThreshold ){
-            LeftSlideMotor.setPower(0.2);
-            RightSlideMotor.setPower(0.2);
+            LeftSlideMotor.setPower(0.002);
+            RightSlideMotor.setPower(0.002);
         }
     }
 
