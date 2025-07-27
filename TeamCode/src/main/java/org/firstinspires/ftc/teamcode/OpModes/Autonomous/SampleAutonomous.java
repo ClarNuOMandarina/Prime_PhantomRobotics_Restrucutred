@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode.OpModes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Actions.SampleAutonomous.AutonomousSampleActions;
+import org.firstinspires.ftc.teamcode.Mechanisms.LimeLight;
 import org.firstinspires.ftc.teamcode.PinpointDrive;
 @Autonomous(name= "Sample Autonomous")
 public class SampleAutonomous extends LinearOpMode {
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -15,13 +18,15 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.actionBuilder.mecanisme.slides.ResetEncoders();
         autonomousActions.actionBuilder.mecanisme.AutoInitSample();
         PinpointDrive drive = new PinpointDrive(hardwareMap, autonomousActions.sampleFieldMap.initialPose);
+        ElapsedTime BasicTimer= new ElapsedTime();
+
 
         waitForStart();
 
         autonomousActions.PreloadScore(drive);
-        sleep(200);
+        sleep(600);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
-        sleep(300);
+        sleep(200);
         autonomousActions.CollectFirstSample(drive);
         autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreFirstSample(drive);
@@ -46,18 +51,33 @@ public class SampleAutonomous extends LinearOpMode {
         boolean isCollected =false;
         double y = -2;
         sleep(400);
+        BasicTimer.reset();
         while (!isCollected && opModeIsActive()) {
-            sleep(200);
-            if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
-                sleep(200);
-                autonomousActions.actionBuilder.SampleCollectUsingLimelight();
-                sleep(200);
+            boolean condition=false;
+            while(BasicTimer.seconds()<0.4 && !condition){
+                if(autonomousActions.actionBuilder.limeLight.is_detecting()){
+                    condition=true;
+                }
+            }
+            if (condition) {
+                double anglepoz=0.52;
+                double turretpoz=0.43;
+                double extendopoz=0.69;
+                BasicTimer.reset();
+                while(BasicTimer.seconds()<0.2){
+                    anglepoz=autonomousActions.actionBuilder.limeLight.AngleMovement(autonomousActions.actionBuilder.limeLight);
+                    turretpoz=autonomousActions.actionBuilder.limeLight.TurretMovement(autonomousActions.actionBuilder.limeLight);
+                    extendopoz=autonomousActions.actionBuilder.limeLight.ExtendoMovement(autonomousActions.actionBuilder.limeLight);
+                }
+                autonomousActions.actionBuilder.mecanisme.intake.angle.AngleCallibration(anglepoz);
+                autonomousActions.actionBuilder.mecanisme.intake.turret.TurretCalibration(turretpoz);
+                autonomousActions.actionBuilder.mecanisme.extendo.ExtendoCallibration(extendopoz);
                 if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
                     isCollected = true;
                 }
 
             } else {
-                y += 5;
+                y += 3;
 
                 autonomousActions.SubmersibleSearch(drive,y);
 
@@ -71,19 +91,36 @@ public class SampleAutonomous extends LinearOpMode {
 
         autonomousActions.SubmersibleCollect(drive);
         sleep(400);
+        BasicTimer.reset();
         while (!isCollected && opModeIsActive()) {
-            sleep(200);
-            if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
-                sleep(200);
-                autonomousActions.actionBuilder.SampleCollectUsingLimelight();
-                sleep(200);
+            boolean condition=false;
+            while(BasicTimer.seconds()<0.4 && !condition){
+                if(autonomousActions.actionBuilder.limeLight.is_detecting()){
+                    condition=true;
+                }
+            }
+            if (condition) {
+                double anglepoz=0.52;
+                double turretpoz=0.43;
+                double extendopoz=0.69;
+                BasicTimer.reset();
+                while(BasicTimer.seconds()<0.2){
+                    anglepoz=autonomousActions.actionBuilder.limeLight.AngleMovement(autonomousActions.actionBuilder.limeLight);
+                    turretpoz=autonomousActions.actionBuilder.limeLight.TurretMovement(autonomousActions.actionBuilder.limeLight);
+                    extendopoz=autonomousActions.actionBuilder.limeLight.ExtendoMovement(autonomousActions.actionBuilder.limeLight);
+                }
+                autonomousActions.actionBuilder.mecanisme.intake.angle.AngleCallibration(anglepoz);
+                autonomousActions.actionBuilder.mecanisme.intake.turret.TurretCalibration(turretpoz);
+                autonomousActions.actionBuilder.mecanisme.extendo.ExtendoCallibration(extendopoz);
                 if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
                     isCollected = true;
                 }
 
             } else {
-                y += 5;
+                y += 3;
+
                 autonomousActions.SubmersibleSearch(drive,y);
+
             }
             if(y>18)y=-2;
         }
@@ -94,19 +131,36 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.SubmersibleCollect(drive);
         sleep(400);
 
+        BasicTimer.reset();
         while (!isCollected && opModeIsActive()) {
-            sleep(200);
-            if (autonomousActions.actionBuilder.limeLight.is_detecting()) {
-                sleep(200);
-                autonomousActions.actionBuilder.SampleCollectUsingLimelight();
-                sleep(200);
+            boolean condition=false;
+            while(BasicTimer.seconds()<0.4 && !condition){
+                if(autonomousActions.actionBuilder.limeLight.is_detecting()){
+                    condition=true;
+                }
+            }
+            if (condition) {
+                double anglepoz=0.52;
+                double turretpoz=0.43;
+                double extendopoz=0.69;
+                BasicTimer.reset();
+                while(BasicTimer.seconds()<0.2){
+                    anglepoz=autonomousActions.actionBuilder.limeLight.AngleMovement(autonomousActions.actionBuilder.limeLight);
+                    turretpoz=autonomousActions.actionBuilder.limeLight.TurretMovement(autonomousActions.actionBuilder.limeLight);
+                    extendopoz=autonomousActions.actionBuilder.limeLight.ExtendoMovement(autonomousActions.actionBuilder.limeLight);
+                }
+                autonomousActions.actionBuilder.mecanisme.intake.angle.AngleCallibration(anglepoz);
+                autonomousActions.actionBuilder.mecanisme.intake.turret.TurretCalibration(turretpoz);
+                autonomousActions.actionBuilder.mecanisme.extendo.ExtendoCallibration(extendopoz);
                 if (autonomousActions.actionBuilder.CollectSampleSubmersible()) {
                     isCollected = true;
                 }
 
             } else {
-                y += 5;
+                y += 3;
+
                 autonomousActions.SubmersibleSearch(drive,y);
+
             }
             if(y>18)y=-2;
         }
@@ -119,4 +173,5 @@ public class SampleAutonomous extends LinearOpMode {
 
         autonomousActions.Reset(drive);
     }
+
 }

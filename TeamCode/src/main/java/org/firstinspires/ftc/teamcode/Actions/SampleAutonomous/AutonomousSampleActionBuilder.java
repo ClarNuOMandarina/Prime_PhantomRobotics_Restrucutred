@@ -20,11 +20,6 @@ public class AutonomousSampleActionBuilder {
         limeLight= new LimeLight(hardwareMap);
 
     }
-    public void SampleCollectUsingLimelight(){
-        mecanisme.intake.angle.AngleCallibration(limeLight.AngleMovement());
-        mecanisme.intake.turret.TurretCalibration(limeLight.TurretMovement());
-        mecanisme.extendo.ExtendoCallibration(limeLight.ExtendoMovement());
-    }
     public class sampleCollectConfig  implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -101,11 +96,11 @@ public class AutonomousSampleActionBuilder {
         return new sampleCollectSubmersibleConfig();
     }
     public boolean CollectSampleSubmersible() throws InterruptedException {
-        sleep(200);
+        sleep(500);
         mecanisme.intake.height.HeightCollecting();
-        sleep(200);
+        sleep(300);
         mecanisme.intake.gripper.ClosedGripperSample();
-        sleep(200);
+        sleep(300);
         if(mecanisme.intake.sensor.IsCollected()) {
             mecanisme.intake.angle.HorizontalAngle();
             mecanisme.intake.turret.TurretDefault();

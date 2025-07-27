@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.tuning;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.tan;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -28,22 +31,18 @@ public class LocalizationTest extends LinearOpMode {
 //17
     // y 10
     private double objectwidth = 0.0;
+    private double Actualobjectwidth = 0.0;
     private double xError = 0.0;
+    private double xOffCenter = 11;
     private double yError = 0.0;
 
-    public static double KprotBaseClose = -0.32;
-    public static double KprotBaseCloseY = -0.32;
-    public static double KprotBaseFarY = -0.5;
-    public static double KprotBaseFarthestY = -0.5;
-    public static double KprotBaseMaxY = -0.5;
+    public static double KpTurret = -0.36;
+    public static double KpTurretRightOffset = -0.7;
 
 
 
-    public static double KpClose = 0.195;
-    public static double KpCloseY = 0.21;
-    public static double KpFarY = 0.2;
-    public static double KpFarthestY = 0.21;
-    public static double KpMaxY = 0.23;
+
+    public static double KpExtendo = 0.13;
 
 
     public static int slide=0;
@@ -52,23 +51,20 @@ public class LocalizationTest extends LinearOpMode {
     public static double Arms=0.2;
     public static double IntakeGripper=0.65;
     public static double OuttakeGripper=0.35;
-    public static double IntakeTurret=0.42  ;
+    public static double IntakeTurret=0.43  ;
 
         public static double IntakeAngle=0.52;
 
     public static double IntakeHeight=0.735;
     public static boolean UseLimelight=false;
     public static boolean Movement=false;
-    public static int HorizontalSampleClose=120;
-    public static int HorizontalSampleMedium=70;
-    public static int HorizontalSampleFar=30;
-    public static int HorizontalSampleLimit=30;
 
-    public static double Ylimit=10;
-    public static double Xlimit=17;
-    public static double YFar=17;
-    public static double YFarthest=28;
-    public static double YMax=29.5;
+
+    public static double ObjWithXMod=1.52;
+    public static double ObjWithYMod=0.73;
+        public static double Standard=110;
+        public static double A=2;
+
 
 
 
@@ -83,45 +79,16 @@ public class LocalizationTest extends LinearOpMode {
 
                 yError = -(fr.getTargetYDegrees() - 8);
                 xError =  fr.getTargetXDegrees();
-
-                double corner1 = fr.getTargetCorners().get(0).get(0);
-                double corner2 = fr.getTargetCorners().get(3).get(0);
-                double corner3 = fr.getTargetCorners().get(2).get(0);
-                double corner4 = fr.getTargetCorners().get(1).get(0);
-
-                double leftmostX = Math.min(Math.min(corner1, corner2), Math.min(corner3, corner4));
-                double rightmostX = Math.max(Math.max(corner1, corner2), Math.max(corner3, corner4));
-
-                objectwidth = rightmostX - leftmostX - 100;
             }
             double KpScaled;
-            KpScaled = KpClose;
+            KpScaled = KpExtendo;
 
-            if( Math.abs(yError)<YFar){
-                KpScaled = KpCloseY;
-
-                if(Math.abs(yError)<Ylimit)
-                    KpScaled=KpClose;
-
-            }
-            if( Math.abs(yError)>YFar){
-                KpScaled = KpFarY;
-
-            }
-            if( Math.abs(yError)>YFarthest){
-                KpScaled = KpFarthestY;
-
-            }
-            if( Math.abs(yError)>YMax){
-                KpScaled = KpMaxY;
-
-            }
 
 
 
             double yErrorMax = 26;
             double normalizedErrorExt = Math.max(-1, Math.min(1, (KpScaled * yError) / yErrorMax));
-            double targetPositionExt = 0.69+ (normalizedErrorExt * 0.8);
+            double targetPositionExt = 0.69+ Math.tan((normalizedErrorExt * 0.8));
             double normalizedSignalExt;
 
             normalizedSignalExt = Math.min(1, Math.max(0.69, targetPositionExt));
@@ -152,33 +119,19 @@ public class LocalizationTest extends LinearOpMode {
                 double leftmostX = Math.min(Math.min(corner1, corner2), Math.min(corner3, corner4));
                 double rightmostX = Math.max(Math.max(corner1, corner2), Math.max(corner3, corner4));
 
-                objectwidth = rightmostX - leftmostX - 100;
+                objectwidth = rightmostX - leftmostX ;
+                Actualobjectwidth=objectwidth-(Math.sqrt(Math.abs(xError) )/(objectwidth*ObjWithXMod ))+(pow(yError*4.5,ObjWithYMod));
             }
             double normalizedSignalAng;
 
-            if (Math.abs(yError) <= 10
-            ) {
-                if (objectwidth < HorizontalSampleClose) normalizedSignalAng = 0.52;
-                else normalizedSignalAng = 0.25;
-            } else if (Math.abs(yError) <= 25) {
-                if (objectwidth < HorizontalSampleMedium) normalizedSignalAng = 0.52;
-                else normalizedSignalAng = 0.25;
+            if(Actualobjectwidth<125) {
+
+                normalizedSignalAng = 0.52;
+
             }
             else {
-                if (objectwidth < HorizontalSampleFar) normalizedSignalAng = 0.52;
-                else normalizedSignalAng = 0.25;
-            }
 
-            if(Math.abs(xError)>Xlimit&& Math.abs(yError)>Ylimit) {
-
-                if (objectwidth >HorizontalSampleLimit) {
-                    normalizedSignalAng = 0.25;
-
-                }
-                else{
-                    normalizedSignalAng = 0.52;
-
-                }
+                normalizedSignalAng = 0.25;
 
             }
 
@@ -196,43 +149,30 @@ public class LocalizationTest extends LinearOpMode {
             for (LLResultTypes.DetectorResult fr : detectorResults) {
 
                 xError = fr.getTargetXDegrees();
-                double corner1 = fr.getTargetCorners().get(0).get(0);
-                double corner2 = fr.getTargetCorners().get(3).get(0);
-                double corner3 = fr.getTargetCorners().get(2).get(0);
-                double corner4 = fr.getTargetCorners().get(1).get(0);
-
-                double leftmostX = Math.min(Math.min(corner1, corner2), Math.min(corner3, corner4));
-                double rightmostX = Math.max(Math.max(corner1, corner2), Math.max(corner3, corner4));
-
-                objectwidth = rightmostX - leftmostX - 100;
 
             }
 
 
             double normalizedSignalRot;
-            double Kprot = KprotBaseClose;
+            double Kprot = KpTurret;
 
-            if( Math.abs(yError)>Ylimit){
-                Kprot = KprotBaseCloseY;
 
-            }
-            if( Math.abs(yError)>YFar){
-                Kprot = KprotBaseFarY;
+            if(xError<0 && xError>-4.5){
+                Kprot = KpTurretRightOffset;
 
-            }
-            if( Math.abs(yError)>YFarthest){
-                Kprot = KprotBaseFarthestY;
+                if(xError>-3){
+                    Kprot*=A*1/Math.abs(xError);
+                }
 
             }
-
 
             double xErrorMax = 24;
             double normalizedErrorRot = Math.max(-1.0, Math.min(1.0, (Kprot * xError) / xErrorMax));
-            double targetPositionRot = 0.405 + (normalizedErrorRot * 0.42);
+            double targetPositionRot = 0.43 + (normalizedErrorRot * 0.42);
             normalizedSignalRot = Math.min(0.73, Math.max(0.15, targetPositionRot));
 
-            if(Math.abs(xError)<=2 ) {
-                normalizedSignalRot = 0.42;
+            if(xError<=6 && xError>=1.5 ) {
+                normalizedSignalRot = 0.43;
 
             }
 
@@ -265,37 +205,51 @@ public class LocalizationTest extends LinearOpMode {
                     -gamepad1.right_stick_x
             ));
 
-//            if(!UseLimelight)
-//            {
-//            }
-//            else{
-//                mecanisme.intake.angle.HorizontalAngle();
-//                mecanisme.intake.turret.TurretDefault();
-//                mecanisme.extendo.Retracted();
-//                mecanisme.intake.height.HeightDefault();
-//            }
-//
-//            if(Movement && limeLight.is_detecting()){
-//                mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
-//                mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
-//                mecanisme.extendo.ExtendoCallibration(ExtendoMovement(limeLight));
-//                Movement=false;
-//                sleep(500);
-//                mecanisme.intake.height.HeightCollecting();
-//
-//            }
+            if(!UseLimelight)
+            {
+
+            }
+            else{
+                mecanisme.intake.angle.HorizontalAngle();
+                mecanisme.intake.turret.TurretDefault();
+                mecanisme.extendo.Retracted();
+                mecanisme.intake.height.HeightDefault();
+                UseLimelight=false;
+                Movement=false;
+            }
+
+            if(Movement && limeLight.is_detecting()){
+                mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
+                mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
+                mecanisme.extendo.ExtendoCallibration(ExtendoMovement(limeLight));
+                Movement=false;
+                sleep(500);
+                mecanisme.intake.height.HeightCollecting();
+                sleep(300);
+                mecanisme.intake.gripper.ClosedGripperSample();
+                sleep(300);
+                mecanisme.intake.height.HeightDefault();
+                sleep(1000);
+                mecanisme.intake.gripper.OpenGripper();
+                sleep(200);
+                mecanisme.intake.angle.HorizontalAngle();
+                mecanisme.intake.turret.TurretDefault();
+                mecanisme.extendo.Retracted();
+                mecanisme.intake.height.HeightDefault();
+UseLimelight=true;
+            }
 
             mecanisme.intake.light.LightCalibration(LightPoz);
             mecanisme.slides.SlideCalibration(slide);
 
-            mecanisme.extendo.ExtendoCallibration(extendo);
-            mecanisme.intake.angle.AngleCallibration(IntakeAngle);
-            mecanisme.intake.height.HeightCallibration(IntakeHeight);
-            mecanisme.intake.gripper.GripperCallibration(IntakeGripper);
+//            mecanisme.extendo.ExtendoCallibration(extendo);
+//            mecanisme.intake.angle.AngleCallibration(IntakeAngle);
+//            mecanisme.intake.height.HeightCallibration(IntakeHeight);
+//            mecanisme.intake.gripper.GripperCallibration(IntakeGripper);
             mecanisme.outtake.arms.ArmsCalibration(Arms);
             mecanisme.outtake.gripper.GripperCalibration(OuttakeGripper);
             mecanisme.outtake.extendo.ExtendoCalibration(OuttakeExtendo);
-               mecanisme.intake.turret.TurretCalibration(IntakeTurret);
+//               mecanisme.intake.turret.TurretCalibration(IntakeTurret);
             LLResult result = limeLight.limelight.getLatestResult();
 
             if (result != null && result.isValid() && !result.getDetectorResults().isEmpty() ) {
@@ -318,17 +272,21 @@ public class LocalizationTest extends LinearOpMode {
                         double leftmostX = Math.min(Math.min(corner1, corner2), Math.min(corner3, corner4));
                         double rightmostX = Math.max(Math.max(corner1, corner2), Math.max(corner3, corner4));
 
-                        objectwidth = rightmostX - leftmostX - 100;
+                        objectwidth = rightmostX - leftmostX ;
                         telemetry.addData("Object Width", objectwidth);
                     }
 
                 }
             }
+            Actualobjectwidth=objectwidth-(Math.sqrt(Math.abs(xError) )/(objectwidth*ObjWithXMod ))+(pow(yError*4.5,ObjWithYMod));
+
             telemetry.addData("is detecting",limeLight.is_detecting());
-            telemetry.addData("extendoPoz",mecanisme.extendo.getExtendoPosition());
+            telemetry.addData("Standard",Standard);
             telemetry.addData("x Error", xError);
             telemetry.addData("y Error", yError);
             telemetry.addData("Object Width", objectwidth);
+            telemetry.addData("Actual Object Width", Actualobjectwidth);
+            telemetry.addData("IsHorizontal", Actualobjectwidth<Standard);
             telemetry.addData("LeftSlidePoz",mecanisme.slides.getLeftSlidePoz());
             telemetry.addData("RightSlidePoz",mecanisme.slides.getRightSlidePoz());
             telemetry.addData("IntakeSensorDistance",mecanisme.intake.sensor.getSensorDistance());

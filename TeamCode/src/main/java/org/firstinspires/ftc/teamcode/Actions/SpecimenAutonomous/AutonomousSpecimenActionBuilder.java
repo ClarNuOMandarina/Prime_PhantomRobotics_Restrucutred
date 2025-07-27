@@ -23,9 +23,9 @@ public class AutonomousSpecimenActionBuilder {
     }
     public void SampleCollectUsingLimelight() throws InterruptedException {
         if(limeLight.is_detecting()) {
-            mecanisme.intake.angle.AngleCallibration(limeLight.AngleMovement());
-            mecanisme.intake.turret.TurretCalibration(limeLight.TurretMovement());
-            mecanisme.extendo.ExtendoCallibration(limeLight.ExtendoMovement());
+            mecanisme.intake.angle.AngleCallibration(limeLight.AngleMovement(limeLight));
+            mecanisme.intake.turret.TurretCalibration(limeLight.TurretMovement(limeLight));
+            mecanisme.extendo.ExtendoCallibration(limeLight.ExtendoMovement(limeLight));
             sleep(400);
             CollectSample();
         }

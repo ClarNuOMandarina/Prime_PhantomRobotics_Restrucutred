@@ -149,7 +149,7 @@ public void ScoreThirdSample(MecanumDrive drive){
             ));
     }
 
-    public void SubmersibleScore(MecanumDrive drive, double y){
+    public void SubmersibleScore(MecanumDrive drive, double y) throws InterruptedException {
         TrajectoryActionBuilder SubmersibleScore = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
@@ -164,6 +164,7 @@ public void ScoreThirdSample(MecanumDrive drive){
                 new SequentialAction(
                         SubmersibleScore.build()
                 ));
+        sleep(600);
     }
 
     public void SubmersibleSearch(MecanumDrive drive, double y) throws InterruptedException {
