@@ -18,20 +18,28 @@ public class Slides {
     private int SpecimenCollectionPosition=0;
     private int TransferPosition=0;
     private int SlideKillerThreshold=30;
+    public boolean isSlideKIller;
 
     public Slides(HardwareMap hardwareMap){
         RightSlideMotor=hardwareMap.get(DcMotorEx.class,"RightSlideMotor");
         LeftSlideMotor=hardwareMap.get(DcMotorEx.class,"LeftSlideMotor");
         RightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         LeftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        isSlideKIller=false;
     }
     protected void SlideMovement(int x){
         RightSlideMotor.setTargetPosition(x);
         LeftSlideMotor.setTargetPosition(x);
         RightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         LeftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        RightSlideMotor.setPower(1);
-        LeftSlideMotor.setPower(1);
+//        if(x>30 || (x<30 &&RightSlideMotor.getCurrentPosition()>SlideKillerThreshold)){
+            RightSlideMotor.setPower(1);
+            LeftSlideMotor.setPower(1);
+//        }
+//        else {
+//            LeftSlideMotor.setPower(0.2);
+//            RightSlideMotor.setPower(0.2);
+//        }
     }
     public void ResetEncoders(){
         RightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -75,8 +83,10 @@ public class Slides {
     }
     public void SlideKiller(){
         if((getLeftSlidePoz()+getRightSlidePoz())/2<SlideKillerThreshold ){
-            LeftSlideMotor.setPower(0.002);
-            RightSlideMotor.setPower(0.002);
+            isSlideKIller=true;
+        }
+        else{
+            isSlideKIller=false;
         }
     }
 

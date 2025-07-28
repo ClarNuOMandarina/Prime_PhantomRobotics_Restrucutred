@@ -36,13 +36,13 @@ public class LocalizationTest extends LinearOpMode {
     private double xOffCenter = 11;
     private double yError = 0.0;
 
-    public static double KpTurret = -0.36;
+    public static double KpTurret = -0.3;
     public static double KpTurretRightOffset = -0.7;
 
 
 
 
-    public static double KpExtendo = 0.13;
+    public static double KpExtendo = 0.15;
 
 
     public static int slide=0;
@@ -280,8 +280,8 @@ UseLimelight=true;
             }
             Actualobjectwidth=objectwidth-(Math.sqrt(Math.abs(xError) )/(objectwidth*ObjWithXMod ))+(pow(yError*4.5,ObjWithYMod));
 
-            telemetry.addData("is detecting",limeLight.is_detecting());
             telemetry.addData("Standard",Standard);
+            telemetry.addData("is detecting",limeLight.is_detecting());
             telemetry.addData("x Error", xError);
             telemetry.addData("y Error", yError);
             telemetry.addData("Object Width", objectwidth);

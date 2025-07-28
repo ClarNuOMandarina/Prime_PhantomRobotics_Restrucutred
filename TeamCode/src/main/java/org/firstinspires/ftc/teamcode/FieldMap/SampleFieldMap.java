@@ -16,6 +16,6 @@ public class SampleFieldMap {
     public Pose2d ScoreFirstSample= new Pose2d(new Vector2d(-61,-50), Math.toRadians(80));
     public Pose2d ScoreSecondSample=new Pose2d(new Vector2d(-63,-50), Math.toRadians(90));
     public Pose2d ScoreThirdSample= ScoreSecondSample;
-    public Pose2d CollectSubmersibleSample= (new Pose2d(new Vector2d(-20,-2), Math.toRadians(0)));
+    public Pose2d CollectSubmersibleSample= (new Pose2d(new Vector2d(-21.5,-2), Math.toRadians(0)));
     public Pose2d ScoreSubmersibleSample= new Pose2d(new Vector2d(-56,-50), Math.toRadians(47));
 }

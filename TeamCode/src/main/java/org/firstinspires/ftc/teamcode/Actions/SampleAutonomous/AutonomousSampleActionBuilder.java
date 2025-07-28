@@ -14,10 +14,8 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
 public class AutonomousSampleActionBuilder {
 
     public Mecanisme mecanisme;
-    public LimeLight limeLight;
     public AutonomousSampleActionBuilder( HardwareMap hardwareMap){
         mecanisme= new Mecanisme(hardwareMap);
-        limeLight= new LimeLight(hardwareMap);
 
     }
     public class sampleCollectConfig  implements Action {

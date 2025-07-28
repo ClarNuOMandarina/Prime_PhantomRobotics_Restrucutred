@@ -20,7 +20,7 @@ public class LimeLight {
     public static double KpTurret = -0.3;
     public static double KpTurretRightOffset = -0.7;
 
-    public static double KpExtendo = 0.13;
+    public static double KpExtendo = 0.15;
     public double YDetectlimit = 29;
     public double Xetectlimit = 19;
 
@@ -92,7 +92,7 @@ public class LimeLight {
             }
             double normalizedSignalAng;
 
-            if(Actualobjectwidth<125) {
+            if(Actualobjectwidth<IsHorizontal) {
 
                 normalizedSignalAng = 0.52;
 

@@ -85,6 +85,7 @@ public class TeleOp extends LinearOpMode {
             telemetry.addData("Intake sensor distance to object",teleOpActions.mecanisme.intake.sensor.getSensorDistance());
             telemetry.addData("Current State",currentState);
             telemetry.addData("HighBasket Scoring",teleOpActions.mecanisme.intake.light.getBasketHeight());
+            telemetry.addData("Slide",teleOpActions.mecanisme.slides.getRightSlidePoz());
             telemetry.update();
         }
     }
