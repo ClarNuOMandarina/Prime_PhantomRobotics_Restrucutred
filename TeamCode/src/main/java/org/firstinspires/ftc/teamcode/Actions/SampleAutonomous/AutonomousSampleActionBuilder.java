@@ -113,16 +113,15 @@ public class AutonomousSampleActionBuilder {
             }
         }
 
-            mecanisme.intake.height.HeightDefault();
-            mecanisme.intake.angle.HorizontalAngle();
-            mecanisme.intake.turret.TurretDefault();
-            mecanisme.intake.gripper.OpenGripper();
-            mecanisme.extendo.Retracted();
-            return false;
+        mecanisme.intake.height.HeightDefault();
+        mecanisme.intake.angle.HorizontalAngle();
+        mecanisme.intake.turret.TurretDefault();
+        mecanisme.intake.gripper.OpenGripper();
+        mecanisme.extendo.Retracted();
+        return false;
 
     }
     public void CollectSample() throws InterruptedException {
-        sleep(200);
         mecanisme.intake.height.HeightCollecting();
         sleep(200);
         mecanisme.intake.gripper.ClosedGripperSample();
@@ -133,6 +132,7 @@ public class AutonomousSampleActionBuilder {
         sleep(300);
         mecanisme.extendo.Transfer();
         sleep(200);
+        mecanisme.slides.ResetEncoders();
     }
 
 }

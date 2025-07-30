@@ -15,6 +15,7 @@ public class Samplecollect extends AbstractRobotBehaviour{
     private boolean ChangingState;
     private boolean IsAngleChanged;
     private double TimerLag=0.2;
+    private boolean IsRessetingSlides;
     public Samplecollect(TeleOpActions teleOpActions, Gamepad gamepad) {
         super(teleOpActions,gamepad);
 
@@ -23,6 +24,7 @@ public class Samplecollect extends AbstractRobotBehaviour{
         ChangingState=false;
         BasicTimer= new ElapsedTime();
         IsAngleChanged=false;
+        IsRessetingSlides=false;
     }
 
     @Override
@@ -32,8 +34,13 @@ public class Samplecollect extends AbstractRobotBehaviour{
             teleOpActions.mecanisme.SampleCollectConfig();
             StrategyInitialized=true;
             teleOpActions.mecanisme.intake.gripper.OpenGripper();
+            BasicTimer.reset();
+            IsRessetingSlides=true;
         }
-
+        if(BasicTimer.seconds()>1.3 && IsRessetingSlides){
+            teleOpActions.mecanisme.slides.ResetEncoders();
+            IsRessetingSlides=false;
+        }
         //Change state from sample to specimen collection
         if(gamepad.options){
             ChangingState=true;

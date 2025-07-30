@@ -33,6 +33,12 @@ public class Samplesecure extends AbstractRobotBehaviour{
             BasicTimer.reset();
             ChangingState=true;
         }
+        if(gamepad.square){
+            teleOpActions.mecanisme.intake.gripper.OpenGripper();
+            teleOpActions.mecanisme.outtake.gripper.SemiClosedGripper();
+            return RobotState.SPECIMENSCORE;
+
+        }
 
         if(ChangingState)
         {

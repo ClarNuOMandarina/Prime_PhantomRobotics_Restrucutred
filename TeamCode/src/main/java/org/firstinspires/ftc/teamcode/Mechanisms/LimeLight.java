@@ -24,8 +24,8 @@ public class LimeLight {
     public double YDetectlimit = 29;
     public double Xetectlimit = 19;
 
-    public static double ObjWithXMod = 1.55;
-    public static double ObjWithYMod = 0.7;
+    public static double ObjWithXMod = 1.52;
+    public static double ObjWithYMod = 0.73;
     public static double IsHorizontal = 125;
 
 
@@ -92,7 +92,7 @@ public class LimeLight {
             }
             double normalizedSignalAng;
 
-            if(Actualobjectwidth<IsHorizontal) {
+            if(Actualobjectwidth<125) {
 
                 normalizedSignalAng = 0.52;
 

@@ -50,7 +50,7 @@ public class AutonomousSampleActions {
                         CollectFirstSample.build()
                 ));
     }
-public void ScoreFirstSample(MecanumDrive drive){
+    public void ScoreFirstSample(MecanumDrive drive){
         TrajectoryActionBuilder ScoreFirstSample = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
@@ -62,10 +62,10 @@ public void ScoreFirstSample(MecanumDrive drive){
                         sampleFieldMap.ScoreFirstSample.position,
                         sampleFieldMap.ScoreFirstSample.heading
                 );
-    Actions.runBlocking(
-            new SequentialAction(
-                    ScoreFirstSample.build()
-            ));
+        Actions.runBlocking(
+                new SequentialAction(
+                        ScoreFirstSample.build()
+                ));
     }
     public void CollectSecondSample(MecanumDrive drive){
         TrajectoryActionBuilder CollectSecondSample = drive.actionBuilder( drive.pose)
@@ -78,8 +78,9 @@ public void ScoreFirstSample(MecanumDrive drive){
                 new SequentialAction(
                         CollectSecondSample.build()
                 ));
+
     }
-public void ScoreSecondSample(MecanumDrive drive){
+    public void ScoreSecondSample(MecanumDrive drive){
         TrajectoryActionBuilder ScoreSecondSample = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
@@ -90,14 +91,15 @@ public void ScoreSecondSample(MecanumDrive drive){
                         sampleFieldMap.ScoreSecondSample.position,
                         sampleFieldMap.ScoreSecondSample.heading
                 );
-    Actions.runBlocking(
-            new SequentialAction(
-                    ScoreSecondSample.build()
-            ));
+        Actions.runBlocking(
+                new SequentialAction(
+                        ScoreSecondSample.build()
+                ));
     }
     public void CollectThirdSample(MecanumDrive drive){
         TrajectoryActionBuilder CollectThirdSample = drive.actionBuilder( drive.pose)
                 .afterTime(0.1,actionBuilder.CollectThirdSample())
+
                 .strafeToLinearHeading(
                         sampleFieldMap.CollectThirdSample.position,
                         sampleFieldMap.CollectThirdSample.heading
@@ -106,8 +108,9 @@ public void ScoreSecondSample(MecanumDrive drive){
                 new SequentialAction(
                         CollectThirdSample.build()
                 ));
+
     }
-public void ScoreThirdSample(MecanumDrive drive){
+    public void ScoreThirdSample(MecanumDrive drive){
         TrajectoryActionBuilder ScoreThirdSample = drive.actionBuilder( drive.pose)
                 .afterTime(0,actionBuilder.mecanisme.outtake.gripper.CloseGripperAction())
                 .afterTime(0.2,actionBuilder.mecanisme.intake.gripper.OpenGripperAction())
@@ -119,34 +122,56 @@ public void ScoreThirdSample(MecanumDrive drive){
                         sampleFieldMap.ScoreThirdSample.position,
                         sampleFieldMap.ScoreThirdSample.heading
                 );
-    Actions.runBlocking(
-            new SequentialAction(
-                    ScoreThirdSample.build()
-            ));
+        Actions.runBlocking(
+                new SequentialAction(
+                        ScoreThirdSample.build()
+                ));
     }
-    public void SubmersibleCollectFirstCycle(MecanumDrive drive){
+    public void SubmersibleCollectFirstCycle(MecanumDrive drive,double y){
         TrajectoryActionBuilder SubmersbleCollect = drive.actionBuilder( drive.pose)
                 .afterTime(0.1,actionBuilder.SampleCollectSubmersibleConfig())
                 .splineToLinearHeading(
                         sampleFieldMap.CollectSubmersibleSample,
                         Math.toRadians(0)
                 );
-    Actions.runBlocking(
-            new SequentialAction(
-                    SubmersbleCollect.build()
-            ));
+        Actions.runBlocking(
+                new SequentialAction(
+                        SubmersbleCollect.build()
+                ));
+
+        Pose2d SearchSubmersibleSample = (new Pose2d(new Vector2d(-18, y), Math.toRadians(0)));
+        TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(
+                        SearchSubmersibleSample.position,
+                        SearchSubmersibleSample.heading
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        SearchSubmersibleSampleTraj.build()
+                ));
     }
-    public void SubmersibleCollect(MecanumDrive drive){
+    public void SubmersibleCollect(MecanumDrive drive,double y){
         TrajectoryActionBuilder SubmersbleCollect = drive.actionBuilder( drive.pose)
                 .afterTime(0.1,actionBuilder.SampleCollectSubmersibleConfig())
                 .strafeToLinearHeading(
                         sampleFieldMap.CollectSubmersibleSample.position,
                         sampleFieldMap.CollectSubmersibleSample.heading
                 );
-    Actions.runBlocking(
-            new SequentialAction(
-                    SubmersbleCollect.build()
-            ));
+        Actions.runBlocking(
+                new SequentialAction(
+                        SubmersbleCollect.build()
+                ));
+
+        Pose2d SearchSubmersibleSample = (new Pose2d(new Vector2d(-18, y), Math.toRadians(0)));
+        TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(
+                        SearchSubmersibleSample.position,
+                        SearchSubmersibleSample.heading
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        SearchSubmersibleSampleTraj.build()
+                ));
     }
 
     public void SubmersibleScore(MecanumDrive drive, double y) throws InterruptedException {
@@ -168,7 +193,7 @@ public void ScoreThirdSample(MecanumDrive drive){
     }
 
     public void SubmersibleSearch(MecanumDrive drive, double y) throws InterruptedException {
-        Pose2d SearchSubmersibleSample = (new Pose2d(new Vector2d(-20.5, y), Math.toRadians(0)));
+        Pose2d SearchSubmersibleSample = (new Pose2d(new Vector2d(-18, y), Math.toRadians(0)));
 
         TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(
@@ -179,14 +204,13 @@ public void ScoreThirdSample(MecanumDrive drive){
                 new SequentialAction(
                         SearchSubmersibleSampleTraj.build()
                 ));
-        sleep(400);
 
     }
     public void Reset(MecanumDrive drive) throws InterruptedException {
 
         TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)
                 .strafeToLinearHeading(
-                       sampleFieldMap.initialPose.position,
+                        sampleFieldMap.initialPose.position,
                         sampleFieldMap.initialPose.heading
                 );
         actionBuilder.mecanisme.InitConfig();

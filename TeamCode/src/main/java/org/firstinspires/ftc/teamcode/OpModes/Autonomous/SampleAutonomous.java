@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode.OpModes.Autonomous;
 
 import static java.lang.Math.pow;
@@ -25,7 +26,7 @@ public class SampleAutonomous extends LinearOpMode {
     public static double KpTurret = -0.3;
     public static double KpTurretRightOffset = -0.7;
 
-    public static double KpExtendo = 0.11;
+    public static double KpExtendo = 0.15;
 
 
     public static double extendo=0.68;
@@ -36,10 +37,6 @@ public class SampleAutonomous extends LinearOpMode {
     public static double ObjWithYMod=0.73;
     public static double A=2;
 
-
-
-
-    public static double LightPoz=1;
     public double ExtendoMovement(LimeLight limeLight) {
         LLResult result = limeLight.limelight.getLatestResult();
 
@@ -170,12 +167,14 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(200);
         autonomousActions.CollectFirstSample(drive);
+        autonomousActions.actionBuilder.mecanisme.slides.SlideCalibration(-30);
         autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreFirstSample(drive);
         sleep(400);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(100);
         autonomousActions.CollectSecondSample(drive);
+        autonomousActions.actionBuilder.mecanisme.slides.SlideCalibration(-30);
         autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreSecondSample(drive);
         sleep(400);
@@ -183,19 +182,20 @@ public class SampleAutonomous extends LinearOpMode {
         sleep(100);
 
         autonomousActions.CollectThirdSample(drive);
+        autonomousActions.actionBuilder.mecanisme.slides.SlideCalibration(-30);
         autonomousActions.actionBuilder.CollectSample();
         autonomousActions.ScoreThirdSample(drive);
         sleep(400);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(100);
-
-        autonomousActions.SubmersibleCollectFirstCycle(drive);
-        boolean isCollected =false;
         double y = -2;
-        sleep(400);
+
+        autonomousActions.SubmersibleCollectFirstCycle(drive,y);
+        boolean isCollected =false;
         while (!isCollected && opModeIsActive()) {
+
             BasicTimer.reset();
-            while(BasicTimer.seconds()<0.6 ){
+            while(BasicTimer.seconds()<0.8 ){
                 if(limeLight.is_detecting()) {
                     autonomousActions.actionBuilder.mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
                     autonomousActions.actionBuilder.mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
@@ -214,7 +214,7 @@ public class SampleAutonomous extends LinearOpMode {
                 telemetry.update();
             }
 
-           if(!isCollected) {
+            if(!isCollected) {
                 y += 3;
 
                 autonomousActions.SubmersibleSearch(drive,y);
@@ -227,13 +227,13 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(300);
 
-        autonomousActions.SubmersibleCollect(drive);
-        sleep(400);
+        autonomousActions.SubmersibleCollect(drive,y);
+
         while (!isCollected && opModeIsActive()) {
             boolean condition=false;
             BasicTimer.reset();
 
-            while(BasicTimer.seconds()<0.4 && !condition){
+            while(BasicTimer.seconds()<0.8 && !condition){
                 if(limeLight.is_detecting()){
                     condition=true;
                 }
@@ -268,14 +268,13 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.SubmersibleScore(drive,y);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(300);
-        autonomousActions.SubmersibleCollect(drive);
-        sleep(400);
+        autonomousActions.SubmersibleCollect(drive,y);
 
         BasicTimer.reset();
         while (!isCollected && opModeIsActive()) {
             boolean condition=false;
             BasicTimer.reset();
-            while(BasicTimer.seconds()<0.6 && !condition){
+            while(BasicTimer.seconds()<0.8 && !condition){
                 if(limeLight.is_detecting()){
                     condition=true;
                 }
@@ -309,7 +308,6 @@ public class SampleAutonomous extends LinearOpMode {
         autonomousActions.SubmersibleScore(drive,y);
         autonomousActions.actionBuilder.mecanisme.outtake.gripper.OpenGripper();
         sleep(300);
-        autonomousActions.SubmersibleCollect(drive);
         sleep(400);
 
         autonomousActions.Reset(drive);

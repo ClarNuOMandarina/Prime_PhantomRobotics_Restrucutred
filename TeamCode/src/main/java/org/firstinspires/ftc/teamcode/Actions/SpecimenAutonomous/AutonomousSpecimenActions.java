@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.Actions.SpecimenAutonomous;
 
 import static java.lang.Thread.sleep;
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -27,6 +29,8 @@ public class AutonomousSpecimenActions {
     }
 
     public void ScoreFirstSample(MecanumDrive drive){
+        drive.updatePoseEstimate();
+
         TrajectoryActionBuilder Traj = drive.actionBuilder( drive.pose)
                 .strafeToConstantHeading(
                         FieldMap.CollectFirstSample.position,
@@ -46,6 +50,8 @@ public class AutonomousSpecimenActions {
                 ));
     }
     public void ScoreSecondSample(MecanumDrive drive){
+        drive.updatePoseEstimate();
+
         TrajectoryActionBuilder Traj = drive.actionBuilder( drive.pose)
                 .splineToConstantHeading(
                         FieldMap.CollectSecondSample.position,
@@ -66,6 +72,8 @@ public class AutonomousSpecimenActions {
                 ));
     }
     public void ScoreThirdSample(MecanumDrive drive) {
+        drive.updatePoseEstimate();
+
         TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
                 .afterTime(0, actionBuilder.CollectFirstSpecimenAction())
                 .splineToConstantHeading(
@@ -88,6 +96,8 @@ public class AutonomousSpecimenActions {
     }
 
     public void CollectSpecimen(MecanumDrive drive) throws InterruptedException {
+        drive.updatePoseEstimate();
+
         TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
                 .afterTime(0.05, actionBuilder.CollectSampleConfig())
                 .setReversed(true)
@@ -117,6 +127,7 @@ public class AutonomousSpecimenActions {
                 ));
     }
     public void CollectSpecimenSubmersibleCollect(MecanumDrive drive) throws InterruptedException {
+        drive.updatePoseEstimate();
         TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
                 .afterTime(0.4, actionBuilder.CollectSpecimenConfigAction())
                 .setReversed(true)
@@ -145,6 +156,8 @@ public class AutonomousSpecimenActions {
                 ));
     }
     public void CollectSubmersible(MecanumDrive drive) throws InterruptedException {
+        drive.updatePoseEstimate();
+
         TrajectoryActionBuilder Traj = drive.actionBuilder(drive.pose)
                 .afterTime(0, actionBuilder.ScoreSpecimenFirstSeqAction())
                 .afterTime(0.2, actionBuilder.ScoreSpecimenSecondAction())
@@ -168,8 +181,24 @@ public class AutonomousSpecimenActions {
                 new SequentialAction(
                         Traj2.build()
                 ));
+        actionBuilder.mecanisme.SpecimenCollectConfig();
     }
 
+    public void SubmersibleSearch(MecanumDrive drive, double x) throws InterruptedException {
+        drive.updatePoseEstimate();
+
+        Pose2d SearchSubmersibleSample = (new Pose2d(new Vector2d(x, -29), Math.toRadians(90)));
+
+        TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)
+                .strafeToLinearHeading(
+                        SearchSubmersibleSample.position,
+                        SearchSubmersibleSample.heading
+                );
+        Actions.runBlocking(
+                new SequentialAction(
+                        SearchSubmersibleSampleTraj.build()
+                ));
+    }
         public void Reset(MecanumDrive drive) throws InterruptedException {
 
             TrajectoryActionBuilder SearchSubmersibleSampleTraj = drive.actionBuilder(drive.pose)

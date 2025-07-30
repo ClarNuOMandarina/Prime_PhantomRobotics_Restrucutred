@@ -15,20 +15,9 @@ import org.firstinspires.ftc.teamcode.Mechanisms.Mecanisme;
 public class AutonomousSpecimenActionBuilder {
 
     public Mecanisme mecanisme;
-    public LimeLight limeLight;
     public AutonomousSpecimenActionBuilder( HardwareMap hardwareMap){
         mecanisme= new Mecanisme(hardwareMap);
-        limeLight= new LimeLight(hardwareMap);
 
-    }
-    public void SampleCollectUsingLimelight() throws InterruptedException {
-        if(limeLight.is_detecting()) {
-            mecanisme.intake.angle.AngleCallibration(limeLight.AngleMovement(limeLight));
-            mecanisme.intake.turret.TurretCalibration(limeLight.TurretMovement(limeLight));
-            mecanisme.extendo.ExtendoCallibration(limeLight.ExtendoMovement(limeLight));
-            sleep(400);
-            CollectSample();
-        }
     }
     public void InitConfig(){
         mecanisme.SpecimenAutoInitConfig();
@@ -118,13 +107,23 @@ public class AutonomousSpecimenActionBuilder {
         return new CollectSampleConfig();
     }
 
-    public void CollectSample() throws InterruptedException {
-        sleep(200);
+    public boolean CollectSample() throws InterruptedException {
+        sleep(500);
         mecanisme.intake.height.HeightCollecting();
-        sleep(200);
+        sleep(300);
         mecanisme.intake.gripper.ClosedGripperSample();
-        sleep(200);
-        mecanisme.intake.SecureSampleConfig();
+        sleep(300);
+        if(mecanisme.intake.sensor.IsCollected()) {
+            mecanisme.intake.SecureSampleConfig();
+            mecanisme.extendo.Retracted();
+            return true;
+        }
+
+        mecanisme.intake.height.HeightDefault();
+        mecanisme.intake.angle.HorizontalAngle();
+        mecanisme.intake.turret.TurretDefault();
+        mecanisme.intake.gripper.OpenGripper();
         mecanisme.extendo.Retracted();
+        return false;
     }
 }

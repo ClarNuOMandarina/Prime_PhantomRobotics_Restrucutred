@@ -42,7 +42,7 @@ public class LocalizationTest extends LinearOpMode {
 
 
 
-    public static double KpExtendo = 0.15;
+    public static double KpExtendo = 0.11;
 
 
     public static int slide=0;
@@ -205,51 +205,51 @@ public class LocalizationTest extends LinearOpMode {
                     -gamepad1.right_stick_x
             ));
 
-            if(!UseLimelight)
-            {
-
-            }
-            else{
-                mecanisme.intake.angle.HorizontalAngle();
-                mecanisme.intake.turret.TurretDefault();
-                mecanisme.extendo.Retracted();
-                mecanisme.intake.height.HeightDefault();
-                UseLimelight=false;
-                Movement=false;
-            }
-
-            if(Movement && limeLight.is_detecting()){
-                mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
-                mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
-                mecanisme.extendo.ExtendoCallibration(ExtendoMovement(limeLight));
-                Movement=false;
-                sleep(500);
-                mecanisme.intake.height.HeightCollecting();
-                sleep(300);
-                mecanisme.intake.gripper.ClosedGripperSample();
-                sleep(300);
-                mecanisme.intake.height.HeightDefault();
-                sleep(1000);
-                mecanisme.intake.gripper.OpenGripper();
-                sleep(200);
-                mecanisme.intake.angle.HorizontalAngle();
-                mecanisme.intake.turret.TurretDefault();
-                mecanisme.extendo.Retracted();
-                mecanisme.intake.height.HeightDefault();
-UseLimelight=true;
-            }
+//            if(!UseLimelight)
+//            {
+//
+//            }
+//            else{
+//                mecanisme.intake.angle.HorizontalAngle();
+//                mecanisme.intake.turret.TurretDefault();
+//                mecanisme.extendo.Retracted();
+//                mecanisme.intake.height.HeightDefault();
+//                UseLimelight=false;
+//                Movement=false;
+//            }
+//
+//            if(Movement && limeLight.is_detecting()){
+//                mecanisme.intake.angle.AngleCallibration(AngleMovement(limeLight));
+//                mecanisme.intake.turret.TurretCalibration(TurretMovement(limeLight));
+//                mecanisme.extendo.ExtendoCallibration(ExtendoMovement(limeLight));
+//                Movement=false;
+//                sleep(500);
+//                mecanisme.intake.height.HeightCollecting();
+//                sleep(300);
+//                mecanisme.intake.gripper.ClosedGripperSample();
+//                sleep(300);
+//                mecanisme.intake.height.HeightDefault();
+//                sleep(1000);
+//                mecanisme.intake.gripper.OpenGripper();
+//                sleep(200);
+//                mecanisme.intake.angle.HorizontalAngle();
+//                mecanisme.intake.turret.TurretDefault();
+//                mecanisme.extendo.Retracted();
+//                mecanisme.intake.height.HeightDefault();
+//UseLimelight=true;
+//            }
 
             mecanisme.intake.light.LightCalibration(LightPoz);
             mecanisme.slides.SlideCalibration(slide);
 
-//            mecanisme.extendo.ExtendoCallibration(extendo);
-//            mecanisme.intake.angle.AngleCallibration(IntakeAngle);
-//            mecanisme.intake.height.HeightCallibration(IntakeHeight);
-//            mecanisme.intake.gripper.GripperCallibration(IntakeGripper);
+               mecanisme.intake.turret.TurretCalibration(IntakeTurret);
+            mecanisme.extendo.ExtendoCallibration(extendo);
+            mecanisme.intake.angle.AngleCallibration(IntakeAngle);
+            mecanisme.intake.height.HeightCallibration(IntakeHeight);
+            mecanisme.intake.gripper.GripperCallibration(IntakeGripper);
             mecanisme.outtake.arms.ArmsCalibration(Arms);
             mecanisme.outtake.gripper.GripperCalibration(OuttakeGripper);
             mecanisme.outtake.extendo.ExtendoCalibration(OuttakeExtendo);
-//               mecanisme.intake.turret.TurretCalibration(IntakeTurret);
             LLResult result = limeLight.limelight.getLatestResult();
 
             if (result != null && result.isValid() && !result.getDetectorResults().isEmpty() ) {

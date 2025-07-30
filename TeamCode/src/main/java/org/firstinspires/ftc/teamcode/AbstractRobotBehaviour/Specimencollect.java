@@ -16,6 +16,7 @@ public class Specimencollect extends AbstractRobotBehaviour{
     private ElapsedTime BasicTimer = new ElapsedTime();
     private boolean ChangingState;
     private double TimerLag=0.3;
+    boolean             IsRessetingSlides;
     public Specimencollect(TeleOpActions teleOpActions, Gamepad gamepad) {
         super(teleOpActions,gamepad);
 
@@ -25,6 +26,7 @@ public class Specimencollect extends AbstractRobotBehaviour{
         AlternativeStateChange=false;
         BasicTimer= new ElapsedTime();
         IsAngleChanged=false;
+        IsRessetingSlides=false;
 
     }
 
@@ -34,6 +36,12 @@ public class Specimencollect extends AbstractRobotBehaviour{
         if(!StrategyInitialized) {
             teleOpActions.mecanisme.SpecimenCollectConfig();
             StrategyInitialized=true;
+            IsRessetingSlides=true;
+            BasicTimer.reset();
+        }
+        if(BasicTimer.seconds()>1.3 && IsRessetingSlides){
+            teleOpActions.mecanisme.slides.ResetEncoders();
+            IsRessetingSlides=false;
         }
 
         //Change state from sample to specimen collection
@@ -95,11 +103,10 @@ public class Specimencollect extends AbstractRobotBehaviour{
 
         if(gamepad.square && !teleOpActions.mecanisme.intake.height.IsCollecting()){
             teleOpActions.mecanisme.outtake.gripper.SemiClosedGripper();
+            teleOpActions.mecanisme.intake.gripper.OpenGripper();
             return RobotState.SPECIMENSCORE;
 
         }
-
-
         return null;
     }
 }

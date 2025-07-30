@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Slides {
@@ -30,11 +31,11 @@ public class Slides {
     protected void SlideMovement(int x){
         RightSlideMotor.setTargetPosition(x);
         LeftSlideMotor.setTargetPosition(x);
-        RightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        LeftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        if(x>30 || (x<30 &&RightSlideMotor.getCurrentPosition()>SlideKillerThreshold)){
             RightSlideMotor.setPower(1);
             LeftSlideMotor.setPower(1);
+        RightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        LeftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        }
 //        else {
 //            LeftSlideMotor.setPower(0.2);
@@ -81,12 +82,28 @@ public class Slides {
     public void Transfer(){
         SlideMovement(TransferPosition);
     }
-    public void SlideKiller(){
-        if((getLeftSlidePoz()+getRightSlidePoz())/2<SlideKillerThreshold ){
-            isSlideKIller=true;
+    public void SlideManualReset(float RightTrigger,float LeftTrigger,boolean condition){
+
+        if(RightTrigger!=0){
+            RightSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            LeftSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            RightSlideMotor.setPower(-1);
+            LeftSlideMotor.setPower(-1);
+
         }
-        else{
-            isSlideKIller=false;
+        else if(LeftTrigger!=0){
+            RightSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            LeftSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            LeftSlideMotor.setPower(1);
+            RightSlideMotor.setPower(1);
+
+        }
+         if(condition){
+            LeftSlideMotor.setPower(0);
+            RightSlideMotor.setPower(0);
+            RightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            LeftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            ResetEncoders();
         }
     }
 
@@ -101,6 +118,17 @@ public class Slides {
     }
     public Action TransferAction(){
         return new transfer();
+    }
+    public class ResetEncoder  implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+ResetEncoders();
+return false;
+        }
+
+    }
+    public Action ResetEncoder(){
+        return new ResetEncoder();
     }
     public class highBasket  implements Action {
         @Override
